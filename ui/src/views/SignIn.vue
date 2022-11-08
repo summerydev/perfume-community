@@ -45,12 +45,13 @@ export default {
       };
       try {
         this.$axios.put("/users/login", inputdata).then((res) => {
-          res.status == 200
-            ? this.$router.push("/")
-            : alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+          localStorage.setItem("accessToken", res.data.token.accessToken);
+          localStorage.setItem("refreshToken", res.data.token.refreshToken);
+          this.$router.push("/");
         });
         // this.$store.dispatch("signin", inputdata);
       } catch (e) {
+        alert(e.message);
         console.log(e);
       }
     },
