@@ -5,7 +5,6 @@ const port = 3000;
 
 const { makeToken, decodePayload } = require("./util/jwt.js");
 
-
 /** DB pool */
 const pool = require("./db/db.js");
 
@@ -59,8 +58,9 @@ app.put("/users/login", async (req, res) => {
     if (result.length > 0) {
       const accessToken = makeToken({ userid: result[0].user_id });
       console.log(accessToken);
-      res.cookie("jwt", accessToken);
+      // res.cookie("jwt", accessToken);
       res.status(200).send({
+        ok: true,
         result,
         token: { accessToken },
       });
@@ -85,6 +85,10 @@ app.post("/users", async (req, res) => {
       req.body.phone,
     ]);
     res.json(rows);
+    res.status(200).send({
+      ok: true,
+      rows,
+    });
   } catch (e) {
     console.log(e);
   }
