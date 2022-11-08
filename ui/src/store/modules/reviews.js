@@ -12,7 +12,7 @@ const getters = {
 
 const actions = {
   async fetchDataReviews({ commit }) {
-    await axios
+    axios
       .get("/reviews")
       .then((res) => {
         commit("setReviewList", res.data);
@@ -24,7 +24,7 @@ const actions = {
 
   async addReview({ commit }, formData) {
     console.log(formData);
-    await axios
+    axios
       .post("/reviews", formData, {
         headers: {
           "Context-Type": "application/json",
