@@ -8,6 +8,7 @@ const expiresIn = process.env.JWT_EXP;
 
 const option = { algorithm, expiresIn };
 
+
 module.exports = {
   makeToken: (payload) => {
     return jwt.sign(payload, secretKey, option);
