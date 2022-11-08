@@ -59,7 +59,16 @@ export default {
         email: this.email,
         phone: this.phone,
       };
-      this.$axios.post("/users", intputdata);
+      this.$axios
+        .post("/users", intputdata)
+        .then((res) => {
+          console.log(res);
+          if (res.ok) {
+            alert("회원가입이 완료되었습니다.");
+            this.$router.push("/signin");
+          }
+        })
+        .catch((e) => console.log(e));
       console.log(intputdata);
     },
   },
