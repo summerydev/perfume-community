@@ -12,7 +12,9 @@ export default {
     return {};
   },
   methods: {
-    handleLogout() {},
+    handleLogout() {
+      this.$store.dispatch("logout");
+    },
   },
 };
 </script>
