@@ -22,10 +22,10 @@ const actions = {
       });
   },
 
-  async addReview({ commit }, formData) {
-    console.log(formData);
+  async addReview({ commit }, inputData) {
+    console.log(inputData);
     axios
-      .post("/reviews", formData, {
+      .post("/reviews", inputData, {
         headers: {
           "Context-Type": "application/json",
         },
