@@ -43,6 +43,15 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      userid: null,
+      password: null,
+      name: null,
+      email: null,
+      phone: null,
+    };
+  },
   computed: {
     ...mapGetters({ isLogin: "getIsLogin", userInfo: "getUserInfo" }),
   },
@@ -56,7 +65,7 @@ export default {
         email: this.email,
         phone: this.phone,
       };
-      console.log(userdata)
+      console.log(userdata);
       this.$store.dispatch("updateUserInfo", userdata);
     },
   },

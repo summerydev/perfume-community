@@ -50,7 +50,15 @@
 
 <script>
 export default {
-  data() {},
+  data() {
+    return {
+      userid: null,
+      password: null,
+      name: null,
+      email: null,
+      phone: null,
+    };
+  },
   methods: {
     handleSubmit() {
       const intputdata = {
