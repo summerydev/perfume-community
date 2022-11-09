@@ -50,6 +50,7 @@
 
 <script>
 export default {
+  data() {},
   methods: {
     handleSubmit() {
       const intputdata = {
@@ -63,13 +64,12 @@ export default {
         .post("/users", intputdata)
         .then((res) => {
           console.log(res);
-          if (res.ok) {
+          if (res.status == 200) {
             alert("회원가입이 완료되었습니다.");
             this.$router.push("/signin");
           }
         })
         .catch((e) => console.log(e));
-      console.log(intputdata);
     },
   },
 };

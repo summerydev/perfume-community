@@ -80,6 +80,7 @@ app.put("/users/login", async (req, res) => {
 /** 유저 회원가입 */
 app.post("/users", async (req, res) => {
   const query = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
+  console.log(req);
   try {
     const [rows] = pool.query(query, [
       req.body.userid,
@@ -90,7 +91,6 @@ app.post("/users", async (req, res) => {
     ]);
     res.json(rows);
     res.status(200).send({
-      ok: true,
       rows,
     });
   } catch (e) {
@@ -100,26 +100,46 @@ app.post("/users", async (req, res) => {
 
 /** 회원 정보 관련 */
 /** authJWT */
-const authJWT = (req, res, next) => {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.split("Bearer ")[1]; // header에서 access token get
-    const result = verify(token); // token을 검증
-    if (result.ok) {
-      // token이 검증되었으면 req에 값을 세팅, 다음 콜백함수로
-      req.id = result.id;
-      req.role = result.role;
-      next();
-    } else {
-      // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답
-      res.status(401).send({
-        ok: false,
-        message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'
-      });
-    }
-  }
-};
+// const authJWT = (req, res, next) => {
+//   if (req.headers.authorization) {
+//     const token = req.headers.authorization.split("Bearer ")[1]; // header에서 access token get
+//     const result = verify(token); // token을 검증
+//     if (result.ok) {
+//       // token이 검증되었으면 req에 값을 세팅, 다음 콜백함수로
+//       req.id = result.id;
+//       req.role = result.role;
+//       next();
+//     } else {
+//       // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답
+//       res.status(401).send({
+//         ok: false,
+//         message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'
+//       });
+//     }
+//   }
+// };
 
-app.get("/users/{userId}", authJWT);
+// app.get("/users/{userId}", authJWT);
+app.put("/users/{userId}", async (req, res) => {
+  const query =
+    "update user set password=?, name=?, email=?, phone=? where id=?;";
+  try {
+    const [rows] = await pool.query(query, [
+      req.body.password,
+      req.body.name,
+      req.body.email,
+      req.body.phone,
+      req.body.id,
+    ]);
+    res.json(rows);
+    res.status(200).send({
+      ok: true,
+      rows,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 /** [리뷰] 전체 리뷰 리스트 조회 */
 app.get("/reviews", async (req, res) => {
