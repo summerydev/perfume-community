@@ -7,7 +7,6 @@ const state = {
   isLoginEror: false,
   accessToken: null,
   refreshToken: null,
-  userList: null,
   role: null,
 };
 
@@ -18,8 +17,8 @@ const getters = {
   getToken(state) {
     return state.accessToken;
   },
-  getUserList(state) {
-    return state.userList;
+  getUserInfo(state) {
+    return state.userInfo;
   },
 };
 
@@ -65,14 +64,21 @@ const actions = {
         console.log(e);
       });
   },
+  async updateUserInfo({ commit }, payload) {
+    try {
+      axios.put(`/users/${payload}`).then((res) => {
+        console.log(res);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    commit("updateUserInfo");
+  },
 };
 
 const mutations = {
   setRole(state, payload) {
     state.role = payload;
-  },
-  setUserList(state, payload) {
-    state.userList = payload;
   },
   loginSuccess(state, payload) {
     state.isLogin = true;
@@ -95,6 +101,10 @@ const mutations = {
     state.userInfo = null;
     state.accessToken = null;
     state.refreshToken = null;
+  },
+  updateUserInfo(state, payload) {
+    state.userInfo = payload;
+    state.userList = payload;
   },
 };
 
