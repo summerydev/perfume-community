@@ -88,7 +88,7 @@
           type="checkbox"
           name="fragrance"
           v-model="fragranceValue"
-          value="a"
+          value="green"
         />
         <input
           type="checkbox"
