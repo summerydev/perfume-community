@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -37,23 +38,16 @@ export default {
       currentPassword: "",
     };
   },
+  computed: {
+    ...mapState(["isLogin", "isLoginError"]),
+  },
   methods: {
     handleSubmit() {
       const inputdata = {
         userid: this.userid,
         password: this.currentPassword,
       };
-      try {
-        this.$axios.put("/users/login", inputdata).then((res) => {
-          localStorage.setItem("accessToken", res.data.token.accessToken);
-          localStorage.setItem("refreshToken", res.data.token.refreshToken);
-          this.$router.push("/");
-        });
-        // this.$store.dispatch("signin", inputdata);
-      } catch (e) {
-        alert(e.message);
-        console.log(e);
-      }
+      this.$store.dispatch("signin", inputdata);
     },
   },
 };
