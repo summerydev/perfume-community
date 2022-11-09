@@ -2,7 +2,7 @@
   "name": "api",
   "version": "1.0.0",
   "description": "side-prj-summer-express-api",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +16,6 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "mysql2": "^2.3.3",
-    "redis": "^4.4.0"
+    "mysql2": "^2.3.3"
   }
 }
