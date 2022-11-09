@@ -1,13 +1,23 @@
 <template>
   <div>
     <h1>My Page</h1>
-    <div>유저이름</div>
-    <div>비밀번호 변경</div>
+    <div v-if="userInfo[0]">
+      <div>{{ userInfo[0].user_id }}님</div>
+    </div>
+    <router-link to="/mypage/update">회원 정보 수정</router-link>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters({ isLogin: "getIsLogin", userInfo: "getUserInfo" }),
+  },
+};
 </script>
 
 <style>
