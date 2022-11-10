@@ -57,8 +57,8 @@ export default {
   },
   methods: {
     handleSubmit() {
+      const userPkId = this.userInfo[0]?.user_id;
       const userdata = {
-        id: this.userInfo[0]?.id,
         userid: this.userInfo[0]?.user_id,
         password: this.password,
         name: this.name,
@@ -66,7 +66,7 @@ export default {
         phone: this.phone,
       };
       console.log(userdata);
-      this.$store.dispatch("updateUserInfo", userdata);
+      this.$store.dispatch("updateUserInfo", [userPkId, userdata]);
     },
   },
 };
