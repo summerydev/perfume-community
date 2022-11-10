@@ -24,59 +24,47 @@
       </div>
       <div>
         어땠나요?
-        <div v-for="(item, index) in recommendationMessage" :key="index">
-          <label for="recommendation">
-            <input
-              type="radio"
-              name="recommendation"
-              v-model="recommendationValue"
-              :value="item"
-              required
-            />{{ item }}
-          </label>
-        </div>
+        <el-radio-group v-model="recommendationValue" size="small">
+          <el-radio-button
+            v-for="(item, index) in recommendationMessage"
+            :key="index"
+            :label="item"
+            name="recommendation"
+          ></el-radio-button>
+        </el-radio-group>
       </div>
       <div>
         오래 지속되나요?
-        <div v-for="(item, index) in longevityMessage" :key="index">
-          <label for="longevity">
-            <input
-              type="radio"
-              name="longevity"
-              v-model="longevityValue"
-              :value="item"
-              required
-            />{{ item }}
-          </label>
-        </div>
+        <el-radio-group v-model="longevityValue" size="small">
+          <el-radio-button
+            v-for="(item, index) in longevityMessage"
+            :key="index"
+            :label="item"
+            name="longevity"
+          ></el-radio-button>
+        </el-radio-group>
       </div>
       <div>
         향이 얼마나 느껴지나요?
-        <div v-for="(item, index) in strengthMessage" :key="index">
-          <label for="strength">
-            <input
-              type="radio"
-              name="strength"
-              v-model="strengthValue"
-              :value="item"
-              required
-            />{{ item }}
-          </label>
-        </div>
+        <el-radio-group v-model="strengthValue" size="small">
+          <el-radio-button
+            v-for="(item, index) in strengthMessage"
+            :key="index"
+            :label="item"
+            name="strength"
+          ></el-radio-button>
+        </el-radio-group>
       </div>
       <div>
         어떤 향이 느껴지나요?
-        <div v-for="(item, index) in frangranceMessage" :key="index">
-          <label for="fragrance">
-            <input
-              type="checkbox"
-              name="fragrance"
-              v-model="fragranceValue"
-              :value="item"
-              required
-            />{{ item }}
-          </label>
-        </div>
+        <el-checkbox-group v-model="fragranceValue" size="small">
+          <el-checkbox-button
+            v-for="(item, index) in frangranceMessage"
+            :key="index"
+            :label="item"
+            name="fragrance"
+          ></el-checkbox-button>
+        </el-checkbox-group>
       </div>
 
       <div>

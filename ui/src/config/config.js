@@ -15,7 +15,7 @@ export const strengthMessage = {
 };
 
 export const genderMessage = {
-  0: "남녀 모두",
+  0: "모두",
   1: "남성",
   2: "여성",
 };

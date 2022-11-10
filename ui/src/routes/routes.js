@@ -6,6 +6,7 @@ import AddReview from "../views/AddReview.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import UpdateUser from "../views/UpdateUser.vue";
+import PerfumeReviews from "../views/PerfumeReviews.vue";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -38,6 +39,9 @@ const router = new VueRouter({
     {
       path: "/signup",
       component: SignUp,
+    },{
+      path: "/perfumereviews",
+      component: PerfumeReviews,
     },
   ],
 });

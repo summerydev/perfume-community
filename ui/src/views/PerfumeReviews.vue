@@ -1,16 +1,19 @@
 <template>
   <div>
-    <h1>All reviews</h1>
     <router-link to="/addreview" class="addBtn">추가하기</router-link>
     <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
       <li v-for="review in this.reviewList" :key="review.id">
-        <el-card shadow="hover" :body-style="{ padding: '10px' }">
+        <el-card
+          shadow="hover"
+          style="border-radius: 10px"
+          :body-style="{ padding: '15px' }"
+        >
           <div>
             <span class="perfume_name">{{ review.perfume_name }}</span>
             <span class="brand">({{ review.name }})</span>
-            <span class="recommendation">{{
-              recommendationMessage[review.recommendation]
-            }}</span>
+            <span class="recommendation">
+              {{ recommendationMessage[review.recommendation] }}</span
+            >
           </div>
           <div class="img-box">
             <img
@@ -18,6 +21,14 @@
               alt="perfume image"
               class="image"
             />
+          </div>
+          <div>
+            <span
+              v-for="item in review.fragrance"
+              v-bind:key="item.fragrance"
+              class="fragrance"
+              >{{ frangranceMessage[item] }}</span
+            >
           </div>
           <div>
             지속력⏱️
@@ -28,15 +39,14 @@
             <span>{{ strengthMessage[review.strength] }}</span>
           </div>
           <div>
-            <span>{{ genderMessage[review.gender] }}</span
+            성별 <span>{{ genderMessage[review.gender] }}</span
             >에게 추천
           </div>
+
           <div>
-            <span v-for="item in review.fragrance" v-bind:key="item.fragrance"
-              >{{ frangranceMessage[item] }}
-            </span>
+            상세리뷰
+            <div class="content">{{ review.content }}</div>
           </div>
-          <div>{{ review.content }}</div>
         </el-card>
       </li>
     </ul>
@@ -62,8 +72,6 @@ export default {
       genderMessage,
       frangranceMessage,
       count: 0,
-      fits: ["fill", "contain", "cover", "none", "scale-down"],
-      url: "https://fimgs.net/mdimg/perfume/375x500.3865.jpg",
     };
   },
   computed: {
@@ -87,7 +95,6 @@ li {
   padding: 10px;
   background-color: white;
   border-radius: 15px;
-  width: 300px;
 }
 .img-box {
   text-align: center;
@@ -97,6 +104,20 @@ li {
 .image {
   width: 100%;
   object-fit: cover;
+}
+
+.content {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.083);
+}
+
+.fragrance {
+  width: max-content;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border: 1px solid #bababa;
+  border-radius: 20px;
 }
 
 .perfume_name {
