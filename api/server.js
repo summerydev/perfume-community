@@ -3,25 +3,22 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-const { makeToken, decodePayload } = require("./util/jwt.js");
+const { makeToken } = require("./util/jwt.js");
 const jwt = require("./util/jwt.js");
-const { verify } = require("./util/jwt.js");
+// const { verify,decodePayload } = require("./util/jwt.js");
+
 /** DB pool */
 const pool = require("./db/db.js");
 
-/** cookie parser */
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
-
 /** body parser */
-const bodyParser = require("body-parser");
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 /** cors */
 var cors = require("cors");
 app.all("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  // res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
 });
 
@@ -34,14 +31,18 @@ app.use(
 
 /** apis */
 /**  */
+// app.get("/", (req, res) => {
+//   const token = req.accessToken;
+//   if (token !== undefined) {
+//     const user = decodePayload(token);
+//     res.send("login success", { user });
+//   } else {
+//     res.send("/");
+//   }
+// });
+
 app.get("/", (req, res) => {
-  const token = req.accessToken;
-  if (token !== undefined) {
-    const user = decodePayload(token);
-    res.send("login success", { user });
-  } else {
-    res.send("/");
-  }
+  res.send("/");
 });
 
 /** 유저 로그인 */
@@ -53,21 +54,16 @@ app.put("/users/login", async (req, res) => {
     const userQuery = `select * from user where user_id=? and password=?`;
     const [result] = await pool.query(userQuery, [userid, password]);
 
-    console.log(result[0]);
-
     if (result.length > 0) {
       const accessToken = makeToken({ userid: result[0].user_id });
       const refreshToken = jwt.refresh();
 
-      // redisClient.set(result[0].user_id, refreshToken);
-      console.log(accessToken);
-
-      res.status(200).send({
+      res.json({
         result,
         token: { accessToken, refreshToken },
       });
     } else {
-      res.status(401).send({
+      res.json({
         message: "아이디 또는 비밀번호가 일치하지 않습니다.",
       });
     }
@@ -82,17 +78,14 @@ app.post("/users", async (req, res) => {
   const query = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
   console.log(req);
   try {
-    const [rows] = pool.query(query, [
+    await pool.query(query, [
       req.body.userid,
       req.body.password,
       req.body.name,
       req.body.email,
       req.body.phone,
     ]);
-    res.json(rows);
-    res.status(200).send({
-      rows,
-    });
+    res.status(200).send();
   } catch (e) {
     console.log(e);
   }
@@ -120,22 +113,20 @@ app.post("/users", async (req, res) => {
 // };
 
 // app.get("/users/{userId}", authJWT);
-app.put("/users/{userId}", async (req, res) => {
+
+app.put("/users/:id", async (req, res) => {
   const query =
     "update user set password=?, name=?, email=?, phone=? where id=?;";
   try {
-    const [rows] = await pool.query(query, [
+    const rows = await pool.query(query, [
       req.body.password,
       req.body.name,
       req.body.email,
       req.body.phone,
-      req.body.id,
+      req.params.id,
     ]);
-    res.json(rows);
-    res.status(200).send({
-      ok: true,
-      rows,
-    });
+    console.log(rows);
+    res.status(200).send();
   } catch (e) {
     console.log(e);
   }
@@ -144,14 +135,12 @@ app.put("/users/{userId}", async (req, res) => {
 /** [리뷰] 전체 리뷰 리스트 조회 */
 app.get("/reviews", async (req, res) => {
   const query =
-    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, b.name from review r join perfume p on r.perfume_id=p.id join brand b on p.brand_id=b.id;";
+    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and  p.brand_id=b.id;";
   try {
     const [rows] = await pool.query(query);
     res.json(rows);
-    console.log(rows);
-    return rows;
+    // res.status(200).send({ rows });
   } catch (e) {
-    console.log("DB err");
     console.log(e);
   }
 });
