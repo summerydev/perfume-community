@@ -6,26 +6,17 @@
       <li v-for="review in this.reviewList" :key="review.id">
         <div>{{ review.perfume_name }}</div>
         <div>{{ review.name }}</div>
-        <div>{{ review.recommendation == "1" ? "추천해요" : "아쉬워요" }}</div>
+        <div>{{ recommendationMessage[review.recommendation] }}</div>
         <div>
           지속력⏱️
-          <span v-if="review.longevity == 0">{{ longevityMessage[0] }}</span>
-          <span v-else-if="review.longevity == 1">{{
-            longevityMessage[1]
-          }}</span>
-          <span v-else>{{ longevityMessage[2] }}</span>
+          <span>{{ longevityMessage[review.longevity] }}</span>
         </div>
         <div>
           확산력✨
-          <span v-if="review.strength == 0">{{ strengthMessage[0] }}</span>
-          <span v-else-if="review.longevity == 1">{{
-            strengthMessage[1]
-          }}</span>
-          <span v-else>{{ strengthMessage[2] }}</span>
+          <span>{{ strengthMessage[review.strength] }}</span>
         </div>
         <div>
-          for
-          <span v-if="review.gender == 0">{{ genderMessage[0] }} </span>
+          <span>{{ genderMessage[review.gender] }}</span>에게 추천
         </div>
         <div>
           <span v-for="item in review.fragrance" v-bind:key="item.fragrance">{{
@@ -40,12 +31,19 @@
 
 <script>
 import { mapGetters } from "vuex";
+import {
+  recommendationMessage,
+  longevityMessage,
+  strengthMessage,
+  genderMessage,
+} from "../config/config.js";
 export default {
   data() {
     return {
-      longevityMessage: ["짧아요", "괜찮아요", "오래가요"],
-      strengthMessage: ["나만 맡을 수 있어요", "지하철 가능!", "강력해요"],
-      genderMessage: ["둘 다", "남성", "여성"],
+      recommendationMessage,
+      longevityMessage,
+      strengthMessage,
+      genderMessage,
     };
   },
   computed: {
