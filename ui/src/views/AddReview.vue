@@ -4,11 +4,23 @@
     <form @submit.prevent="handleSubmit">
       <div>
         <label for="perfumeName">제품명</label>
-        <input type="text" name="perfumeName" v-model="perfumeName" required />
-      </div>
-      <div>
-        <label for="brand">브랜드</label>
-        <input type="text" name="brand" v-model="brand" required />
+        <input
+          @input="submitAutoComplete"
+          type="text"
+          name="searchPerfumeName"
+          v-model="searchPerfumeName"
+          required
+        />
+        <div class="autocomplete disabled">
+          <div
+            @click="setPerfumeName"
+            style="cursor: pointer"
+            v-for="(res, i) in perfumeList"
+            :key="i"
+          >
+            {{ res }}
+          </div>
+        </div>
       </div>
       <div>
         <label for="recommendation">어땠나요?</label>
@@ -108,35 +120,74 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      perfumeName: "",
-      brand: "",
-      recommendationValues: "",
-      longevityValue: "",
-      strengthValue: "",
+      searchPerfumeName: null,
+      perfumeName: null,
+      recommendationValues: null,
+      longevityValue: null,
+      strengthValue: null,
       fragranceValue: [],
-      content: "",
+      content: null,
+      searchResult: [],
+      perfumeId: null,
+      perfumeList: [],
+      clickedPerfumeName: null,
     };
   },
+  computed: {
+    ...mapGetters({ isLogin: "getIsLogin", userInfo: "getUserInfo" }),
+  },
   methods: {
-    handleSubmit() {
+    submitAutoComplete() {
+      const autocomplete = document.querySelector(".autocomplete");
+      if (this.searchPerfumeName) {
+        autocomplete.classList.remove("disabled");
+        this.handleGetPerfume();
+      } else {
+        autocomplete.classList.add("disabled");
+      }
+    },
+    async handleSubmit() {
       const inputData = {
+        userPkId: this.userInfo[0].id,
         perfumeName: this.perfumeName,
-        brand: this.brand,
         recommendationValues: this.recommendationValues,
         longevityValue: this.longevityValue,
         strengthValue: this.strengthValue,
         fragranceValue: this.fragranceValue,
         content: this.content,
       };
-
-      this.$store.dispatch("addReview", inputData);
+      try {
+        await this.$axios.post("/reviews", inputData);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async handleGetPerfume() {
+      try {
+        const result = await this.$axios.get("/perfume", {
+          params: { perfumeName: this.searchPerfumeName },
+        });
+        this.searchResult = result.data;
+        this.searchResult.map((e) => this.perfumeList.push(e.perfume_name));
+        console.log(this.perfumeList);
+        console.log(this.perfumeName);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    setPerfumeName() {
+      // this.perfumeName = this.clickedPerfumeName;
     },
   },
 };
 </script>
 
 <style>
+disabled {
+  display: none;
+}
 </style>

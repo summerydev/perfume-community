@@ -12,29 +12,14 @@ const getters = {
 
 const actions = {
   async fetchDataReviews({ commit }) {
-    axios
-      .get("/reviews")
-      .then((res) => {
-        commit("setReviewList", res.data);
-      })
-      .then((e) => {
-        console.log(e);
-      });
+    try {
+      const result = await axios.get("/reviews");
+      commit("setReviewList", result.data);
+    } catch (e) {
+      console.log(e);
+    }
   },
 
-  async addReview({ commit }, inputData) {
-    console.log(inputData);
-    axios
-      .post("/reviews", inputData, {
-        headers: {
-          "Context-Type": "application/json",
-        },
-      }) //
-      .then((res) => {
-        console.log(res);
-        commit;
-      });
-  },
 };
 
 const mutations = {
