@@ -19,3 +19,14 @@ export const genderMessage = {
   1: "남성",
   2: "여성",
 };
+
+export const frangranceMessage = {
+  0: "citrus",
+  1: "fruity",
+  2: "floral",
+  3: "spicy",
+  4: "sweet",
+  5: "woody",
+  6: "musky",
+  7: "green",
+};
