@@ -1,5 +1,4 @@
 import axios from "axios";
-import router from "../../routes/routes";
 
 const state = {
   userInfo: null,
@@ -23,18 +22,6 @@ const getters = {
 };
 
 const actions = {
-  async logout({ commit }) {
-    commit("logout");
-    alert("로그아웃 되었습니다.");
-    localStorage.clear();
-    router
-      .push({
-        path: "/",
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  },
   async updateUserInfo({ commit }, payload) {
     try {
       await axios.put(`/users/${payload}`).then((res) => {

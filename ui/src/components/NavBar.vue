@@ -20,8 +20,19 @@ export default {
     ...mapGetters({ isLogin: "getIsLogin" }),
   },
   methods: {
-    handleLogout() {
-      this.$store.dispatch("logout");
+    async handleLogout() {
+      this.$store.commit("logout");
+      alert("로그아웃 되었습니다.");
+      localStorage.clear();
+      try {
+        if (this.$router.currentRoute.path !== "/reviews") {
+          this.$router.push("/");
+        } else {
+          this.$router.go();
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
