@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>add review</div>
+    <h1>리뷰 등록하기</h1>
     <form @submit.prevent="handleSubmit">
       <div>
         <label for="perfumeName">제품명</label>
@@ -23,92 +23,62 @@
         </div>
       </div>
       <div>
-        <label for="recommendation">어땠나요?</label>
-        <input
-          type="radio"
-          name="recommendation"
-          v-model="recommendationValues"
-          value="별로에요"
-        />
-        <input
-          type="radio"
-          name="recommendation"
-          v-model="recommendationValues"
-          value="괜찮아요"
-        />
-        <input
-          type="radio"
-          name="recommendation"
-          v-model="recommendationValues"
-          value="좋아요"
-        />
-        <input
-          type="radio"
-          name="recommendation"
-          v-model="recommendationValues"
-          value="최고에요"
-        />
-        {{ recommendationValues }}
+        어땠나요?
+        <div v-for="(item, index) in recommendationMessage" :key="index">
+          <label for="recommendation">
+            <input
+              type="radio"
+              name="recommendation"
+              v-model="recommendationValue"
+              :value="item"
+              required
+            />{{ item }}
+          </label>
+        </div>
       </div>
       <div>
-        <label for="longevity" required>오래 지속되나요?</label>
-        <input
-          type="radio"
-          name="longevity"
-          v-model="longevityValue"
-          value="짧아요"
-        />
-        <input
-          type="radio"
-          name="longevity"
-          v-model="longevityValue"
-          value="괜찮아요"
-        />
-        <input
-          type="radio"
-          name="longevity"
-          v-model="longevityValue"
-          value="오래가요"
-        />
-        {{ longevityValue }}
+        오래 지속되나요?
+        <div v-for="(item, index) in longevityMessage" :key="index">
+          <label for="longevity">
+            <input
+              type="radio"
+              name="longevity"
+              v-model="longevityValue"
+              :value="item"
+              required
+            />{{ item }}
+          </label>
+        </div>
       </div>
       <div>
-        <label for="strength">향이 강하나요?</label>
-        <input
-          type="radio"
-          name="strength"
-          v-model="strengthValue"
-          value="나만 맡을 수 있어요"
-        />
-        <input
-          type="radio"
-          name="strength"
-          v-model="strengthValue"
-          value="버스, 지하철 탈 수 있어요"
-        />
-        <input
-          type="radio"
-          name="strength"
-          v-model="strengthValue"
-          value="강력해요"
-        />
-        {{ strengthValue }}
+        향이 얼마나 느껴지나요?
+        <div v-for="(item, index) in strengthMessage" :key="index">
+          <label for="strength">
+            <input
+              type="radio"
+              name="strength"
+              v-model="strengthValue"
+              :value="item"
+              required
+            />{{ item }}
+          </label>
+        </div>
       </div>
       <div>
-        <label for="fragrance">어떤 향이 느껴지나요?</label>
-        <input
-          type="checkbox"
-          name="fragrance"
-          v-model="fragranceValue"
-          value="green"
-        />
-        <input
-          type="checkbox"
-          name="fragrance"
-          v-model="fragranceValue"
-          value="b"
-        />{{ fragranceValue }}
+        어떤 향이 느껴지나요?
+        <div v-for="(item, index) in frangranceMessage" :key="index">
+          <label for="fragrance">
+            <input
+              type="checkbox"
+              name="fragrance"
+              v-model="fragranceValue"
+              :value="item"
+              required
+            />{{ item }}
+          </label>
+        </div>
       </div>
+
       <div>
         <label for="content">리뷰를 작성해주세요.</label>
         <input type="text" v-model="content" />
@@ -121,12 +91,19 @@
 
 <script>
 import { mapGetters } from "vuex";
+import {
+  recommendationMessage,
+  longevityMessage,
+  strengthMessage,
+  genderMessage,
+  frangranceMessage,
+} from "../config/config.js";
 export default {
   data() {
     return {
       searchPerfumeName: null,
       perfumeName: null,
-      recommendationValues: null,
+      recommendationValue: null,
       longevityValue: null,
       strengthValue: null,
       fragranceValue: [],
@@ -135,7 +112,15 @@ export default {
       perfumeId: null,
       perfumeList: [],
       clickedPerfumeName: null,
+      recommendationMessage,
+      longevityMessage,
+      strengthMessage,
+      genderMessage,
+      frangranceMessage,
     };
+  },
+  created() {
+    console.log(recommendationMessage[0]);
   },
   computed: {
     ...mapGetters({ isLogin: "getIsLogin", userInfo: "getUserInfo" }),
