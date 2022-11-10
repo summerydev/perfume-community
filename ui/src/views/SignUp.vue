@@ -2,7 +2,7 @@
   <div>
     <h1>회원가입</h1>
     <form @submit.prevent="handleSubmit">
-      <label for="userid">
+      <label for="userid">아이디
         <input
           v-model="userid"
           name="userid"
@@ -12,7 +12,7 @@
         />
       </label>
       <label for="password"
-        ><input
+        >비밀번호<input
           v-model="password"
           name="password"
           type="password"
@@ -20,7 +20,7 @@
           required
       /></label>
       <label for="name"
-        ><input
+        >이름<input
           v-model="name"
           name="name"
           type="text"
@@ -34,9 +34,9 @@
           type="email"
           placeholder="your@email.com"
           required
-      /></label>
+      />이메일</label>
       <label for="phone"
-        ><input
+        >전화번호<input
           v-model="phone"
           name="phone"
           type="tel"
