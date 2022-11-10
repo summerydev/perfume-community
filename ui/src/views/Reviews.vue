@@ -16,12 +16,13 @@
           <span>{{ strengthMessage[review.strength] }}</span>
         </div>
         <div>
-          <span>{{ genderMessage[review.gender] }}</span>에게 추천
+          <span>{{ genderMessage[review.gender] }}</span
+          >에게 추천
         </div>
         <div>
           <span v-for="item in review.fragrance" v-bind:key="item.fragrance">{{
-            item
-          }}</span>
+            frangranceMessage[item]
+          }} </span>
         </div>
         <div>{{ review.content }}</div>
       </li>
@@ -36,6 +37,7 @@ import {
   longevityMessage,
   strengthMessage,
   genderMessage,
+  frangranceMessage,
 } from "../config/config.js";
 export default {
   data() {
@@ -44,6 +46,7 @@ export default {
       longevityMessage,
       strengthMessage,
       genderMessage,
+      frangranceMessage,
     };
   },
   computed: {
