@@ -21,19 +21,6 @@ const getters = {
   },
 };
 
-const actions = {
-  async updateUserInfo({ commit }, payload) {
-    try {
-      await axios.put(`/users/${payload}`).then((res) => {
-        console.log(res);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    commit("updateUserInfo");
-  },
-};
-
 const mutations = {
   setRole(state, payload) {
     state.role = payload;
@@ -66,4 +53,4 @@ const mutations = {
   },
 };
 
-export default { state, getters, mutations, actions };
+export default { state, getters, mutations };
