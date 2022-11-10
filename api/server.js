@@ -51,8 +51,8 @@ app.put("/users/login", async (req, res) => {
   const password = req.body.password;
 
   try {
-    const userQuery = `select * from user where user_id=? and password=?`;
-    const [result] = await pool.query(userQuery, [userid, password]);
+    const loginCheckQuery = `select * from user where user_id=? and password=?`;
+    const [result] = await pool.query(loginCheckQuery, [userid, password]);
 
     if (result.length > 0) {
       const accessToken = makeToken({ userid: result[0].user_id });
@@ -75,10 +75,10 @@ app.put("/users/login", async (req, res) => {
 
 /** 유저 회원가입 */
 app.post("/users", async (req, res) => {
-  const query = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
+  const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
   console.log(req);
   try {
-    await pool.query(query, [
+    await pool.query(signupQuery, [
       req.body.userid,
       req.body.password,
       req.body.name,
@@ -114,11 +114,12 @@ app.post("/users", async (req, res) => {
 
 // app.get("/users/{userId}", authJWT);
 
+/** 회원 정보 수정 */
 app.put("/users/:id", async (req, res) => {
-  const query =
+  const userUpdatequery =
     "update user set password=?, name=?, email=?, phone=? where id=?;";
   try {
-    const rows = await pool.query(query, [
+    const rows = await pool.query(userUpdatequery, [
       req.body.password,
       req.body.name,
       req.body.email,
@@ -134,16 +135,48 @@ app.put("/users/:id", async (req, res) => {
 
 /** [리뷰] 전체 리뷰 리스트 조회 */
 app.get("/reviews", async (req, res) => {
-  const query =
+  const getReviewQuery =
     "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and  p.brand_id=b.id;";
   try {
-    const [rows] = await pool.query(query);
+    const [rows] = await pool.query(getReviewQuery);
     res.json(rows);
     // res.status(200).send({ rows });
   } catch (e) {
     console.log(e);
   }
 });
+
+/** 향수 검색 */
+// app.get("/perfume", async (req, res) => {
+//   const searchPerfumeNameKey = req.query.perfumeName;
+//   const getPerfumeIdQuery =
+//     "select id, perfume_name from perfume where perfume_name like ?";
+//   try {
+//     const [rows] = await pool.query(getPerfumeIdQuery, `%${searchPerfumeNameKey}%`);
+//     res.json(rows);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// });
+
+/** [리뷰] 리뷰 등록 */
+// app.post("/reviews", async (req, res) => {
+//   const insertReviewQuery = `insert into review (user_id, perfume_id, recommendation, longevity, strength, gender, fragrance,created_date, modified_date) values(?,?,?,?,?,?,?, now(), now())`;
+//   try {
+//     await pool.query(insertReviewQuery, [
+//       req.body.userPkId,
+//       req.body.perfumeId,
+//       req.body.recommendation,
+//       req.body.longevity,
+//       req.body.strength,
+//       req.body.gender,
+//       req.body.fragrance,
+//     ]);
+//     res.json({ status: 200 });
+//   } catch (e) {
+//     console.log(e);
+//   }
+// });
 
 app.listen(port, () => {
   console.log(`listening on port http://localhost:${port}`);
