@@ -42,12 +42,32 @@ export default {
     ...mapState(["isLogin", "isLoginError"]),
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       const inputdata = {
         userid: this.userid,
         password: this.currentPassword,
       };
-      this.$store.dispatch("signin", inputdata);
+      try {
+        const result = await this.$axios.put("/users/login", inputdata);
+        if (result.status == 200) {
+          console.log(result);
+          const { accessToken, refreshToken } = result.data.token;
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          this.$store.commit("loginToken", result.data.token);
+          this.$store.commit("loginSuccess", result.data.result);
+          this.$router
+            .push({
+              path: "/",
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      } catch (e) {
+        console.log(e);
+        alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+      }
     },
   },
 };

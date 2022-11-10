@@ -23,35 +23,6 @@ const getters = {
 };
 
 const actions = {
-  async signin({ commit }, inputData) {
-    try {
-      axios
-        .put("/users/login", inputData) //
-        .then((res) => {
-          if (res.status == 200) {
-            console.log(res);
-            localStorage.setItem("accessToken", res.data.token.accessToken);
-            localStorage.setItem("refreshToken", res.data.token.refreshToken);
-            commit("loginToken", res.data.token);
-            commit("loginSuccess", res.data.result);
-            router
-              .push({
-                path: "/",
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          commit("loginError");
-          alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  },
   async logout({ commit }) {
     commit("logout");
     alert("로그아웃 되었습니다.");
@@ -66,7 +37,7 @@ const actions = {
   },
   async updateUserInfo({ commit }, payload) {
     try {
-      axios.put(`/users/${payload}`).then((res) => {
+      await axios.put(`/users/${payload}`).then((res) => {
         console.log(res);
       });
     } catch (e) {
