@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>리뷰 등록하기</h1>
-    <el-form @submit.prevent="handleSubmit" label-width="150px">
+    <el-form label-width="150px">
       <el-form-item label="제품명" for="perfumeName">
         <el-row class="demo-autocomplete">
           <el-col :span="12">
@@ -61,7 +61,7 @@
         ><el-input type="textarea" :rows="2" v-model="content" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">작성하기</el-button>
+        <el-button type="primary" @click="handleSubmit">작성하기</el-button>
         <router-link to="/"><el-button>back</el-button></router-link>
       </el-form-item>
     </el-form>
@@ -104,14 +104,16 @@ export default {
     async handleSubmit() {
       const inputData = {
         userPkId: this.userInfo[0].id,
-        perfumeName: this.perfumeName,
-        recommendationValues: this.recommendationValues,
-        longevityValue: this.longevityValue,
-        strengthValue: this.strengthValue,
-        fragranceValue: this.fragranceValue,
+        perfumeId: this.searchResult[0].id,
+        recommendation: this.recommendationValues,
+        longevity: this.longevityValue,
+        strength: this.strengthValue,
+        gender: this.genderValue,
+        fragrance: this.fragranceValue,
         content: this.content,
       };
       try {
+        console.log(this.userInfo[0].id);
         await this.$axios.post("/reviews", inputData);
       } catch (e) {
         console.log(e);
@@ -124,8 +126,8 @@ export default {
         });
         this.searchResult = result.data;
         this.searchResult.map((e) => this.perfumeList.push(e.perfume_name));
-        // console.log(this.searchResult)
-        // console.log(this.perfumeList)
+        // console.log(this.searchResult);
+        // console.log(this.perfumeList);
         return cb(this.perfumeList);
       } catch (e) {
         console.log(e);
