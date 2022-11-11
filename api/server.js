@@ -5,7 +5,7 @@ const port = 3000;
 
 const { makeToken } = require("./util/jwt.js");
 const jwt = require("./util/jwt.js");
-const { verify,decodePayload } = require("./util/jwt.js");
+const { verify, decodePayload } = require("./util/jwt.js");
 
 /** DB pool */
 const pool = require("./db/db.js");
@@ -70,7 +70,7 @@ app.put("/users/login", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
-    res.send(null);
+    res.status(500).send({ result: "fail", message: e });
   }
 });
 
@@ -86,9 +86,10 @@ app.post("/users", async (req, res) => {
       req.body.email,
       req.body.phone,
     ]);
-    res.status(200).send();
+    res.status(200).send({ result: "success" });
   } catch (e) {
     console.log(e);
+    res.status(500).send({ result: "fail", message: e });
   }
 });
 
@@ -127,9 +128,10 @@ app.put("/users", async (req, res) => {
       req.params.id,
     ]);
     console.log(rows);
-    res.status(200).send();
+    res.status(200).send({ result: "success" });
   } catch (e) {
     console.log(e);
+    res.status(500).send({ result: "fail", message: e });
   }
 });
 
@@ -140,9 +142,9 @@ app.get("/reviews", async (req, res) => {
   try {
     const [rows] = await pool.query(getReviewQuery);
     res.json(rows);
-    // res.status(200).send({ rows });
   } catch (e) {
     console.log(e);
+    res.status(500).send({ result: "fail", message: e });
   }
 });
 
@@ -156,6 +158,7 @@ app.get("/perfume", async (req, res) => {
     res.json(rows);
   } catch (e) {
     console.log(e);
+    res.status(500).send({ result: "fail", message: e });
   }
 });
 
