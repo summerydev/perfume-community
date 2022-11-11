@@ -1,6 +1,5 @@
 <template>
   <div>
-    <router-link to="/addreview" class="addBtn">추가하기</router-link>
     <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
       <li v-for="review in this.reviewList" :key="review.id">
         <el-card
@@ -46,7 +45,6 @@
         </el-card>
       </li>
     </ul>
-    <div></div>
   </div>
 </template>
 
@@ -75,7 +73,7 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchDataReviews");
-    // console.log(this.reviewList);
+    console.log(this.reviewList);
   },
   methods: {
     load() {

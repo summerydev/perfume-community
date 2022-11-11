@@ -4,6 +4,8 @@
     <div v-if="userInfo[0]">
       <div>{{ userInfo[0].user_id }}님</div>
     </div>
+
+    <router-link to="/addreview" class="addBtn">추가하기</router-link>
     <el-button @click="handleLogout">로그아웃</el-button>
     <router-link to="/mypage/update">
       <el-button>회원 정보 수정</el-button>

@@ -6,6 +6,7 @@ import AddReview from "../views/AddReview.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import UpdateUser from "../views/UpdateUser.vue";
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -23,12 +24,10 @@ const router = new VueRouter({
       path: "/mypage",
       component: MyPage,
       meta: { requiresAuth: true },
-      children: [
-        {
-          path: "/mypage/update",
-          component: UpdateUser,
-        },
-      ],
+    },
+    {
+      path: "/mypage/update",
+      component: UpdateUser,
     },
     {
       path: "/addreview",
