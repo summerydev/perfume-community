@@ -3,13 +3,18 @@
     <h1>리뷰 등록하기</h1>
     <el-form @submit.prevent="handleSubmit" label-width="150px">
       <el-form-item label="제품명" for="perfumeName">
-        <el-input
-          @input="submitAutoComplete"
-          type="text"
-          name="searchPerfumeName"
-          v-model="searchPerfumeName"
-          required
-        />
+        <el-row class="demo-autocomplete">
+          <el-col :span="12">
+            <el-autocomplete
+              class="inline-input"
+              v-model="searchKey"
+              :fetch-suggestions="searchPerfume"
+              placeholder="향수 이름 검색"
+              :trigger-on-focus="false"
+              @select="handleSelect"
+            ></el-autocomplete>
+          </el-col>
+        </el-row>
       </el-form-item>
       <el-form-item label="어땠나요?" for="recommendationValue">
         <el-radio-group v-model="recommendationValue" size="small" required>
@@ -59,19 +64,6 @@
         <el-button type="primary">작성하기</el-button>
         <router-link to="/"><el-button>back</el-button></router-link>
       </el-form-item>
-
-      <!-- <div>
-        <div class="autocomplete disabled">
-          <div
-            @click="setPerfumeName"
-            style="cursor: pointer"
-            v-for="(res, i) in perfumeList"
-            :key="i"
-          >
-            {{ res }}
-          </div>
-        </div>
-      </div> -->
     </el-form>
   </div>
 </template>
@@ -88,40 +80,27 @@ import {
 export default {
   data() {
     return {
-      searchPerfumeName: null,
+      recommendationMessage,
+      longevityMessage,
+      strengthMessage,
+      genderMessage,
+      frangranceMessage,
       perfumeName: null,
       recommendationValue: null,
       longevityValue: null,
       strengthValue: null,
       fragranceValue: [],
       content: null,
+      searchKey: null,
       searchResult: [],
       perfumeId: null,
       perfumeList: [],
-      clickedPerfumeName: null,
-      recommendationMessage,
-      longevityMessage,
-      strengthMessage,
-      genderMessage,
-      frangranceMessage,
     };
-  },
-  created() {
-    console.log(recommendationMessage[0]);
   },
   computed: {
     ...mapGetters({ isLogin: "getIsLogin", userInfo: "getUserInfo" }),
   },
   methods: {
-    submitAutoComplete() {
-      const autocomplete = document.querySelector(".autocomplete");
-      if (this.searchPerfumeName) {
-        autocomplete.classList.remove("disabled");
-        this.handleGetPerfume();
-      } else {
-        autocomplete.classList.add("disabled");
-      }
-    },
     async handleSubmit() {
       const inputData = {
         userPkId: this.userInfo[0].id,
@@ -138,30 +117,28 @@ export default {
         console.log(e);
       }
     },
-    async handleGetPerfume() {
+    async searchPerfume(searchKey, cb) {
       try {
         const result = await this.$axios.get("/perfume", {
-          params: { perfumeName: this.searchPerfumeName },
+          params: { searchKey: searchKey },
         });
         this.searchResult = result.data;
         this.searchResult.map((e) => this.perfumeList.push(e.perfume_name));
-        console.log(this.perfumeList);
-        console.log(this.perfumeName);
+        // console.log(this.searchResult)
+        // console.log(this.perfumeList)
+        return cb(this.perfumeList);
       } catch (e) {
         console.log(e);
       }
     },
-    setPerfumeName() {
-      // this.perfumeName = this.clickedPerfumeName;
+    handleSelect(item) {
+      console.log(item);
     },
   },
 };
 </script>
 
 <style scoped>
-disabled {
-  display: none;
-}
 form {
   width: 630px;
 }
