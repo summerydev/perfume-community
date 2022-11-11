@@ -2,50 +2,43 @@
   <div>
     <h1>회원 정보 수정</h1>
     <div v-if="userInfo[0]">{{ userInfo[0].user_id }}님</div>
-    <form @submit.prevent="handleSubmit">
-      <div>
-        <label for="password"
-          >비밀번호
-          <input
-            v-model="password"
-            name="password"
-            type="password"
-            placeholder="your password"
-            required
-        /></label>
-      </div>
-      <div>
-        <label for="name"
-          >이름<input
-            v-model="name"
-            name="name"
-            type="text"
-            placeholder="your name"
-            required
-        /></label>
-      </div>
-      <div>
-        <label for="email"
-          >이메일<input
-            v-model="email"
-            name="email"
-            type="email"
-            placeholder="your@email.com"
-            required
-        /></label>
-      </div>
-      <div>
-        <label for="phone"
-          >전화번호<input
-            v-model="phone"
-            name="phone"
-            type="tel"
-            placeholder="01030200807"
-            required
-        /></label>
-      </div>
-      <button @click="handleSubmit">저장</button>
-    </form>
+    <el-form @submit.prevent="handleSubmit">
+      <el-form-item label="비밀번호" for="password">
+        <el-input
+          v-model="password"
+          type="password"
+          placeholder="your password"
+          required
+        />
+      </el-form-item>
+      <el-form-item label="이름" for="name">
+        <el-input
+          v-model="name"
+          type="text"
+          placeholder="your name"
+          required
+        />
+      </el-form-item>
+      <el-form-item label="이메일" for="email">
+        <el-input
+          v-model="email"
+          type="email"
+          placeholder="your@email.com"
+          required
+        />
+      </el-form-item>
+      <el-form-item label="전화번호" for="phone">
+        <el-input
+          v-model="phone"
+          type="tel"
+          placeholder="01030200807"
+          required
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="handleSubmit">저장</el-button></el-form-item
+      >
+    </el-form>
   </div>
 </template>
 
@@ -54,7 +47,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      userid: null,
+      userid: this.userInfo[0]?.user_id,
       password: null,
       name: null,
       email: null,
@@ -66,7 +59,7 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      const userPkId = this.userInfo[0]?.id;
+      const userPkId = this.userInfo[0].id;
       const userdata = {
         password: this.password,
         name: this.name,
@@ -87,5 +80,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+form {
+  width: 300px;
+}
 </style>
