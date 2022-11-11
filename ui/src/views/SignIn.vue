@@ -23,7 +23,9 @@
           clearable
           show-password
       /></label>
-      <el-button @click="handleSubmit" style="margin-top: 20px">Login</el-button>
+      <el-button @click="handleSubmit" style="margin-top: 20px"
+        >Login</el-button
+      >
     </form>
     <div>
       아직 회원이 아니신가요?
@@ -55,12 +57,14 @@ export default {
       try {
         const result = await this.$axios.put("/users/login", inputdata);
         if (result.status == 200) {
-          console.log(result);
           const { accessToken, refreshToken } = result.data.token;
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
           this.$store.commit("loginToken", result.data.token);
           this.$store.commit("loginSuccess", result.data.result);
+          this.$axios.defaults.headers.common[
+            "authorization"
+          ] = `Bearer ${result.data.token}`;
           this.$router
             .push({
               path: "/",
@@ -86,7 +90,7 @@ div {
 form {
   display: flex;
   flex-direction: column;
-  width:350px;
+  width: 350px;
   margin: auto;
 }
 label > div {
