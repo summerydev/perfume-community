@@ -64,7 +64,7 @@ app.put("/users/login", async (req, res) => {
         token: { accessToken, refreshToken },
       });
     } else {
-      res.json({
+      res.send({
         message: "아이디 또는 비밀번호가 일치하지 않습니다.",
       });
     }
@@ -138,7 +138,7 @@ app.put("/users", async (req, res) => {
 /** [리뷰] 전체 리뷰 리스트 조회 */
 app.get("/reviews", async (req, res) => {
   const getReviewQuery =
-    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and  p.brand_id=b.id";
+    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and p.brand_id=b.id";
   try {
     const [rows] = await pool.query(getReviewQuery);
     res.json(rows);
@@ -163,23 +163,26 @@ app.get("/perfume", async (req, res) => {
 });
 
 /** [리뷰] 리뷰 등록 */
-// app.post("/reviews", async (req, res) => {
-//   const insertReviewQuery = `insert into review (user_id, perfume_id, recommendation, longevity, strength, gender, fragrance,created_date, modified_date) values(?,?,?,?,?,?,?, now(), now())`;
-//   try {
-//     await pool.query(insertReviewQuery, [
-//       req.body.userPkId,
-//       req.body.perfumeId,
-//       req.body.recommendation,
-//       req.body.longevity,
-//       req.body.strength,
-//       req.body.gender,
-//       req.body.fragrance,
-//     ]);
-//     res.json({ status: 200 });
-//   } catch (e) {
-//     console.log(e);
-//   }
-// });
+app.post("/reviews", async (req, res) => {
+  // console.log(req.body); => undefined
+  const insertReviewQuery = `insert into review (user_id, perfume_id, recommendation, longevity, strength, gender, fragrance, content, created_date, modified_date) values(?,?,?,?,?,?,?,?, now(), now())`;
+  try {
+    await pool.query(insertReviewQuery, [
+      req.body.userPkId,
+      req.body.perfumeId,
+      req.body.recommendation,
+      req.body.longevity,
+      req.body.strength,
+      req.body.gender,
+      req.body.fragrance,
+      req.body.content,
+    ]);
+    res.json({ status: 200 });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ result: "fail", message: e });
+  }
+});
 
 app.listen(port, () => {
   console.log(`listening on port http://localhost:${port}`);
