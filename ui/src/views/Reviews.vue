@@ -73,7 +73,7 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchDataReviews");
-    console.log(this.reviewList);
+    // console.log(this.reviewList);
   },
   methods: {
     load() {
