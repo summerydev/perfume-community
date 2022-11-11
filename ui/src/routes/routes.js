@@ -22,10 +22,13 @@ const router = new VueRouter({
     {
       path: "/mypage",
       component: MyPage,
-    },
-    {
-      path: "/mypage/update",
-      component: UpdateUser,
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: "/mypage/update",
+          component: UpdateUser,
+        },
+      ],
     },
     {
       path: "/addreview",
@@ -40,6 +43,15 @@ const router = new VueRouter({
       component: SignUp,
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const isLogin = localStorage.getItem("accessToken");
+  if (to.matched.some((record) => record.meta.requiresAuth) && !isLogin) {
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;

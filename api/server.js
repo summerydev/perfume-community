@@ -5,7 +5,7 @@ const port = 3000;
 
 const { makeToken } = require("./util/jwt.js");
 const jwt = require("./util/jwt.js");
-// const { verify,decodePayload } = require("./util/jwt.js");
+const { verify,decodePayload } = require("./util/jwt.js");
 
 /** DB pool */
 const pool = require("./db/db.js");
@@ -32,6 +32,7 @@ app.use(
 /** apis */
 /**  */
 // app.get("/", (req, res) => {
+//   console.log(req)
 //   const token = req.accessToken;
 //   if (token !== undefined) {
 //     const user = decodePayload(token);
@@ -93,29 +94,28 @@ app.post("/users", async (req, res) => {
 
 /** 회원 정보 관련 */
 /** authJWT */
-// const authJWT = (req, res, next) => {
-//   if (req.headers.authorization) {
-//     const token = req.headers.authorization.split("Bearer ")[1]; // header에서 access token get
-//     const result = verify(token); // token을 검증
-//     if (result.ok) {
-//       // token이 검증되었으면 req에 값을 세팅, 다음 콜백함수로
-//       req.id = result.id;
-//       req.role = result.role;
-//       next();
-//     } else {
-//       // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답
-//       res.status(401).send({
-//         ok: false,
-//         message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'
-//       });
-//     }
-//   }
-// };
+const authJWT = (req, res, next) => {
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split("Bearer ")[1]; // header에서 access token get
+    const result = verify(token); // token을 검증
+    if (result.ok) {
+      // token이 검증되었으면 req에 값을 세팅, 다음 콜백함수로
+      req.id = result.id;
+      next();
+    } else {
+      // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답
+      res.status(401).send({
+        ok: false,
+        message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'
+      });
+    }
+  }
+};
 
-// app.get("/users/{userId}", authJWT);
+app.get("/", authJWT);
 
 /** 회원 정보 수정 */
-app.put("/users/:id", async (req, res) => {
+app.put("/users", async (req, res) => {
   const userUpdatequery =
     "update user set password=?, name=?, email=?, phone=? where id=?;";
   try {
@@ -147,17 +147,17 @@ app.get("/reviews", async (req, res) => {
 });
 
 /** 향수 검색 */
-// app.get("/perfume", async (req, res) => {
-//   const searchPerfumeNameKey = req.query.perfumeName;
-//   const getPerfumeIdQuery =
-//     "select id, perfume_name from perfume where perfume_name like ?";
-//   try {
-//     const [rows] = await pool.query(getPerfumeIdQuery, `%${searchPerfumeNameKey}%`);
-//     res.json(rows);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// });
+app.get("/perfume", async (req, res) => {
+  const searchKey = req.query.searchKey;
+  const getPerfumeIdQuery =
+    "select id, perfume_name from perfume where perfume_name like ?";
+  try {
+    const [rows] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
+    res.json(rows);
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 /** [리뷰] 리뷰 등록 */
 // app.post("/reviews", async (req, res) => {
