@@ -16,11 +16,7 @@
             >
           </div>
           <div class="img-box">
-            <img
-              src="https://fimgs.net/mdimg/perfume/375x500.3865.jpg"
-              alt="perfume image"
-              class="image"
-            />
+            <img v-bind:src="review.path" alt="perfume image" class="image" />
           </div>
           <div>
             <span
