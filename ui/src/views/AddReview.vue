@@ -57,6 +57,16 @@
           ></el-checkbox-button>
         </el-checkbox-group>
       </el-form-item>
+      <el-form-item label="누구에게 추천하나요?" for="genderValue">
+        <el-checkbox-group v-model="genderValue" size="small">
+          <el-checkbox-button
+            v-for="(item, index) in genderMessage"
+            :key="index"
+            :label="item"
+            name="fragrance"
+          ></el-checkbox-button>
+        </el-checkbox-group>
+      </el-form-item>
       <el-form-item label="리뷰를 작성해주세요." for="content"
         ><el-input type="textarea" :rows="2" v-model="content" />
       </el-form-item>
@@ -89,7 +99,8 @@ export default {
       recommendationValue: null,
       longevityValue: null,
       strengthValue: null,
-      fragranceValue: [],
+      genderValue: null,
+      fragranceValue: null,
       content: null,
       searchKey: null,
       searchResult: [],
