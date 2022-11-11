@@ -4,7 +4,7 @@
     <form @submit.prevent="handleSubmit">
       <label for="userid"
         >아이디
-        <el-input
+        <input
           v-model="userid"
           name="userid"
           type="text"
@@ -13,7 +13,7 @@
         />
       </label>
       <label for="password"
-        >비밀번호<el-input
+        >비밀번호<input
           v-model="password"
           name="password"
           type="password"
@@ -21,7 +21,7 @@
           required
       /></label>
       <label for="name"
-        >이름<el-input
+        >이름<input
           v-model="name"
           name="name"
           type="text"
@@ -29,7 +29,7 @@
           required
       /></label>
       <label for="email"
-        >이메일<el-input
+        >이메일<input
           v-model="email"
           name="email"
           type="email"
@@ -37,14 +37,14 @@
           required
       /></label>
       <label for="phone"
-        >전화번호<el-input
+        >전화번호<input
           v-model="phone"
           name="phone"
           type="tel"
           placeholder="01030200807"
           required
       /></label>
-      <el-button>회원가입하기</el-button>
+      <button type="submit">회원가입하기</button>
     </form>
   </div>
 </template>
@@ -88,7 +88,7 @@ export default {
 form {
   display: flex;
   flex-direction: column;
-  width:350px;
+  width: 350px;
   margin: auto;
 }
 </style>
