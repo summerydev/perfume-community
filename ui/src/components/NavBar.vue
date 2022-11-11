@@ -1,12 +1,16 @@
 <template>
   <nav class="navbar">
-    <div v-if="this.isLogin">
-      <router-link to="/mypage">👤</router-link>
-      <button @click="handleLogout">로그아웃</button>
-    </div>
-    <div v-else>
-      <router-link to="/signin">로그인</router-link>
-    </div>
+    <el-row>
+      <div v-if="this.isLogin">
+        <router-link to="/mypage"
+          ><el-button>마이페이지</el-button></router-link
+        >
+        <el-button @click="handleLogout">로그아웃</el-button>
+      </div>
+      <div v-else>
+        <router-link to="/signin"><el-button>로그인</el-button></router-link>
+      </div>
+    </el-row>
   </nav>
 </template>
 
@@ -38,5 +42,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+nav {
+  float: right;
+}
 </style>

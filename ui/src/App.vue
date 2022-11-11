@@ -26,4 +26,14 @@ export default {
 body {
   background-color: white;
 }
+a {
+  text-decoration: none;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  color:#409eff;
+  text-decoration: none;
+}
 </style>

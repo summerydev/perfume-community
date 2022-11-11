@@ -4,27 +4,32 @@
     <form @submit.prevent="handleSubmit">
       <label for="userid">
         <div>ID</div>
-        <input
+        <el-input
           type="text"
           name="userid"
           v-model="userid"
           placeholder="id"
           required
+          clearable
       /></label>
       <label for="current-password">
         <div>Password</div>
-        <input
+        <el-input
           type="password"
           name="current-password"
           v-model="currentPassword"
           placeholder="password"
           required
+          clearable
+          show-password
       /></label>
-      <button>Login</button>
+      <el-button @click="handleSubmit" style="margin-top: 20px">Login</el-button>
     </form>
     <div>
       아직 회원이 아니신가요?
-      <router-link to="/signup">회원가입하러가기</router-link>
+      <router-link to="/signup">
+        <el-link>회원가입하러가기</el-link>
+      </router-link>
     </div>
   </div>
 </template>
@@ -73,5 +78,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+div {
+  text-align: center;
+  margin: 10px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  width:350px;
+  margin: auto;
+}
+label > div {
+  text-align: left;
+}
 </style>

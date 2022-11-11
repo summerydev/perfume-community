@@ -1,7 +1,7 @@
 <template>
   <header>
     <h1>
-      <router-link to="/">Perfume Community</router-link>
+      <router-link to="/"><img src="../assets/logo.png" /></router-link>
     </h1>
   </header>
 </template>
@@ -10,5 +10,10 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
+img {
+  width: 200px;
+  height: 100px;
+  object-fit: cover;
+}
 </style>

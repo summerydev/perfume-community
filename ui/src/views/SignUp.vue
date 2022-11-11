@@ -2,8 +2,9 @@
   <div>
     <h1>회원가입</h1>
     <form @submit.prevent="handleSubmit">
-      <label for="userid">아이디
-        <input
+      <label for="userid"
+        >아이디
+        <el-input
           v-model="userid"
           name="userid"
           type="text"
@@ -12,7 +13,7 @@
         />
       </label>
       <label for="password"
-        >비밀번호<input
+        >비밀번호<el-input
           v-model="password"
           name="password"
           type="password"
@@ -20,7 +21,7 @@
           required
       /></label>
       <label for="name"
-        >이름<input
+        >이름<el-input
           v-model="name"
           name="name"
           type="text"
@@ -28,22 +29,22 @@
           required
       /></label>
       <label for="email"
-        ><input
+        >이메일<el-input
           v-model="email"
           name="email"
           type="email"
           placeholder="your@email.com"
           required
-      />이메일</label>
+      /></label>
       <label for="phone"
-        >전화번호<input
+        >전화번호<el-input
           v-model="phone"
           name="phone"
           type="tel"
           placeholder="01030200807"
           required
       /></label>
-      <button>회원가입하기</button>
+      <el-button>회원가입하기</el-button>
     </form>
   </div>
 </template>
@@ -83,5 +84,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+form {
+  display: flex;
+  flex-direction: column;
+  width:350px;
+  margin: auto;
+}
 </style>
