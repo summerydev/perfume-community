@@ -136,7 +136,7 @@ app.put("/users/:id", async (req, res) => {
 /** [리뷰] 전체 리뷰 리스트 조회 */
 app.get("/reviews", async (req, res) => {
   const getReviewQuery =
-    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and  p.brand_id=b.id;";
+    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and  p.brand_id=b.id";
   try {
     const [rows] = await pool.query(getReviewQuery);
     res.json(rows);
