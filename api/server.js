@@ -155,11 +155,14 @@ app.put("/users/:id", async (req, res) => {
 /** 유저 개인 리뷰 조회 */
 app.get("/users/:id", async (req, res) => {
   const userPkId = req.params.id;
-  const getUserReviewQuery = "";
-  try{
-  const [result] = await pool.query(getUserReviewQuery, userPkId);
-  }catch(e){
-    console.log()
+  const getUserReviewQuery =
+    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and p.brand_id=b.id and user_id=?";
+  try {
+    const [rows] = await pool.query(getUserReviewQuery, userPkId);
+    // console.log(rows);
+    res.json(rows);
+  } catch (e) {
+    console.log();
   }
 });
 
