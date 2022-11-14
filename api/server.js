@@ -57,6 +57,20 @@ app.put("/user/:id", async (req, res) => {
   }
 });
 
+/** 향수 검색 */
+app.get("/perfume", async (req, res) => {
+  const searchKey = req.query.searchKey;
+  const getPerfumeIdQuery =
+    "select id, perfume_name from perfume where perfume_name like ?";
+  try {
+    const [rows] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
+    res.json(rows);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ result: "fail", message: e });
+  }
+});
+
 const userRouter = require("./router/users");
 const reviewsRouter = require("./router/reviews");
 app.use("/users", userRouter);
