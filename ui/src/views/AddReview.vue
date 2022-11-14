@@ -113,7 +113,7 @@ export default {
   methods: {
     async handleSubmit() {
       const inputData = {
-        userPkId: this.userInfo.user.id,
+        userPkId: localStorage.userid,
         perfumeId: this.searchResult[0].id,
         recommendation: Number(this.recommendationValue),
         longevity: Number(this.longevityValue),
@@ -131,6 +131,7 @@ export default {
         }
       } catch (e) {
         console.log(e);
+        alert("리뷰를 작성하지 못했어요😥");
       }
     },
     async searchPerfume(searchKey, cb) {
