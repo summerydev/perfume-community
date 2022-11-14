@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      const userPkId = this.userInfo.id;
+      const userPkId = localStorage.userid;
       const userdata = {
         password: this.password,
         name: this.name,
@@ -67,6 +67,7 @@ export default {
         const result = await this.$axios.put(`/users/${userPkId}`, userdata);
         if (result.status == 200) {
           alert("회원정보 수정이 완료되었습니다.");
+          this.$router.push("/mypage");
         }
       } catch (e) {
         console.log(e);
