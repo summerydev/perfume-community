@@ -21,9 +21,9 @@
           <el-radio-button
             v-for="(item, index) in recommendationMessage"
             :key="index"
-            :label="item"
-            name="recommendation"
-          ></el-radio-button>
+            :label="index"
+            >{{ item }}</el-radio-button
+          >
         </el-radio-group>
       </el-form-item>
       <el-form-item label="오래 지속되나요?" for="longevityValue"
@@ -31,9 +31,9 @@
           <el-radio-button
             v-for="(item, index) in longevityMessage"
             :key="index"
-            :label="item"
-            name="longevity"
-          ></el-radio-button>
+            :label="index"
+            >{{ item }}</el-radio-button
+          >
         </el-radio-group>
       </el-form-item>
       <el-form-item label="향이 얼마나 느껴지나요?" for="strengthValue"
@@ -41,9 +41,8 @@
           <el-radio-button
             v-for="(item, index) in strengthMessage"
             :key="index"
-            :label="item"
-            name="strength"
-          >
+            :label="index"
+            >{{ item }}
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
@@ -52,20 +51,20 @@
           <el-checkbox-button
             v-for="(item, index) in frangranceMessage"
             :key="index"
-            :label="item"
-            name="fragrance"
-          ></el-checkbox-button>
+            :label="index"
+            >{{ item }}</el-checkbox-button
+          >
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="누구에게 추천하나요?" for="genderValue">
-        <el-checkbox-group v-model="genderValue" size="small">
-          <el-checkbox-button
+        <el-radio-group v-model="genderValue" size="small">
+          <el-radio-button
             v-for="(item, index) in genderMessage"
             :key="index"
-            :label="item"
-            name="fragrance"
-          ></el-checkbox-button>
-        </el-checkbox-group>
+            :label="index"
+            >{{ item }}</el-radio-button
+          >
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="리뷰를 작성해주세요." for="content"
         ><el-input type="textarea" :rows="2" v-model="content" />
@@ -100,7 +99,7 @@ export default {
       longevityValue: null,
       strengthValue: null,
       genderValue: null,
-      fragranceValue: null,
+      fragranceValue: [],
       content: null,
       searchKey: null,
       searchResult: [],
@@ -114,18 +113,22 @@ export default {
   methods: {
     async handleSubmit() {
       const inputData = {
-        userPkId: this.userInfo[0].id,
+        userPkId: this.userInfo.user.id,
         perfumeId: this.searchResult[0].id,
-        recommendation: this.recommendationValues,
-        longevity: this.longevityValue,
-        strength: this.strengthValue,
-        gender: this.genderValue,
-        fragrance: this.fragranceValue,
+        recommendation: Number(this.recommendationValue),
+        longevity: Number(this.longevityValue),
+        strength: Number(this.strengthValue),
+        gender: Number(this.genderValue),
+        fragrance: String(this.fragranceValue.map((el) => Number(el))),
         content: this.content,
       };
       try {
-        console.log(this.userInfo[0].id);
-        await this.$axios.post("/reviews", inputData);
+        const result = await this.$axios.post("/reviews", inputData);
+        if (result.status == 200) {
+          console.log(result);
+          alert("등록이 완료되었습니다.");
+          this.$router.push("/");
+        }
       } catch (e) {
         console.log(e);
       }
@@ -137,7 +140,7 @@ export default {
         });
         this.searchResult = result.data;
         this.searchResult.map((e) => this.perfumeList.push(e.perfume_name));
-        // console.log(this.searchResult);
+        console.log(this.searchResult);
         // console.log(this.perfumeList);
         return cb(this.perfumeList);
       } catch (e) {
