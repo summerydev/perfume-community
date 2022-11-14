@@ -25,13 +25,15 @@ export default {
   },
   methods: {
     async loginCheck() {
-      const data = await axios.get("/", localStorage.accessToken);
-      if (data.status == 200) {
-        const result = await axios.put(`/user/${localStorage.userid}`);
-        const accessToken = localStorage.getItem("accessToken");
-        const refreshToken = localStorage.getItem("refreshToken");
-        this.$store.commit("loginToken", { accessToken, refreshToken });
-        this.$store.commit("loginSuccess", result.data);
+      if (localStorage.accessToken) {
+        const data = await axios.get("/", localStorage.accessToken);
+        if (data.status == 200) {
+          const result = await axios.put(`/user/${localStorage.userid}`);
+          const accessToken = localStorage.getItem("accessToken");
+          const refreshToken = localStorage.getItem("refreshToken");
+          this.$store.commit("loginToken", { accessToken, refreshToken });
+          this.$store.commit("loginSuccess", result.data.user);
+        }
       }
     },
   },
