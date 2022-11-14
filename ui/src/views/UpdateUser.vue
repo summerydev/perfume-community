@@ -2,38 +2,40 @@
   <div>
     <h1>회원 정보 수정</h1>
     <div v-if="userInfo">{{ userInfo.user_id }}님</div>
-    <el-form @submit.prevent="handleSubmit">
-      <el-form-item label="비밀번호" for="password">
+    <form @submit.prevent="handleSubmit">
+      <label for="password">
+        <span>비밀번호</span>
         <el-input
           v-model="password"
           type="password"
           placeholder="your password"
           required
         />
-      </el-form-item>
-      <el-form-item label="이름" for="name">
+      </label>
+      <label for="name">
+        <span>이름</span>
         <el-input v-model="name" type="text" placeholder="your name" required />
-      </el-form-item>
-      <el-form-item label="이메일" for="email">
+      </label>
+      <label for="email">
+        <span>이메일</span>
         <el-input
           v-model="email"
-          type="email"
-          placeholder="your@email.com"
+          type="text"
+          placeholder="your email"
           required
         />
-      </el-form-item>
-      <el-form-item label="전화번호" for="phone">
+      </label>
+      <label for="email">
+        <span>전화번호</span>
         <el-input
           v-model="phone"
-          type="tel"
+          type="text"
           placeholder="01030200807"
           required
         />
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="handleSubmit">저장</el-button></el-form-item
-      >
-    </el-form>
+      </label>
+      <button type="submit">저장</button>
+    </form>
   </div>
 </template>
 

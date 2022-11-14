@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1>Login</h1>
-    <form>
+    <form @submit.prevent="handleSubmit">
       <label for="userid">
-        <div>ID</div>
+        <span>ID</span>
         <el-input
           type="text"
           name="userid"
@@ -11,9 +11,10 @@
           placeholder="id"
           required
           clearable
-      /></label>
+        />
+      </label>
       <label for="current-password">
-        <div>Password</div>
+        <span>Password</span>
         <el-input
           type="password"
           name="current-password"
@@ -22,10 +23,9 @@
           required
           clearable
           show-password
-      /></label>
-      <el-button @click="handleSubmit" style="margin-top: 20px"
-        >Login</el-button
-      >
+        />
+      </label>
+      <button type="submit" style="margin-top: 20px">Login</button>
     </form>
     <div>
       아직 회원이 아니신가요?
@@ -62,7 +62,7 @@ export default {
           localStorage.setItem("refreshToken", refreshToken);
           localStorage.setItem("userid", result.data.user.id);
           this.$store.commit("loginToken", result.data.token);
-          this.$store.commit("loginSuccess", result.data.user);
+          this.$store.commit("loginSuccess", result.data.result);
           this.$axios.defaults.headers.common[
             "authorization"
           ] = `Bearer ${result.data.token}`;
@@ -96,5 +96,10 @@ form {
 }
 label > div {
   text-align: left;
+}
+input {
+  border: none;
+  width: 200px;
+  height: 30px;
 }
 </style>
