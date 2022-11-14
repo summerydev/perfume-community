@@ -71,7 +71,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSubmit">작성하기</el-button>
-        <router-link to="/"><el-button>back</el-button></router-link>
+        <router-link to="/mypage"><el-button>back</el-button></router-link>
       </el-form-item>
     </el-form>
   </div>
