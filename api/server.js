@@ -31,16 +31,16 @@ app.use(
 
 /** apis */
 /**  */
-// app.get("/", (req, res) => {
-//   console.log(req)
-//   const token = req.accessToken;
-//   if (token !== undefined) {
-//     const user = decodePayload(token);
-//     res.send("login success", { user });
-//   } else {
-//     res.send("/");
-//   }
-// });
+app.get("/", (req, res) => {
+  //console.log(req)
+  const token = req.accessToken;
+  if (token !== undefined) {
+    const user = decodePayload(token);
+    res.send("login success", { user });
+  } else {
+    res.send("/");
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("/");
@@ -53,14 +53,16 @@ app.put("/users/login", async (req, res) => {
 
   try {
     const loginCheckQuery = `select * from user where user_id=? and password=?`;
+    const updateLoginDateQuery = `update user set login_date=now() where id=?`;
     const [result] = await pool.query(loginCheckQuery, [userid, password]);
+    const user = result[0];
 
     if (result.length > 0) {
-      const accessToken = makeToken({ userid: result[0].user_id });
+      const accessToken = makeToken({ userid: user.user_id });
       const refreshToken = jwt.refresh();
-
+      await pool.query(updateLoginDateQuery, user.id);
       res.json({
-        result,
+        user: user,
         token: { accessToken, refreshToken },
       });
     } else {
@@ -68,6 +70,20 @@ app.put("/users/login", async (req, res) => {
         message: "아이디 또는 비밀번호가 일치하지 않습니다.",
       });
     }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ result: "fail", message: e });
+  }
+});
+
+app.put("/users/:id", async (req, res) => {
+  const userPkId = req.params.id;
+  const getUserInfoQuery = `select * from user where id=?`;
+  try {
+    const [result] = await pool.query(getUserInfoQuery, userPkId);
+    res.json({
+      user: result[0],
+    });
   } catch (e) {
     console.log(e);
     res.status(500).send({ result: "fail", message: e });

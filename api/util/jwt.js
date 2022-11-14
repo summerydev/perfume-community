@@ -12,7 +12,7 @@ module.exports = {
     return jwt.sign(payload, secretKey, option);
   },
   decodePayload: (token) => {
-    return jwt.verify(token, secretKey);
+    return jwt.verify(token, secretKey, option);
   },
 
   refresh: () => {
