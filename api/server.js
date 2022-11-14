@@ -3,8 +3,6 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-const { makeToken } = require("./util/jwt.js");
-const jwt = require("./util/jwt.js");
 const { verify, decodePayload } = require("./util/jwt.js");
 
 /** DB pool */
@@ -29,8 +27,6 @@ app.use(
   })
 );
 
-/** apis */
-/**  */
 app.get("/", (req, res) => {
   //console.log(req)
   const token = req.accessToken;
@@ -46,7 +42,26 @@ app.get("/", (req, res) => {
   res.send("/");
 });
 
-/** 회원 정보 관련 */
+/** 새로고침 로그인 풀림 방지 */
+app.put("/user/:id", async (req, res) => {
+  const userPkId = req.params.id;
+  const getUserInfoQuery = `select * from user where id=?`;
+  try {
+    const [result] = await pool.query(getUserInfoQuery, userPkId);
+    res.json({
+      user: result[0],
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ result: "fail", message: e });
+  }
+});
+
+const userRouter = require("./router/users");
+const reviewsRouter = require("./router/reviews");
+app.use("/users", userRouter);
+app.use("/reviews", reviewsRouter);
+
 /** authJWT */
 const authJWT = (req, res, next) => {
   if (req.headers.authorization) {
@@ -66,173 +81,7 @@ const authJWT = (req, res, next) => {
   }
 };
 
-/** 유저 로그인 */
-app.put("/users/login", async (req, res) => {
-  const userid = req.body.userid;
-  const password = req.body.password;
-
-  try {
-    const loginCheckQuery = `select * from user where user_id=? and password=?`;
-    const updateLoginDateQuery = `update user set login_date=now() where id=?`;
-    const [result] = await pool.query(loginCheckQuery, [userid, password]);
-    const user = result[0];
-
-    if (result.length > 0) {
-      const accessToken = makeToken({ userid: user.user_id });
-      const refreshToken = jwt.refresh();
-      await pool.query(updateLoginDateQuery, user.id);
-      res.json({
-        user: user,
-        token: { accessToken, refreshToken },
-      });
-    } else {
-      res.send({
-        message: "아이디 또는 비밀번호가 일치하지 않습니다.",
-      });
-    }
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
-/** 새로고침 로그인 풀림 방지 */
-app.put("/user/:id", async (req, res) => {
-  const userPkId = req.params.id;
-  const getUserInfoQuery = `select * from user where id=?`;
-  try {
-    const [result] = await pool.query(getUserInfoQuery, userPkId);
-    res.json({
-      user: result[0],
-    });
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
-/** 유저 회원가입 */
-app.post("/users", async (req, res) => {
-  const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
-  console.log(req);
-  try {
-    await pool.query(signupQuery, [
-      req.body.userid,
-      req.body.password,
-      req.body.name,
-      req.body.email,
-      req.body.phone,
-    ]);
-    res.status(200).send({ result: "success" });
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
-/** 유저 회원가입 - 아이디 중복 체크 */
-app.get("/users/:id", async (req, res) => {
-  const userId = req.params.id;
-  const checkIdQuery =
-    "select exists (select user_id from user where user_id=?) as isInit";
-  try {
-    const [result] = await pool.query(checkIdQuery, userId);
-    const isInit = result[0].isInit;
-    if (!isInit) {
-      res.status(200).send({ result: "availableId" });
-    } else if (isInit) {
-      res.status(200).send({ result: "unavailableId" });
-    }
-  } catch (e) {
-    console.log(e);
-  }
-});
-
 app.get("/", authJWT);
-
-/** 회원 정보 수정 */
-app.put("/users/:id", async (req, res) => {
-  const userPkId = req.params.id;
-  const userUpdatequery =
-    "update user set password=?, name=?, email=?, phone=? where id=?";
-  try {
-    const rows = await pool.query(userUpdatequery, [
-      req.body.password,
-      req.body.name,
-      req.body.email,
-      req.body.phone,
-      userPkId,
-    ]);
-    console.log(rows);
-    res.status(200).send({ result: "success" });
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
-/** 유저 개인 리뷰 조회 */
-app.get("/users/:id/reviews", async (req, res) => {
-  const userPkId = req.params.id;
-  const getUserReviewQuery =
-    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and p.brand_id=b.id and user_id=? order by r.created_date desc";
-  try {
-    const [rows] = await pool.query(getUserReviewQuery, userPkId);
-    // console.log(rows);
-    res.json(rows);
-  } catch (e) {
-    console.log();
-  }
-});
-
-/** [리뷰] 전체 리뷰 리스트 조회 */
-app.get("/reviews", async (req, res) => {
-  const getReviewQuery =
-    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.perfume_name, p.image_name, p.path, b.name, u.name as user_name from review r, perfume p, brand b, user u where r.perfume_id=p.id and p.brand_id=b.id and r.user_id=u.id order by r.created_date desc";
-  try {
-    const [rows] = await pool.query(getReviewQuery);
-    res.json(rows);
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
-/** 향수 검색 */
-app.get("/perfume", async (req, res) => {
-  const searchKey = req.query.searchKey;
-  const getPerfumeIdQuery =
-    "select id, perfume_name from perfume where perfume_name like ?";
-  try {
-    const [rows] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
-    res.json(rows);
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
-/** [리뷰] 리뷰 등록 */
-app.post("/reviews", async (req, res) => {
-  // console.log(req.body); => undefined
-  const insertReviewQuery = `insert into review (user_id, perfume_id, recommendation, longevity, strength, gender, fragrance, content, created_date, modified_date) values(?,?,?,?,?,?,?,?, now(), now())`;
-  try {
-    await pool.query(insertReviewQuery, [
-      req.body.userPkId,
-      req.body.perfumeId,
-      req.body.recommendation,
-      req.body.longevity,
-      req.body.strength,
-      req.body.gender,
-      req.body.fragrance,
-      req.body.content,
-    ]);
-    res.status(200).send({ result: "success" });
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
 
 app.listen(port, () => {
   console.log(`listening on port http://localhost:${port}`);
