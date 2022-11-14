@@ -76,7 +76,7 @@ app.put("/users/login", async (req, res) => {
   }
 });
 
-app.put("/users/:id", async (req, res) => {
+app.put("/user/:id", async (req, res) => {
   const userPkId = req.params.id;
   const getUserInfoQuery = `select * from user where id=?`;
   try {
@@ -132,22 +132,34 @@ const authJWT = (req, res, next) => {
 app.get("/", authJWT);
 
 /** 회원 정보 수정 */
-app.put("/users", async (req, res) => {
+app.put("/users/:id", async (req, res) => {
+  const userPkId = req.params.id;
   const userUpdatequery =
-    "update user set password=?, name=?, email=?, phone=? where id=?;";
+    "update user set password=?, name=?, email=?, phone=? where id=?";
   try {
     const rows = await pool.query(userUpdatequery, [
       req.body.password,
       req.body.name,
       req.body.email,
       req.body.phone,
-      req.params.id,
+      userPkId,
     ]);
     console.log(rows);
     res.status(200).send({ result: "success" });
   } catch (e) {
     console.log(e);
     res.status(500).send({ result: "fail", message: e });
+  }
+});
+
+/** 유저 개인 리뷰 조회 */
+app.get("/users/:id", async (req, res) => {
+  const userPkId = req.params.id;
+  const getUserReviewQuery = "";
+  try{
+  const [result] = await pool.query(getUserReviewQuery, userPkId);
+  }catch(e){
+    console.log()
   }
 });
 
@@ -193,7 +205,7 @@ app.post("/reviews", async (req, res) => {
       req.body.fragrance,
       req.body.content,
     ]);
-    res.json({ status: 200 });
+    res.status(200).send({ result: "success" });
   } catch (e) {
     console.log(e);
     res.status(500).send({ result: "fail", message: e });
