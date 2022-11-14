@@ -109,6 +109,24 @@ app.post("/users", async (req, res) => {
   }
 });
 
+/** 유저 회원가입 - 아이디 유효성 검사 */
+app.get("/users/:id", async (req, res) => {
+  const userId = req.params.id;
+  const checkIdQuery =
+    "select exists (select user_id from user where user_id=?) as isInit";
+  try {
+    const [result] = await pool.query(checkIdQuery, userId);
+    const isInit = result[0].isInit;
+    if (!isInit) {
+      res.status(200).send({ result: "availableId" });
+    } else if (isInit) {
+      res.status(200).send({ result: "unavailableId" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 /** 회원 정보 관련 */
 /** authJWT */
 const authJWT = (req, res, next) => {
