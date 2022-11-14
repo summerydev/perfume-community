@@ -10,9 +10,15 @@
           <div>
             <span class="perfume_name">{{ review.perfume_name }}</span>
             <span class="brand">({{ review.name }})</span>
+          </div>
+          <div>
             <span class="recommendation">
-              {{ recommendationMessage[review.recommendation] }}</span
-            >
+              {{ recommendationMessage[review.recommendation] }}
+            </span>
+            <span>
+              ({{ review.user_name }}님,
+              {{ review.created_date.substr(0, 10) }})
+            </span>
           </div>
           <div class="img-box">
             <img v-bind:src="review.path" alt="perfume image" class="image" />
