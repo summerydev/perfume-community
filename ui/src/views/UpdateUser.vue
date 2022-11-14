@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>회원 정보 수정</h1>
-    <div v-if="userInfo[0]">{{ userInfo[0].user_id }}님</div>
+    <div v-if="userInfo">{{ userInfo.user_id }}님</div>
     <el-form @submit.prevent="handleSubmit">
       <el-form-item label="비밀번호" for="password">
         <el-input
@@ -12,12 +12,7 @@
         />
       </el-form-item>
       <el-form-item label="이름" for="name">
-        <el-input
-          v-model="name"
-          type="text"
-          placeholder="your name"
-          required
-        />
+        <el-input v-model="name" type="text" placeholder="your name" required />
       </el-form-item>
       <el-form-item label="이메일" for="email">
         <el-input
@@ -47,7 +42,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      userid: this.userInfo[0]?.user_id,
+      userid: this.userInfo?.user_id,
       password: null,
       name: null,
       email: null,
@@ -59,7 +54,7 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      const userPkId = this.userInfo[0].id;
+      const userPkId = this.userInfo.id;
       const userdata = {
         password: this.password,
         name: this.name,
@@ -67,10 +62,10 @@ export default {
         phone: this.phone,
       };
       try {
-        await this.$axios.put("/users", {
-          params: { userPkId },
-          body: userdata,
-        });
+        const result = await this.$axios.put(`/users/${userPkId}`, userdata);
+        if (result.status == 200) {
+          alert("회원정보 수정이 완료되었습니다.");
+        }
       } catch (e) {
         console.log(e);
       }
