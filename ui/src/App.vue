@@ -4,7 +4,7 @@
     <NavBar></NavBar>
     <main>
       <router-view>
-        <Reviews></Reviews>
+        <AllReviews></AllReviews>
       </router-view>
     </main>
     <AppFooter></AppFooter>
@@ -15,11 +15,11 @@
 import AppFooter from "./components/AppFooter.vue";
 import AppHeader from "./components/AppHeader.vue";
 import NavBar from "./components/NavBar.vue";
-import Reviews from "./views/Reviews.vue";
+import AllReviews from "./views/AllReviews.vue";
 import axios from "axios";
 
 export default {
-  components: { AppHeader, AppFooter, NavBar, Reviews },
+  components: { AppHeader, AppFooter, NavBar, AllReviews },
   mounted() {
     this.loginCheck();
   },
@@ -30,7 +30,7 @@ export default {
         const result = await axios.put(`/user/${localStorage.userid}`);
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
-        this.$store.commit("loginToken", {accessToken, refreshToken});
+        this.$store.commit("loginToken", { accessToken, refreshToken });
         this.$store.commit("loginSuccess", result.data);
       }
     },

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Reviews from "../views/Reviews.vue";
+import AllReviews from "../views/AllReviews.vue";
 import MyPage from "../views/MyPage.vue";
 import AddReview from "../views/AddReview.vue";
 import SignIn from "../views/SignIn.vue";
@@ -14,11 +14,11 @@ const router = new VueRouter({
   routes: [
     {
       path: "/",
-      redirect: "/reviews",
+      redirect: "/allreviews",
     },
     {
-      path: "/reviews",
-      component: Reviews,
+      path: "/allreviews",
+      component: AllReviews,
     },
     {
       path: "/mypage",
