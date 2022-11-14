@@ -46,7 +46,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isLogin", "isLoginError"]),
+    ...mapState(["isLogin"]),
   },
   methods: {
     async handleSubmit() {
@@ -60,8 +60,9 @@ export default {
           const { accessToken, refreshToken } = result.data.token;
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
+          localStorage.setItem("userid", result.data.user.id);
           this.$store.commit("loginToken", result.data.token);
-          this.$store.commit("loginSuccess", result.data.result);
+          this.$store.commit("loginSuccess", result.data.user);
           this.$axios.defaults.headers.common[
             "authorization"
           ] = `Bearer ${result.data.token}`;
