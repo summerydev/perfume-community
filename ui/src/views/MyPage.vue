@@ -13,7 +13,7 @@
     <router-link to="/mypage/update">
       <el-button>회원 정보 수정</el-button>
     </router-link>
-    <div>
+    <div v-if="myReveiws && myReveiws.length > 0">
       <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
         <li v-for="review in this.myReveiws" :key="review.id">
           <el-card
@@ -59,6 +59,15 @@
           </el-card>
         </li>
       </ul>
+    </div>
+    <div v-else>
+      아직 리뷰를 등록하지 않으셨군요!👀
+      <div>
+        리뷰 등록하러가기
+        <router-link to="/addreview" class="addBtn"
+          ><i class="el-icon-edit"></i
+        ></router-link>
+      </div>
     </div>
   </div>
 </template>
