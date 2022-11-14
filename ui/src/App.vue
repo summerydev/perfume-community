@@ -21,23 +21,19 @@ import axios from "axios";
 export default {
   components: { AppHeader, AppFooter, NavBar, Reviews },
   mounted() {
-    async function loginCheck() {
+    this.loginCheck();
+  },
+  methods: {
+    async loginCheck() {
       const data = await axios.get("/", localStorage.accessToken);
       if (data.status == 200) {
-        const result = await axios.put(`/users/${localStorage.userid}`);
-        console.log(result.data);
+        const result = await axios.put(`/user/${localStorage.userid}`);
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
-        console.log("oo");
-        console.log(accessToken);
-        console.log(refreshToken);
-        console.log(this.$router);
-        console.log(this.$store);
-        this.$store.commit("loginToken", [accessToken, refreshToken]);
+        this.$store.commit("loginToken", {accessToken, refreshToken});
         this.$store.commit("loginSuccess", result.data);
       }
-    }
-    loginCheck();
+    },
   },
 };
 </script>
