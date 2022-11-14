@@ -46,6 +46,26 @@ app.get("/", (req, res) => {
   res.send("/");
 });
 
+/** 회원 정보 관련 */
+/** authJWT */
+const authJWT = (req, res, next) => {
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split("Bearer ")[1]; // header에서 access token get
+    const result = verify(token); // token을 검증
+    if (result.ok) {
+      // token이 검증되었으면 req에 값을 세팅, 다음 콜백함수로
+      req.id = result.id;
+      next();
+    } else {
+      // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답
+      res.status(401).send({
+        ok: false,
+        message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'
+      });
+    }
+  }
+};
+
 /** 유저 로그인 */
 app.put("/users/login", async (req, res) => {
   const userid = req.body.userid;
@@ -76,6 +96,7 @@ app.put("/users/login", async (req, res) => {
   }
 });
 
+/** 새로고침 로그인 풀림 방지 */
 app.put("/user/:id", async (req, res) => {
   const userPkId = req.params.id;
   const getUserInfoQuery = `select * from user where id=?`;
@@ -109,7 +130,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
-/** 유저 회원가입 - 아이디 유효성 검사 */
+/** 유저 회원가입 - 아이디 중복 체크 */
 app.get("/users/:id", async (req, res) => {
   const userId = req.params.id;
   const checkIdQuery =
@@ -126,26 +147,6 @@ app.get("/users/:id", async (req, res) => {
     console.log(e);
   }
 });
-
-/** 회원 정보 관련 */
-/** authJWT */
-const authJWT = (req, res, next) => {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.split("Bearer ")[1]; // header에서 access token get
-    const result = verify(token); // token을 검증
-    if (result.ok) {
-      // token이 검증되었으면 req에 값을 세팅, 다음 콜백함수로
-      req.id = result.id;
-      next();
-    } else {
-      // 검증에 실패하거나 토큰이 만료되었다면 클라이언트에게 메세지를 담아서 응답
-      res.status(401).send({
-        ok: false,
-        message: result.message, // jwt가 만료되었다면 메세지는 'jwt expired'
-      });
-    }
-  }
-};
 
 app.get("/", authJWT);
 
@@ -171,7 +172,7 @@ app.put("/users/:id", async (req, res) => {
 });
 
 /** 유저 개인 리뷰 조회 */
-app.get("/users/:id", async (req, res) => {
+app.get("/users/:id/reviews", async (req, res) => {
   const userPkId = req.params.id;
   const getUserReviewQuery =
     "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and p.brand_id=b.id and user_id=? order by r.created_date desc";
