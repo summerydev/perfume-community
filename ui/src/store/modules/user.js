@@ -6,7 +6,6 @@ const state = {
   accessToken: null,
   refreshToken: null,
   role: null,
-  myReviews: null,
 };
 
 const getters = {
@@ -19,20 +18,10 @@ const getters = {
   getUserInfo(state) {
     return state.userInfo;
   },
-  getmyReviews(state) {
-    return state.myReviews;
-  },
 };
 
 const actions = {
-  async fetchMyReviews({ commit }, payload) {
-    try {
-      const result = await axios.get(`/users/${payload}`);
-      commit("setMyReviews", result.data);
-    } catch (e) {
-      console.log(e);
-    }
-  },
+
 };
 
 const mutations = {
@@ -57,9 +46,6 @@ const mutations = {
   updateUserInfo(state, payload) {
     state.userInfo = payload;
     state.userList = payload;
-  },
-  setMyReviews(state, payload) {
-    state.myReviews = payload;
   },
 };
 

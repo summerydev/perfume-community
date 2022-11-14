@@ -6,16 +6,15 @@
       <div>유저가 작성한 리뷰</div>
       <div>리뷰 추가 버튼, 로그아웃 버튼, 회원정보 수정 버튼</div>
     </div>
-    ///////////////////////
     <div v-if="userInfo">{{ userInfo.name }}님</div>
     <router-link to="/addreview" class="addBtn">추가하기</router-link>
     <el-button @click="handleLogout">로그아웃</el-button>
     <router-link to="/mypage/update">
       <el-button>회원 정보 수정</el-button>
     </router-link>
-    <div v-if="myReveiws && myReveiws.length > 0">
+    <div v-if="myReviews && myReviews.length > 0">
       <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
-        <li v-for="review in this.myReveiws" :key="review.id">
+        <li v-for="review in myReviews" :key="review.id">
           <el-card
             shadow="hover"
             style="border-radius: 10px"
@@ -90,17 +89,24 @@ export default {
       genderMessage,
       frangranceMessage,
       count: 0,
+      myReviews: [],
     };
   },
   computed: {
     ...mapGetters({
       isLogin: "getIsLogin",
       userInfo: "getUserInfo",
-      myReveiws: "getmyReviews",
     }),
   },
   async created() {
-    this.$store.dispatch("fetchMyReviews", localStorage.userid);
+    try {
+      const result = await this.$axios.get(
+        `/users/${localStorage.userid}/reviews/`
+      );
+      this.myReviews = result.data;
+    } catch (e) {
+      console.log(e);
+    }
   },
   methods: {
     async handleLogout() {
