@@ -89,7 +89,6 @@ export default {
       strengthMessage,
       genderMessage,
       frangranceMessage,
-      perfumeList: [],
       fragranceValue: [],
       review: {
         user_id: null,
