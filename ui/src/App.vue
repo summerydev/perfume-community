@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <AppHeader></AppHeader>
     <NavBar></NavBar>
+    <AppHeader></AppHeader>
     <main>
       <router-view>
         <AllReviews></AllReviews>
@@ -16,26 +16,11 @@ import AppFooter from "./components/AppFooter.vue";
 import AppHeader from "./components/AppHeader.vue";
 import NavBar from "./components/NavBar.vue";
 import AllReviews from "./views/reviewViews/AllReviews.vue";
-import axios from "axios";
 
 export default {
   components: { AppHeader, AppFooter, NavBar, AllReviews },
-  mounted() {
-    this.loginCheck();
-  },
-  methods: {
-    async loginCheck() {
-      if (localStorage.accessToken) {
-        const data = await axios.get("/", localStorage.accessToken);
-        if (data.status == 200) {
-          const result = await axios.put(`/user/${localStorage.userid}`);
-          const accessToken = localStorage.getItem("accessToken");
-          const refreshToken = localStorage.getItem("refreshToken");
-          this.$store.commit("loginToken", { accessToken, refreshToken });
-          this.$store.commit("loginSuccess", result.data.user);
-        }
-      }
-    },
+  created() {
+    this.$store.dispatch("loginCheck");
   },
 };
 </script>
@@ -53,5 +38,15 @@ a:link {
 a:visited {
   color: #409eff;
   text-decoration: none;
+}
+
+.updatebtn {
+  float: right;
+}
+
+.addBtn {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
 }
 </style>
