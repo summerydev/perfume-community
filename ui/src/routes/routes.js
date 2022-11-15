@@ -6,7 +6,8 @@ import AddReview from "../views/AddReview.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import UpdateUser from "../views/UpdateUser.vue";
-
+import UpdateReview from "../views/UpdateReview.vue";
+import ErrorPage from "../views/ErrorPage.vue"
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -19,6 +20,10 @@ const router = new VueRouter({
     {
       path: "/allreviews",
       component: AllReviews,
+    },
+    {
+      path: "/reviews/:id",
+      component: UpdateReview,
     },
     {
       path: "/mypage",
@@ -40,6 +45,11 @@ const router = new VueRouter({
     {
       path: "/signup",
       component: SignUp,
+    },
+    {
+      path: "/:catchAll(.*)",
+      name: "ErrorPage",
+      component: ErrorPage,
     },
   ],
 });
