@@ -15,17 +15,16 @@ router.use(function (req, res, next) {
 router.put("/login", async (req, res) => {
   const userid = req.body.userid;
   const password = req.body.password;
-
   try {
     const loginCheckQuery = `select * from user where user_id=? and password=?`;
     const updateLoginDateQuery = `update user set login_date=now() where id=?`;
     const [result] = await pool.query(loginCheckQuery, [userid, password]);
     const user = result[0];
-
     if (result.length > 0) {
-      const accessToken = makeToken({ userid: user.user_id });
+      const accessToken = makeToken({ userid: user.userid });
       const refreshToken = jwt.refresh();
       await pool.query(updateLoginDateQuery, user.id);
+      console.log(accessToken);
       res.json({
         user: user,
         token: { accessToken, refreshToken },
@@ -68,10 +67,10 @@ router.get("/:id", async (req, res) => {
   try {
     const [result] = await pool.query(checkIdQuery, userId);
     const isInit = result[0].isInit;
-    if (!isInit) {
-      res.status(200).send({ result: "availableId" });
-    } else if (isInit) {
+    if (isInit) {
       res.status(200).send({ result: "unavailableId" });
+    } else if (!isInit) {
+      res.status(200).send({ result: "availableId" });
     }
   } catch (e) {
     console.log(e);
