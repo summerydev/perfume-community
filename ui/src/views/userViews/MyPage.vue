@@ -1,83 +1,107 @@
 <template>
   <div>
-    <h1>My Page</h1>
-    <div>
-      <div>유저 정보 : 유저 아이디, 유저 이름, 유저 이메일, 유저 전화번호</div>
-      <div>유저가 작성한 리뷰</div>
-      <div>리뷰 추가 버튼, 로그아웃 버튼, 회원정보 수정 버튼</div>
-    </div>
-    <div v-if="userInfo">{{ userInfo.name }}님</div>
-    <router-link to="/addreview" class="addBtn">추가하기</router-link>
-    <el-button @click="handleLogout">로그아웃</el-button>
-    <router-link to="/mypage/update">
-      <el-button>회원 정보 수정</el-button>
-    </router-link>
-    <div v-if="myReviews && myReviews.length > 0">
-      <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
-        <li v-for="review in myReviews" :key="review.id">
-          <el-card
-            shadow="hover"
-            style="border-radius: 10px"
-            :body-style="{ padding: '15px' }"
-            ><div>
-              <i
-                @click="updateConfirm(review.id)"
-                class="el-icon-more-outline"
-              ></i>
-            </div>
-            <div>
-              <span class="perfume_name">{{ review.perfume_name }}</span>
-              <span class="brand">({{ review.name }})</span>
-              <span class="recommendation">
-                {{ recommendationMessage[review.recommendation] }}</span
-              >
-            </div>
-            <div class="img-box">
-              <img v-bind:src="review.path" alt="perfume image" class="image" />
-            </div>
-            <div>
-              <span
-                v-for="item in review.fragrance"
-                v-bind:key="item.fragrance"
-                class="fragrance"
-              >
-                {{ frangranceMessage[item] }}
-              </span>
-            </div>
-            <div>
-              지속력⏱️
-              <span>{{ longevityMessage[review.longevity] }}</span>
-            </div>
-            <div>
-              확산력✨
-              <span>{{ strengthMessage[review.strength] }}</span>
-            </div>
-            <div>
-              성별 <span>{{ genderMessage[review.gender] }}</span
-              >에게 추천
-            </div>
-            <div>
-              상세리뷰
-              <div class="content">{{ review.content }}</div>
-            </div>
-          </el-card>
-        </li>
-      </ul>
-    </div>
-    <div v-else>
-      아직 리뷰를 등록하지 않으셨군요!👀
-      <div>
-        리뷰 등록하러가기
-        <router-link to="/addreview" class="addBtn"
-          ><i class="el-icon-edit"></i
-        ></router-link>
+    <AddReviewBtn></AddReviewBtn>
+    <el-main>
+      <div v-if="userInfo">
+        <h2>회원 정보</h2>
+        <el-row>
+          <el-col :span="4">아이디</el-col>
+          <el-col :span="8">{{ userInfo.user_id }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">이름</el-col>
+          <el-col :span="8">{{ userInfo.name }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">이메일</el-col>
+          <el-col :span="8">{{ userInfo.email }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">전화번호</el-col>
+          <el-col :span="8">{{ userInfo.phone }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <router-link to="/mypage/update">
+              <el-link type="primary">
+                회원정보 수정<i class="el-icon-edit"></i>
+              </el-link>
+            </router-link>
+          </el-col>
+        </el-row>
       </div>
-    </div>
+      <el-divider></el-divider>
+      <h2>내가 작성한 리뷰</h2>
+      <div v-if="myReviews && myReviews.length > 0">
+        <ul
+          class="infinite-list"
+          v-infinite-scroll="load"
+          style="overflow: auto"
+        >
+          <li v-for="review in myReviews" :key="review.id">
+            <el-card
+              shadow="hover"
+              style="border-radius: 10px"
+              :body-style="{ padding: '15px' }"
+              ><div>
+                <div class="updatebtn">
+                  <i
+                    @click="updateConfirm(review.id)"
+                    class="el-icon-more-outline"
+                  ></i>
+                </div>
+              </div>
+              <div>
+                <span class="perfume_name">{{ review.perfume_name }}</span>
+                <span class="brand">({{ review.name }})</span>
+                <span class="recommendation">
+                  {{ recommendationMessage[review.recommendation] }}</span
+                >
+              </div>
+              <div class="img-box">
+                <img
+                  v-bind:src="review.path"
+                  alt="perfume image"
+                  class="image"
+                />
+              </div>
+              <div>
+                <span
+                  v-for="item in review.fragrance.trim().replace(',', '')"
+                  v-bind:key="item.fragrance"
+                  class="fragrance"
+                >
+                  {{ frangranceMessage[item] }}
+                </span>
+              </div>
+              <div>
+                지속력⏱️
+                <span>{{ longevityMessage[review.longevity] }}</span>
+              </div>
+              <div>
+                확산력✨
+                <span>{{ strengthMessage[review.strength] }}</span>
+              </div>
+              <div>
+                성별 <span>{{ genderMessage[review.gender] }}</span
+                >에게 추천
+              </div>
+              <div>
+                상세리뷰
+                <div class="content">{{ review.content }}</div>
+              </div>
+            </el-card>
+          </li>
+        </ul>
+      </div>
+      <div v-else>아직 리뷰를 등록하지 않으셨군요!👀</div>
+    </el-main>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import AddReviewBtn from "../../components/AddReviewBtn.vue";
 import {
   recommendationMessage,
   longevityMessage,
@@ -86,6 +110,9 @@ import {
   frangranceMessage,
 } from "../../config/config.js";
 export default {
+  components: {
+    AddReviewBtn,
+  },
   data() {
     return {
       recommendationMessage,
@@ -104,6 +131,7 @@ export default {
     }),
   },
   async created() {
+    this.$store.dispatch("loginCheck");
     try {
       const result = await this.$axios.get(
         `/users/${localStorage.userid}/reviews/`
@@ -114,12 +142,6 @@ export default {
     }
   },
   methods: {
-    async handleLogout() {
-      this.$store.commit("logout");
-      alert("로그아웃 되었습니다.");
-      this.$router.push("/");
-      localStorage.clear();
-    },
     load() {
       this.count += 2;
     },
