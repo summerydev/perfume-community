@@ -3,18 +3,16 @@
     <h1>리뷰 등록하기</h1>
     <el-form label-width="150px">
       <el-form-item label="제품명" for="perfumeName">
-        <el-row class="demo-autocomplete">
-          <el-col :span="12">
-            <el-autocomplete
-              class="inline-input"
-              v-model="searchKey"
-              :fetch-suggestions="searchPerfume"
-              placeholder="향수 이름 검색"
-              :trigger-on-focus="false"
-              @select="handleSelect"
-            ></el-autocomplete>
-          </el-col>
-        </el-row>
+        <el-input v-model="searchKey" @input="searchPerfume"></el-input>
+        <div class="searchBox disabled">
+          <div
+            v-for="perfume in searchResult"
+            :key="perfume.id"
+            @click="selectPerfume(perfume)"
+          >
+            {{ perfume.perfume_name ? perfume.perfume_name : perfume }}
+          </div>
+        </div>
       </el-form-item>
       <el-form-item label="어땠나요?" for="recommendationValue">
         <el-radio-group v-model="recommendationValue" size="small" required>
@@ -94,17 +92,17 @@ export default {
       strengthMessage,
       genderMessage,
       frangranceMessage,
-      perfumeName: null,
       recommendationValue: null,
       longevityValue: null,
       strengthValue: null,
       genderValue: null,
       fragranceValue: [],
       content: null,
+
+      perfumeName: null,
       searchKey: null,
       searchResult: [],
       perfumeId: null,
-      perfumeList: [],
     };
   },
   computed: {
@@ -114,7 +112,7 @@ export default {
     async handleSubmit() {
       const inputData = {
         userPkId: localStorage.userid,
-        perfumeId: this.searchResult[0].id,
+        perfumeId: this.perfumeId,
         recommendation: Number(this.recommendationValue),
         longevity: Number(this.longevityValue),
         strength: Number(this.strengthValue),
@@ -134,22 +132,30 @@ export default {
         alert("리뷰를 작성하지 못했어요😥");
       }
     },
-    async searchPerfume(searchKey, cb) {
+    async searchPerfume() {
+      const searchBox = document.querySelector(".searchBox");
+      searchBox.classList.remove("disabled");
+      this.searchResult = [];
       try {
         const result = await this.$axios.get("/perfume", {
-          params: { searchKey: searchKey },
+          params: { searchKey: this.searchKey },
         });
-        this.searchResult = result.data;
-        this.searchResult.map((e) => this.perfumeList.push(e.perfume_name));
-        console.log(this.searchResult);
-        // console.log(this.perfumeList);
-        return cb(this.perfumeList);
+        if (result.data.length > 0) {
+          this.searchResult = result.data;
+        } else if (result.data.length == 0) {
+          this.searchResult.push("검색결과 없음");
+          console.log(this.searchResult);
+        }
       } catch (e) {
         console.log(e);
       }
     },
-    handleSelect(item) {
-      console.log(item);
+    selectPerfume(perfume) {
+      this.searchKey = perfume.perfume_name;
+      this.searchResult = [];
+      this.perfumeId = perfume.id;
+      const searchBox = document.querySelector(".searchBox");
+      searchBox.classList.add("disabled");
     },
   },
 };
@@ -158,5 +164,12 @@ export default {
 <style scoped>
 form {
   width: 630px;
+}
+.disabled {
+  display: none;
+}
+.searchBox {
+  width: 200px;
+  height: 120px;
 }
 </style>
