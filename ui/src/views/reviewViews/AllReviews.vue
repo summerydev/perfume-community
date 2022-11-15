@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AddReviewBtn></AddReviewBtn>
     <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
       <li v-for="review in this.reviewList" :key="review.id">
         <el-card
@@ -7,7 +8,7 @@
           style="border-radius: 10px"
           :body-style="{ padding: '15px' }"
         >
-          <div v-if="review.user_id == userInfo?.id">
+          <div v-if="review.user_id == userInfo?.id" class="updatebtn">
             <i
               @click="updateConfirm(review.id)"
               class="el-icon-more-outline"
@@ -62,6 +63,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import AddReviewBtn from "../../components/AddReviewBtn.vue";
 import {
   recommendationMessage,
   longevityMessage,
@@ -70,6 +72,9 @@ import {
   frangranceMessage,
 } from "../../config/config.js";
 export default {
+  components: {
+    AddReviewBtn,
+  },
   data() {
     return {
       recommendationMessage,
@@ -111,6 +116,7 @@ li {
   background-color: white;
   border-radius: 15px;
   width: 270px;
+  height: 400px;
 }
 .img-box {
   text-align: center;
