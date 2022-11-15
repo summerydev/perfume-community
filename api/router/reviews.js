@@ -39,13 +39,29 @@ router.post("/", async (req, res) => {
   }
 });
 
+/** 개별 리뷰 정보 조회 */
+router.get("/:id", async (req, res) => {
+  const reviewPkId = req.params.id;
+  const getOneReviewQuery =
+    "select r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.id as perfume_id, p.perfume_name, p.image_name, p.path, b.name, u.name as user_name from review r, perfume p, brand b, user u where r.perfume_id=p.id and p.brand_id=b.id and r.user_id=u.id and r.id =?";
+  try {
+    const [rows] = await pool.query(getOneReviewQuery, reviewPkId);
+    console.log(rows);
+    res.json(rows[0]);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ result: "fail", message: e });
+  }
+});
+
 /** 리뷰 수정 */
 router.put("/:id", async (req, res) => {
   const reviewPkId = req.params.id;
+  console.log(reviewPkId);
   const updateReviewQuery =
     "update review set recommendation=?, longevity=?, strength=?, gender=?, fragrance=?, content=?, modified_date=now() where id=?";
   try {
-    await pool.query(updateReviewQuery, [
+    const [rows] = await pool.query(updateReviewQuery, [
       req.body.recommendation,
       req.body.longevity,
       req.body.strength,
@@ -54,7 +70,27 @@ router.put("/:id", async (req, res) => {
       req.body.content,
       reviewPkId,
     ]);
+    if (rows.affectedRows == 1 && rows.changedRows == 1) {
+      console.log("ok");
+      res.status(200).send({ result: "success" });
+    } else if (rows.affectedRows == 0) {
+      res.status(200).send({ result: "no review" });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ result: "fail", message: e });
+  }
+});
 
+/** 리뷰 삭제 */
+router.delete("/:id", async (req, res) => {
+  const reviewPkId = req.params.id;
+  const updateReviewQuery = "delete from review where id=?";
+  try {
+    const [rows] = await pool.query(updateReviewQuery, reviewPkId);
+    // console.log(rows);
+    console.log(rows.ResultSetHeader.affectedRows);
+    console.log(rows.ResultSetHeader.changedRows);
     res.status(200).send({ result: "success" });
   } catch (e) {
     console.log(e);
