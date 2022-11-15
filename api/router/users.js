@@ -91,8 +91,14 @@ router.put("/:id", async (req, res) => {
       req.body.phone,
       userPkId,
     ]);
-    console.log(rows);
-    res.status(200).send({ result: "success" });
+    if (rows.affectedRows == 1 && rows.changedRows == 1) {
+      console.log("ok");
+      res.status(200).send({ result: "success" });
+    } else if (rows.affectedRows == 0) {
+      res.status(200).send({ result: "no user" });
+    } else {
+      throw error;
+    }
   } catch (e) {
     console.log(e);
     res.status(500).send({ result: "fail", message: e });
@@ -106,7 +112,6 @@ router.get("/:id/reviews", async (req, res) => {
     "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and p.brand_id=b.id and user_id=? order by r.created_date desc";
   try {
     const [rows] = await pool.query(getUserReviewQuery, userPkId);
-    // console.log(rows);
     res.json(rows);
   } catch (e) {
     console.log();

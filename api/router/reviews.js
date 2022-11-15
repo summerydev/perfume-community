@@ -19,7 +19,6 @@ router.get("/", async (req, res) => {
 
 /** 리뷰 등록 */
 router.post("/", async (req, res) => {
-  // console.log(req.body); => undefined
   const insertReviewQuery = `insert into review (user_id, perfume_id, recommendation, longevity, strength, gender, fragrance, content, created_date, modified_date) values(?,?,?,?,?,?,?,?, now(), now())`;
   try {
     await pool.query(insertReviewQuery, [
@@ -75,6 +74,8 @@ router.put("/:id", async (req, res) => {
       res.status(200).send({ result: "success" });
     } else if (rows.affectedRows == 0) {
       res.status(200).send({ result: "no review" });
+    } else {
+      throw error;
     }
   } catch (e) {
     console.log(e);
@@ -88,7 +89,6 @@ router.delete("/:id", async (req, res) => {
   const updateReviewQuery = "delete from review where id=?";
   try {
     const [rows] = await pool.query(updateReviewQuery, reviewPkId);
-    // console.log(rows);
     console.log(rows.ResultSetHeader.affectedRows);
     console.log(rows.ResultSetHeader.changedRows);
     res.status(200).send({ result: "success" });
