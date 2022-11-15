@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddReviewBtn></AddReviewBtn>
+    <AddReviewBtn v-if="userInfo"></AddReviewBtn>
     <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
       <li v-for="review in this.reviewList" :key="review.id">
         <el-card
