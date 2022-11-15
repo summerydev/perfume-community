@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>Login</h1>
     <form @submit.prevent="handleSubmit">
+      <h1>Login</h1>
       <label for="userid">
         <span>ID</span>
         <el-input
           type="text"
           name="userid"
-          v-model="userid"
+          v-model="inputData.userid"
           placeholder="id"
           required
           clearable
@@ -18,7 +18,7 @@
         <el-input
           type="password"
           name="current-password"
-          v-model="currentPassword"
+          v-model="inputData.password"
           placeholder="password"
           required
           clearable
@@ -41,8 +41,10 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      userid: "",
-      currentPassword: "",
+      inputData: {
+        userid: null,
+        password: null,
+      },
     };
   },
   computed: {
@@ -50,12 +52,8 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      const inputdata = {
-        userid: this.userid,
-        password: this.currentPassword,
-      };
       try {
-        const result = await this.$axios.put("/users/login", inputdata);
+        const result = await this.$axios.put("/users/login", this.inputData);
         if (result.status == 200) {
           const { accessToken, refreshToken } = result.data.token;
           localStorage.setItem("accessToken", accessToken);
