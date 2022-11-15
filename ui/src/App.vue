@@ -15,7 +15,7 @@
 import AppFooter from "./components/AppFooter.vue";
 import AppHeader from "./components/AppHeader.vue";
 import NavBar from "./components/NavBar.vue";
-import AllReviews from "./views/AllReviews.vue";
+import AllReviews from "./views/reviewViews/AllReviews.vue";
 import axios from "axios";
 
 export default {

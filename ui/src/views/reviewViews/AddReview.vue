@@ -85,7 +85,7 @@ import {
   strengthMessage,
   genderMessage,
   frangranceMessage,
-} from "../config/config.js";
+} from "../../config/config.js";
 export default {
   data() {
     return {

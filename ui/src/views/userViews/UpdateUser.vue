@@ -65,11 +65,14 @@ export default {
       };
       try {
         const result = await this.$axios.put(`/users/${userPkId}`, userdata);
-        if (result.status == 200) {
+        if (result.status == 200 && result.data.result == "success") {
           alert("회원정보 수정이 완료되었습니다.");
           this.$router.push("/mypage");
+        } else if (result.status == 200 && result.data.result == "no user") {
+          alert("존재하지 않는 사용자입니다.");
         }
       } catch (e) {
+        alert("수정에 실패했습니다.😭")
         console.log(e);
       }
       this.$store.commit("updateUserInfo");

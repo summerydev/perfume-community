@@ -1,13 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import AllReviews from "../views/AllReviews.vue";
-import MyPage from "../views/MyPage.vue";
-import AddReview from "../views/AddReview.vue";
-import SignIn from "../views/SignIn.vue";
-import SignUp from "../views/SignUp.vue";
-import UpdateUser from "../views/UpdateUser.vue";
-import UpdateReview from "../views/UpdateReview.vue";
-import ErrorPage from "../views/ErrorPage.vue"
+import AllReviews from "../views/reviewViews/AllReviews.vue";
+import MyPage from "../views/userViews/MyPage.vue";
+import AddReview from "../views/reviewViews/AddReview.vue";
+import SignIn from "../views/userViews/SignIn.vue";
+import SignUp from "../views/userViews/SignUp.vue";
+import UpdateUser from "../views/userViews/UpdateUser.vue";
+import UpdateReview from "../views/reviewViews//UpdateReview.vue";
+import ErrorPage from "../views/ErrorPage.vue";
 Vue.use(VueRouter);
 
 const router = new VueRouter({

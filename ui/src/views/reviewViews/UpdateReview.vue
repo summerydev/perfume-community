@@ -2,7 +2,7 @@
   <div>
     {{ this.$route.params.id }}번 리뷰
     <h1>리뷰 수정하기</h1>
-    <el-form label-width="150px">
+    <el-form v-if="userInfo?.id == review.user_id" label-width="150px">
       <el-form-item label="제품명" for="review">
         <el-row class="demo-autocomplete">
           <el-col :span="12">
@@ -80,7 +80,7 @@ import {
   strengthMessage,
   genderMessage,
   frangranceMessage,
-} from "../config/config.js";
+} from "../../config/config.js";
 export default {
   data() {
     return {
