@@ -31,7 +31,7 @@
           </div>
           <div>
             <span
-              v-for="item in review.fragrance"
+              v-for="item in review.fragrance.trim().replace(',', '')"
               v-bind:key="item.fragrance"
               class="fragrance"
             >
