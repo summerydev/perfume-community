@@ -7,6 +7,12 @@
           style="border-radius: 10px"
           :body-style="{ padding: '15px' }"
         >
+          <div v-if="review.user_id == userInfo?.id">
+            <i
+              @click="updateConfirm(review.id)"
+              class="el-icon-more-outline"
+            ></i>
+          </div>
           <div>
             <span class="perfume_name">{{ review.perfume_name }}</span>
             <span class="brand">({{ review.name }})</span>
@@ -75,15 +81,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ reviewList: "getReviewList" }),
+    ...mapGetters({ reviewList: "getReviewList", userInfo: "getUserInfo" }),
   },
   created() {
     this.$store.dispatch("fetchDataReviews");
-    // console.log(this.reviewList);
   },
   methods: {
     load() {
       this.count += 2;
+    },
+    updateConfirm(reviewId) {
+      let updateConfirm = confirm("수정하시겠습니까?");
+      if (updateConfirm) this.$router.push(`/reviews/${reviewId}`);
     },
   },
 };

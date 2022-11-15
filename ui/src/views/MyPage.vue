@@ -19,7 +19,12 @@
             shadow="hover"
             style="border-radius: 10px"
             :body-style="{ padding: '15px' }"
-          >
+            ><div>
+              <i
+                @click="updateConfirm(review.id)"
+                class="el-icon-more-outline"
+              ></i>
+            </div>
             <div>
               <span class="perfume_name">{{ review.perfume_name }}</span>
               <span class="brand">({{ review.name }})</span>
@@ -117,6 +122,10 @@ export default {
     },
     load() {
       this.count += 2;
+    },
+    updateConfirm(reviewId) {
+      let updateConfirm = confirm("수정하시겠습니까?");
+      if (updateConfirm) this.$router.push(`/reviews/${reviewId}`);
     },
   },
 };
