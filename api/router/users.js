@@ -40,6 +40,21 @@ router.put("/login", async (req, res) => {
   }
 });
 
+/** 새로고침 로그인 풀림 방지 */
+router.put("/login/:id", async (req, res) => {
+  const userPkId = req.params.id;
+  const getUserInfoQuery = `select * from user where id=?`;
+  try {
+    const [result] = await pool.query(getUserInfoQuery, userPkId);
+    res.json({
+      user: result[0],
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ result: "fail", message: e });
+  }
+});
+
 /** 유저 회원가입 */
 router.post("/", async (req, res) => {
   const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;

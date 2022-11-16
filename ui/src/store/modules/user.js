@@ -25,7 +25,7 @@ const actions = {
     if (localStorage.accessToken) {
       const data = await axios.get("/", localStorage.accessToken);
       if (data.status == 200) {
-        const result = await axios.put(`/user/${localStorage.userid}`);
+        const result = await axios.put(`/users/login/${localStorage.userid}`);
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
         commit("loginToken", { accessToken, refreshToken });
