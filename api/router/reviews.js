@@ -78,9 +78,9 @@ router.put("/:id", async (req, res) => {
 /** 리뷰 삭제 */
 router.delete("/:id", async (req, res) => {
   const reviewPkId = req.params.id;
-  const updateReviewQuery = "delete from review where id=?";
+  const deleteReviewQuery = "delete from review where id=?";
   try {
-    const [rows] = await pool.query(updateReviewQuery, reviewPkId);
+    const [rows] = await pool.query(deleteReviewQuery, reviewPkId);
     if (rows.changedRows == 1) {
       res.status(200).send({ ok: true });
     } else if (rows.affectedRows == 0) {
