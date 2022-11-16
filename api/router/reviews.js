@@ -12,8 +12,7 @@ router.get("/", async (req, res) => {
     const [rows] = await pool.query(getReviewQuery);
     res.json(rows);
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -31,10 +30,9 @@ router.post("/", async (req, res) => {
       req.body.fragrance,
       req.body.content,
     ]);
-    res.status(200).send({ result: "success" });
+    res.status(200).send({ ok: true });
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -45,11 +43,9 @@ router.get("/:id", async (req, res) => {
     "select r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.id as perfume_id, p.perfume_name, p.image_name, p.path, b.name, u.name as user_name from review r, perfume p, brand b, user u where r.perfume_id=p.id and p.brand_id=b.id and r.user_id=u.id and r.id =?";
   try {
     const [rows] = await pool.query(getOneReviewQuery, reviewPkId);
-    console.log(rows);
     res.json(rows[0]);
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -69,17 +65,13 @@ router.put("/:id", async (req, res) => {
       req.body.content,
       reviewPkId,
     ]);
-    if (rows.affectedRows == 1 && rows.changedRows == 1) {
-      console.log("ok");
-      res.status(200).send({ result: "success" });
+    if (rows.changedRows == 1) {
+      res.status(200).send({ ok: true });
     } else if (rows.affectedRows == 0) {
-      res.status(200).send({ result: "no review" });
-    } else {
-      throw error;
+      res.status(200).send({ ok: false });
     }
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -89,12 +81,13 @@ router.delete("/:id", async (req, res) => {
   const updateReviewQuery = "delete from review where id=?";
   try {
     const [rows] = await pool.query(updateReviewQuery, reviewPkId);
-    console.log(rows.ResultSetHeader.affectedRows);
-    console.log(rows.ResultSetHeader.changedRows);
-    res.status(200).send({ result: "success" });
+    if (rows.changedRows == 1) {
+      res.status(200).send({ ok: true });
+    } else if (rows.affectedRows == 0) {
+      res.status(200).send({ ok: false });
+    }
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 

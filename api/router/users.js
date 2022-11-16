@@ -35,8 +35,7 @@ router.put("/login", async (req, res) => {
       });
     }
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -50,8 +49,7 @@ router.put("/login/:id", async (req, res) => {
       user: result[0],
     });
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -67,10 +65,9 @@ router.post("/", async (req, res) => {
       req.body.email,
       req.body.phone,
     ]);
-    res.status(200).send({ result: "success" });
+    res.status(200).send({ ok: true });
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -83,12 +80,12 @@ router.get("/:id", async (req, res) => {
     const [result] = await pool.query(checkIdQuery, userId);
     const isInit = result[0].isInit;
     if (isInit) {
-      res.status(200).send({ result: "unavailableId" });
+      res.status(200).send({ ok: false });
     } else if (!isInit) {
-      res.status(200).send({ result: "availableId" });
+      res.status(200).send({ ok: true });
     }
   } catch (e) {
-    console.log(e);
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -98,24 +95,21 @@ router.put("/:id", async (req, res) => {
   const userUpdatequery =
     "update user set password=?, name=?, email=?, phone=? where id=?";
   try {
-    const rows = await pool.query(userUpdatequery, [
+    const [rows] = await pool.query(userUpdatequery, [
       req.body.password,
       req.body.name,
       req.body.email,
       req.body.phone,
       userPkId,
     ]);
-    if (rows.affectedRows == 1 && rows.changedRows == 1) {
-      console.log("ok");
-      res.status(200).send({ result: "success" });
+    console.log(rows);
+    if (rows.changedRows == 1) {
+      res.status(200).send({ ok: true });
     } else if (rows.affectedRows == 0) {
-      res.status(200).send({ result: "no user" });
-    } else {
-      throw error;
+      res.status(200).send({ ok: false });
     }
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -128,7 +122,7 @@ router.get("/:id/reviews", async (req, res) => {
     const [rows] = await pool.query(getUserReviewQuery, userPkId);
     res.json(rows);
   } catch (e) {
-    console.log();
+    res.status(500).send({ ok: false, message: e });
   }
 });
 

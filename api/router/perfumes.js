@@ -17,8 +17,7 @@ router.get("/", async (req, res) => {
     const [rows] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
     res.json(rows);
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
@@ -49,10 +48,9 @@ router.get("/reviews", async (req, res) => {
 
   try {
     const [rows] = await pool.query(getPerfumesReviews);
-    console.log(rows);
     res.json(rows);
   } catch (e) {
-    console.log(e);
+    res.status(500).send({ ok: false, message: e });
   }
 });
 
