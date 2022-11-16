@@ -69,10 +69,10 @@ export default {
           `/users/${this.userPkId}`,
           this.userData
         );
-        if (result.status == 200 && result.data.result == "success") {
+        if (result.status == 200 && result.data.ok) {
           alert("회원정보 수정이 완료되었습니다.");
           this.$router.push("/mypage");
-        } else if (result.status == 200 && result.data.result == "no user") {
+        } else if (result.status == 200 && !result.data.ok) {
           alert("존재하지 않는 사용자입니다.");
         }
       } catch (e) {

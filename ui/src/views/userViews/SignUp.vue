@@ -106,10 +106,10 @@ export default {
       } else {
         const res = await this.$axios.get(`/users/${this.inputData.userid}`);
         console.log(res.data);
-        if (res.data.result == "availableId") {
+        if (res.data.ok) {
           this.availableId = true;
           this.checkIdMessge = "사용 가능한 아이디입니다.";
-        } else if (res.data.result == "unavailableId") {
+        } else if (!res.data.ok) {
           this.availableId = false;
           this.checkIdMessge = "이미 사용중인 아이디입니다.";
         }

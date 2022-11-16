@@ -146,7 +146,6 @@ export default {
           this.searchResult = result.data;
         } else if (result.data.length == 0) {
           this.searchResult.push("검색결과 없음");
-          console.log(this.searchResult);
         }
       } catch (e) {
         console.log(e);

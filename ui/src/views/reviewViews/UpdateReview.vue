@@ -131,14 +131,14 @@ export default {
         content: this.review.content,
       };
       try {
-        const result = await this.$axios.put(
+        const res = await this.$axios.put(
           `/reviews/${this.reviewPkId}`,
           inputData
         );
-        if (result.status == 200 && result.data.result == "success") {
+        if (res.status == 200 && res.data.ok) {
           alert("수정이 완료되었습니다.");
           this.$router.push("/");
-        } else if (result.status == 200 && result.data.result == "no review") {
+        } else if (res.status == 200 && !res.data.ok) {
           alert("🤔 존재하지 않는 리뷰입니다.");
         }
       } catch (e) {
@@ -151,7 +151,12 @@ export default {
       if (deleteConfirm) {
         try {
           const res = await this.$axios.delete(`/reviews/${this.reviewPkId}`);
-          console.log(res.data.result);
+          if (res.status == 200 && res.data.ok) {
+            alert("삭제가 완료되었습니다.");
+            this.$router.push("/");
+          } else if (res.status == 200 && !res.data.ok) {
+            alert("🤔 삭제할 수 없습니다.");
+          }
         } catch (e) {
           console.log(e);
         }
