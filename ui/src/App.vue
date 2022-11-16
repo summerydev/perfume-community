@@ -28,6 +28,8 @@ export default {
 <style>
 body {
   background-color: white;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 a {
   text-decoration: none;
@@ -48,5 +50,36 @@ a:visited {
   position: fixed;
   bottom: 50px;
   right: 50px;
+}
+
+.img-box {
+  text-align: center;
+  width: 100px;
+  height: 150px;
+  margin: 0 auto;
+}
+.image {
+  width: 100%;
+  object-fit: cover;
+}
+.content {
+  padding: 10px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.083);
+  overflow: scroll;
+}
+
+.fragrance {
+  width: max-content;
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border: 1px solid #bababa;
+  border-radius: 20px;
+}
+
+.perfume_name {
+  font-size: 1.3rem;
+  font-weight: bolder;
 }
 </style>

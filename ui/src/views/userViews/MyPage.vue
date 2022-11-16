@@ -167,32 +167,5 @@ li {
   border-radius: 15px;
   width: 270px;
 }
-.img-box {
-  text-align: center;
-  width: 100px;
-  height: 150px;
-}
-.image {
-  width: 100%;
-  object-fit: cover;
-}
-
-.content {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.083);
-}
-
-.fragrance {
-  width: max-content;
-  font-size: 0.8rem;
-  padding: 3px 10px;
-  border: 1px solid #bababa;
-  border-radius: 20px;
-}
-
-.perfume_name {
-  font-size: 1.3rem;
-  font-weight: bolder;
-}
 </style>
+

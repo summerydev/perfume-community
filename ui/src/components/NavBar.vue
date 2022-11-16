@@ -3,11 +3,10 @@
     <el-row>
       <div v-if="this.isLogin">
         <router-link to="/mypage">
-          <el-link>마이페이지</el-link>
+          <el-link class="clickedLink">마이페이지</el-link>
         </router-link>
         <span> | </span>
         <el-link @click="handleLogout">로그아웃</el-link>
-       
       </div>
       <div v-else>
         <router-link to="/signin"><el-link>로그인</el-link></router-link>
@@ -40,5 +39,4 @@ export default {
 nav {
   float: right;
 }
-
 </style>
