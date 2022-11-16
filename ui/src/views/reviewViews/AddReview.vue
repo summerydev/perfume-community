@@ -1,17 +1,19 @@
 <template>
   <div>
     <h1>리뷰 등록하기</h1>
-    <el-form label-width="150px">
+    <el-form label-width="150px" style="position: relative">
       <el-form-item label="제품명" for="perfumeName">
         <el-input v-model="searchKey" @input="searchPerfume"></el-input>
-        <div class="searchBox disabled">
-          <div
-            v-for="perfume in searchResult"
-            :key="perfume.id"
-            @click="selectPerfume(perfume)"
+        <div class="searchBox disabled" style="position: absolute">
+          <el-card>
+            <div
+              v-for="perfume in searchResult"
+              :key="perfume.id"
+              @click="selectPerfume(perfume)"
+            >
+              {{ perfume.perfume_name ? perfume.perfume_name : perfume }}
+            </div></el-card
           >
-            {{ perfume.perfume_name ? perfume.perfume_name : perfume }}
-          </div>
         </div>
       </el-form-item>
       <el-form-item label="어땠나요?" for="recommendationValue">
@@ -166,10 +168,12 @@ form {
   width: 630px;
 }
 .disabled {
-  display: none;
+  display: none !important;
 }
 .searchBox {
-  width: 200px;
-  height: 120px;
+  width: 300px;
+  height: 150px;
+  overflow: scroll;
+  z-index: 1;
 }
 </style>
