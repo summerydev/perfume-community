@@ -90,6 +90,7 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchDataReviews");
+    this.$store.dispatch("loginCheck")
   },
   methods: {
     load() {
