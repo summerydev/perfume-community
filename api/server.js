@@ -42,39 +42,12 @@ app.get("/", (req, res) => {
   res.send("/");
 });
 
-/** 새로고침 로그인 풀림 방지 */
-app.put("/user/:id", async (req, res) => {
-  const userPkId = req.params.id;
-  const getUserInfoQuery = `select * from user where id=?`;
-  try {
-    const [result] = await pool.query(getUserInfoQuery, userPkId);
-    res.json({
-      user: result[0],
-    });
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
-/** 향수 검색 */
-app.get("/perfume", async (req, res) => {
-  const searchKey = req.query.searchKey;
-  const getPerfumeIdQuery =
-    "select id, perfume_name from perfume where perfume_name like ?";
-  try {
-    const [rows] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
-    res.json(rows);
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ result: "fail", message: e });
-  }
-});
-
 const userRouter = require("./router/users");
 const reviewsRouter = require("./router/reviews");
+const perfumeRouter = require("./router/perfumes");
 app.use("/users", userRouter);
 app.use("/reviews", reviewsRouter);
+app.use("/perfumes", perfumeRouter);
 
 /** authJWT */
 const authJWT = (req, res, next) => {
