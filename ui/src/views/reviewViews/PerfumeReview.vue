@@ -4,7 +4,11 @@
     <div>
       <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
         <li v-for="perfume in perfumesReviews" :key="perfume.id">
-          <el-card>
+          <el-card
+            shadow="hover"
+            style="border-radius: 10px"
+            :body-style="{ padding: '15px' }"
+          >
             <div>
               <span class="perfume_name">{{ perfume.perfume_name }}</span>
               <span class="brand">({{ perfume.name }})</span>
@@ -53,6 +57,36 @@
                   ></el-progress>
                 </el-col>
                 <el-col :span="6">{{ longevityMessage[2] }}</el-col>
+              </el-row>
+            </div>
+            <div>
+              <el-row>확산력</el-row>
+              <el-row type="flex">
+                <el-col :span="15">
+                  <el-progress
+                    :stroke-width="13"
+                    :percentage="Number(perfume.s0)"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="10">{{ strengthMessage[0] }}</el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="15">
+                  <el-progress
+                    :stroke-width="13"
+                    :percentage="Number(perfume.s1)"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="10">{{ strengthMessage[1] }}</el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="15">
+                  <el-progress
+                    :stroke-width="13"
+                    :percentage="Number(perfume.s2)"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="10">{{ strengthMessage[2] }}</el-col>
               </el-row>
             </div>
           </el-card>
@@ -174,35 +208,8 @@ li {
   padding: 10px;
   background-color: white;
   border-radius: 15px;
-  width: 270px;
+  width: 400px;
   height: 400px;
 }
-.img-box {
-  text-align: center;
-  width: 100px;
-  height: 150px;
-}
-.image {
-  width: 100%;
-  object-fit: cover;
-}
 
-.content {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.083);
-}
-
-.fragrance {
-  width: max-content;
-  font-size: 0.8rem;
-  padding: 3px 10px;
-  border: 1px solid #bababa;
-  border-radius: 20px;
-}
-
-.perfume_name {
-  font-size: 1.3rem;
-  font-weight: bolder;
-}
 </style>
