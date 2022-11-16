@@ -117,7 +117,7 @@ router.put("/:id", async (req, res) => {
 router.get("/:id/reviews", async (req, res) => {
   const userPkId = req.params.id;
   const getUserReviewQuery =
-    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and p.brand_id=b.id and user_id=? order by r.created_date desc";
+    "select r.id, r.user_id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, r.created_date, p.perfume_name, p.image_name, p.path, b.name  from review r, perfume p, brand b where r.perfume_id=p.id and p.brand_id=b.id and r.user_id=? order by r.created_date desc";
   try {
     const [rows] = await pool.query(getUserReviewQuery, userPkId);
     res.json(rows);
