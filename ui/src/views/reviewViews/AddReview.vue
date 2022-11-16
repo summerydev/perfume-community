@@ -139,7 +139,7 @@ export default {
       searchBox.classList.remove("disabled");
       this.searchResult = [];
       try {
-        const result = await this.$axios.get("/perfume", {
+        const result = await this.$axios.get("/perfumes", {
           params: { searchKey: this.searchKey },
         });
         if (result.data.length > 0) {
