@@ -34,11 +34,18 @@ router.get("/reviews", async (req, res) => {
   count(case when r.id is null then 0 else r.id end) as review_count, 
   round(avg(longevity=0)*100, 0) as l0,
   round(avg(longevity=1)*100, 0) as l1,
-  round(avg(longevity=2)*100, 0) as l2
+  round(avg(longevity=2)*100, 0) as l2,
+  round(avg(strength=0)*100, 0) as s0,
+  round(avg(strength=1)*100, 0) as s1,
+  round(avg(strength=2)*100, 0) as s2
   from perfume p, review r, brand b
   where p.id=r.perfume_id
   and p.brand_id=b.id
-  group by p.id, p.perfume_name, p.brand_id, p.id, p.id, p.id, p.id, p.id, p.id, p.id;`;
+  group by
+  p.id, p.perfume_name, p.brand_id, p.id, p.id, 
+  p.id, p.id, 
+  p.id, p.id, p.id, 
+  p.id, p.id, p.id;`;
 
   try {
     const [rows] = await pool.query(getPerfumesReviews);
