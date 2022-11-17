@@ -28,7 +28,6 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  //console.log(req)
   const token = req.accessToken;
   if (token !== undefined) {
     const user = decodePayload(token);

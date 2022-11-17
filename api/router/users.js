@@ -24,7 +24,6 @@ router.put("/login", async (req, res) => {
       const accessToken = makeToken({ userid: user.userid });
       const refreshToken = jwt.refresh();
       await pool.query(updateLoginDateQuery, user.id);
-      console.log(accessToken);
       res.json({
         user: user,
         token: { accessToken, refreshToken },
@@ -56,7 +55,6 @@ router.put("/login/:id", async (req, res) => {
 /** 유저 회원가입 */
 router.post("/", async (req, res) => {
   const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
-  console.log(req);
   try {
     await pool.query(signupQuery, [
       req.body.userid,
@@ -102,7 +100,6 @@ router.put("/:id", async (req, res) => {
       req.body.phone,
       userPkId,
     ]);
-    console.log(rows);
     if (rows.changedRows == 1) {
       res.status(200).send({ ok: true });
     } else if (rows.affectedRows == 0) {

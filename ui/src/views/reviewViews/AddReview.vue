@@ -125,7 +125,6 @@ export default {
       try {
         const result = await this.$axios.post("/reviews", inputData);
         if (result.status == 200) {
-          console.log(result);
           alert("등록이 완료되었습니다.");
           this.$router.push("/");
         }

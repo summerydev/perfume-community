@@ -52,7 +52,6 @@ router.get("/:id", async (req, res) => {
 /** 리뷰 수정 */
 router.put("/:id", async (req, res) => {
   const reviewPkId = req.params.id;
-  console.log(reviewPkId);
   const updateReviewQuery =
     "update review set recommendation=?, longevity=?, strength=?, gender=?, fragrance=?, content=?, modified_date=now() where id=?";
   try {
