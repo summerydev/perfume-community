@@ -32,13 +32,15 @@ body {
   background-color: white;
   margin: 0 auto;
   max-width: 1280px;
-  height: 100%;
 }
 #wrapper {
-  min-height: 100%;
+  height: auto;
+  min-height: 1000px;
+  max-height: 100%;
   padding-bottom: 60px;
 }
 footer {
+  height: 60px;
   text-align: center;
   position: relative;
   transform: translateY(-100%);
