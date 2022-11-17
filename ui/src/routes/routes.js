@@ -34,10 +34,12 @@ const router = new VueRouter({
     {
       path: "/mypage/update",
       component: UpdateUser,
+      meta: { requiresAuth: true },
     },
     {
       path: "/addreview",
       component: AddReview,
+      meta: { requiresAuth: true },
     },
     {
       path: "/signin",

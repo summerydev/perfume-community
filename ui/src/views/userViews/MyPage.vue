@@ -95,7 +95,7 @@ export default {
       }
     },
     handleClick(link) {
-      this.$router.push(link);
+      this.$router.go(link);
     },
   },
 };

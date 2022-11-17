@@ -42,11 +42,11 @@ export default {
     async handleLogout() {
       this.$store.commit("logout");
       alert("로그아웃 되었습니다.");
-      this.$router.go("/");
       localStorage.clear();
+      this.$router.go("/");
     },
     handleClick(link) {
-      this.$router.push(`${link}`);
+      this.$router.go(`${link}`);
     },
   },
 };
