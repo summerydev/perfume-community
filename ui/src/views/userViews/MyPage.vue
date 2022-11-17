@@ -21,76 +21,22 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <router-link to="/mypage/update">
-              <el-link type="primary">
-                회원정보 수정<i class="el-icon-edit"></i>
-              </el-link>
-            </router-link>
+            <el-link @click="handleClick('/mypage/update')" type="primary">
+              회원정보 수정<i class="el-icon-edit"></i>
+            </el-link>
           </el-col>
         </el-row>
       </div>
       <el-divider></el-divider>
       <h2>내가 작성한 리뷰</h2>
       <div v-if="myReviews && myReviews.length > 0">
-        <AddReviewBtn></AddReviewBtn>
         <ul
           class="infinite-list"
           v-infinite-scroll="load"
           style="overflow: auto"
         >
           <li v-for="review in myReviews" :key="review.id">
-            <el-card
-              shadow="hover"
-              style="border-radius: 10px"
-              :body-style="{ padding: '15px' }"
-              ><div>
-                <div class="updatebtn">
-                  <i
-                    @click="updateConfirm(review.id)"
-                    class="el-icon-more-outline"
-                  ></i>
-                </div>
-              </div>
-              <div>
-                <span class="perfume_name">{{ review.perfume_name }}</span>
-                <span class="brand">({{ review.name }})</span>
-                <span class="recommendation">
-                  {{ recommendationMessage[review.recommendation] }}</span
-                >
-              </div>
-              <div class="img-box">
-                <img
-                  v-bind:src="review.path"
-                  alt="perfume image"
-                  class="image"
-                />
-              </div>
-              <div>
-                <span
-                  v-for="item in review.fragrance.split(',')"
-                  v-bind:key="item.fragrance"
-                  class="fragrance"
-                >
-                  {{ frangranceMessage[item] }}
-                </span>
-              </div>
-              <div>
-                지속력⏱️
-                <span>{{ longevityMessage[review.longevity] }}</span>
-              </div>
-              <div>
-                확산력✨
-                <span>{{ strengthMessage[review.strength] }}</span>
-              </div>
-              <div>
-                성별 <span>{{ genderMessage[review.gender] }}</span
-                >에게 추천
-              </div>
-              <div>
-                상세리뷰
-                <div class="content">{{ review.content }}</div>
-              </div>
-            </el-card>
+            <ReviewCard :review="review"></ReviewCard>
           </li>
         </ul>
       </div>
@@ -108,6 +54,7 @@ import {
   genderMessage,
   frangranceMessage,
 } from "../../config/config.js";
+import ReviewCard from "../../components/ReviewCard.vue";
 export default {
   data() {
     return {
@@ -126,24 +73,33 @@ export default {
       userInfo: "getUserInfo",
     }),
   },
-  async created() {
+  components: {
+    ReviewCard,
+  },
+  created() {
     this.$store.dispatch("loginCheck");
-    try {
-      const result = await this.$axios.get(
-        `/users/${localStorage.userid}/reviews/`
-      );
-      this.myReviews = result.data;
-    } catch (e) {
-      console.log(e);
-    }
+    this.getMyReview();
   },
   methods: {
     load() {
       this.count += 2;
     },
+    async getMyReview() {
+      try {
+        const result = await this.$axios.get(
+          `/users/${localStorage.userid}/reviews/`
+        );
+        this.myReviews = result.data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
     updateConfirm(reviewId) {
       let updateConfirm = confirm("수정하시겠습니까?");
       if (updateConfirm) this.$router.push(`/reviews/${reviewId}`);
+    },
+    handleClick(link) {
+      this.$router.push(link);
     },
   },
 };
