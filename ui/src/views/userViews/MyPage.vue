@@ -1,26 +1,26 @@
 <template>
   <div>
     <el-main>
-      <div v-if="userInfo">
+      <div v-if="userInfo" class="userInfo">
         <h2>회원 정보</h2>
         <el-row>
           <el-col :span="4">아이디</el-col>
-          <el-col :span="8">{{ userInfo.user_id }}</el-col>
+          <el-col :span="6">{{ userInfo.user_id }}</el-col>
         </el-row>
         <el-row>
           <el-col :span="4">이름</el-col>
-          <el-col :span="8">{{ userInfo.name }}</el-col>
+          <el-col :span="6">{{ userInfo.name }}</el-col>
         </el-row>
         <el-row>
           <el-col :span="4">이메일</el-col>
-          <el-col :span="8">{{ userInfo.email }}</el-col>
+          <el-col :span="6">{{ userInfo.email }}</el-col>
         </el-row>
         <el-row>
           <el-col :span="4">전화번호</el-col>
-          <el-col :span="8">{{ userInfo.phone }}</el-col>
+          <el-col :span="6">{{ userInfo.phone }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="6">
             <el-link @click="$router.push('/mypage/update')" type="primary">
               회원정보 수정<i class="el-icon-edit"></i>
             </el-link>
@@ -40,7 +40,20 @@
           </li>
         </ul>
       </div>
-      <div v-else>아직 리뷰를 등록하지 않으셨군요!👀</div>
+      <div v-else>
+        <div>아직 리뷰를 등록하지 않으셨군요!👀</div>
+        <div>
+          <el-link
+            type="primary"
+            @click="handleClick('/addreview')"
+            size="mini"
+            round
+          >
+            <i class="el-icon-edit"></i>
+            리뷰 쓰러 가기
+          </el-link>
+        </div>
+      </div>
     </el-main>
   </div>
 </template>
@@ -111,6 +124,14 @@ li {
   background-color: white;
   border-radius: 15px;
   width: 270px;
+}
+
+.userInfo {
+  max-width: 600px;
+}
+
+.userInfo .el-row {
+  padding: 8px;
 }
 </style>
 

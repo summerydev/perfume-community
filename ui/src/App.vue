@@ -31,6 +31,7 @@ export default {
 body {
   background-color: white;
   margin: 0 auto;
+  max-width: 1280px;
   height: 100%;
 }
 #wrapper {
