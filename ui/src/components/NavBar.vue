@@ -1,17 +1,31 @@
 <template>
   <nav class="navbar">
-    <el-row>
-      <div v-if="this.isLogin">
-        <router-link to="/mypage">
-          <el-link class="clickedLink">마이페이지</el-link>
-        </router-link>
-        <span> | </span>
-        <el-link @click="handleLogout">로그아웃</el-link>
-      </div>
-      <div v-else>
-        <router-link to="/signin"><el-link>로그인</el-link></router-link>
-      </div>
-    </el-row>
+    <div v-if="this.isLogin">
+      <el-button @click="handleClick('addreview')" size="mini" round>
+        <i class="el-icon-edit"></i>
+        리뷰쓰기
+      </el-button>
+      <el-divider direction="vertical"></el-divider>
+      <el-dropdown trigger="click">
+        <span class="el-dropdown-link">
+          {{ userInfo.name }}님
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <el-link @click="handleClick('mypage')" class="clickedLink">
+              마이페이지
+            </el-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-link @click="handleLogout">로그아웃</el-link>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <div v-else>
+      <el-link @click="handleClick('signin')">로그인</el-link>
+    </div>
   </nav>
 </template>
 
@@ -22,7 +36,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters({ isLogin: "getIsLogin" }),
+    ...mapGetters({ isLogin: "getIsLogin", userInfo: "getUserInfo" }),
   },
   methods: {
     async handleLogout() {
@@ -31,6 +45,9 @@ export default {
       this.$router.go("/");
       localStorage.clear();
     },
+    handleClick(link) {
+      this.$router.push(`/${link}`);
+    },
   },
 };
 </script>
@@ -38,5 +55,9 @@ export default {
 <style scoped>
 nav {
   float: right;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
 }
 </style>
