@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <div v-if="this.isLogin">
-      <el-button @click="handleClick('addreview')" size="mini" round>
+      <el-button @click="handleClick('/addreview')" size="mini" round>
         <i class="el-icon-edit"></i>
         리뷰쓰기
       </el-button>
@@ -13,7 +13,7 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <el-link @click="handleClick('mypage')" class="clickedLink">
+            <el-link @click="handleClick('/mypage')" class="clickedLink">
               마이페이지
             </el-link>
           </el-dropdown-item>
@@ -24,7 +24,7 @@
       </el-dropdown>
     </div>
     <div v-else>
-      <el-link @click="handleClick('signin')">로그인</el-link>
+      <el-link @click="handleClick('/signin')">로그인</el-link>
     </div>
   </nav>
 </template>
@@ -46,7 +46,7 @@ export default {
       localStorage.clear();
     },
     handleClick(link) {
-      this.$router.push(`/${link}`);
+      this.$router.push(`${link}`);
     },
   },
 };
