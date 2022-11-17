@@ -16,8 +16,12 @@
           </el-card>
         </div>
       </el-form-item>
-      <el-form-item label="어땠나요?" for="recommendationValue">
-        <el-radio-group v-model="recommendationValue" size="small" required>
+      <el-form-item label="어땠나요?" for="inputValues.recommendation">
+        <el-radio-group
+          v-model="inputValues.recommendation"
+          size="small"
+          required
+        >
           <el-radio-button
             v-for="(item, index) in recommendationMessage"
             :key="index"
@@ -26,8 +30,8 @@
           >
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="오래 지속되나요?" for="longevityValue"
-        ><el-radio-group v-model="longevityValue" size="small">
+      <el-form-item label="오래 지속되나요?" for="inputValues.longevity"
+        ><el-radio-group v-model="inputValues.longevity" size="small">
           <el-radio-button
             v-for="(item, index) in longevityMessage"
             :key="index"
@@ -36,8 +40,8 @@
           >
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="향이 얼마나 느껴지나요?" for="strengthValue"
-        ><el-radio-group v-model="strengthValue" size="small">
+      <el-form-item label="향이 얼마나 느껴지나요?" for="inputValues.strength"
+        ><el-radio-group v-model="inputValues.strength" size="small">
           <el-radio-button
             v-for="(item, index) in strengthMessage"
             :key="index"
@@ -56,8 +60,8 @@
           >
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="누구에게 추천하나요?" for="genderValue">
-        <el-radio-group v-model="genderValue" size="small">
+      <el-form-item label="누구에게 추천하나요?" for="inputValues.gender">
+        <el-radio-group v-model="inputValues.gender" size="small">
           <el-radio-button
             v-for="(item, index) in genderMessage"
             :key="index"
@@ -66,11 +70,11 @@
           >
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="리뷰를 작성해주세요." for="content"
-        ><el-input type="textarea" :rows="2" v-model="content" />
+      <el-form-item label="리뷰를 작성해주세요." for="inputValues.content"
+        ><el-input type="textarea" :rows="2" v-model="inputValues.content" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleSubmit">작성하기</el-button>
+        <el-button type="primary" @click="checkInputData">작성하기</el-button>
         <router-link to="/mypage"><el-button>back</el-button></router-link>
       </el-form-item>
     </el-form>
@@ -94,12 +98,15 @@ export default {
       strengthMessage,
       genderMessage,
       frangranceMessage,
-      recommendationValue: null,
-      longevityValue: null,
-      strengthValue: null,
-      genderValue: null,
+      inputValues: {
+        recommendation: null,
+        longevity: null,
+        strength: null,
+        gender: null,
+        content: null,
+      },
+
       fragranceValue: [],
-      content: null,
 
       perfumeName: null,
       searchKey: null,
@@ -112,16 +119,32 @@ export default {
     ...mapGetters({ isLogin: "getIsLogin", userInfo: "getUserInfo" }),
   },
   methods: {
+    checkInputData() {
+      let isInitArr = [];
+      for (let i in this.inputValues) {
+        if (this.inputValues[i] == null) {
+          isInitArr.push(false);
+        }
+      }
+      const isInit = isInitArr.every((el) => {
+        el == true;
+      });
+      if (isInit) {
+        this.handleSubmit();
+      } else {
+        alert("모든 값을 입력해주세요👀");
+      }
+    },
     async handleSubmit() {
       const inputData = {
         userPkId: localStorage.userid,
         perfumeId: this.perfumeId,
-        recommendation: Number(this.recommendationValue),
-        longevity: Number(this.longevityValue),
-        strength: Number(this.strengthValue),
-        gender: Number(this.genderValue),
+        recommendation: Number(this.inputValues.recommendation),
+        longevity: Number(this.inputValues.longevity),
+        strength: Number(this.inputValues.strength),
+        gender: Number(this.inputValues.gender),
         fragrance: String(this.fragranceValue.map((el) => Number(el))),
-        content: this.content,
+        content: this.inputValues.content,
       };
       try {
         const result = await this.$axios.post("/reviews", inputData);
