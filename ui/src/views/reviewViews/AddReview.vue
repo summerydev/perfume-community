@@ -4,7 +4,7 @@
     <el-form label-width="150px" style="position: relative">
       <el-form-item label="제품명" for="perfumeName">
         <el-input v-model="searchKey" @input="searchPerfume"></el-input>
-        <div class="searchBox disabled" style="position: absolute">
+        <div v-show="isShow" class="searchBox" style="position: absolute">
           <el-card>
             <div
               v-for="perfume in searchResult"
@@ -12,8 +12,8 @@
               @click="selectPerfume(perfume)"
             >
               {{ perfume.perfume_name ? perfume.perfume_name : perfume }}
-            </div></el-card
-          >
+            </div>
+          </el-card>
         </div>
       </el-form-item>
       <el-form-item label="어땠나요?" for="recommendationValue">
@@ -105,6 +105,7 @@ export default {
       searchKey: null,
       searchResult: [],
       perfumeId: null,
+      isShow: false,
     };
   },
   computed: {
@@ -134,28 +135,30 @@ export default {
       }
     },
     async searchPerfume() {
-      const searchBox = document.querySelector(".searchBox");
-      searchBox.classList.remove("disabled");
-      this.searchResult = [];
-      try {
-        const result = await this.$axios.get("/perfumes", {
-          params: { searchKey: this.searchKey },
-        });
-        if (result.data.length > 0) {
-          this.searchResult = result.data;
-        } else if (result.data.length == 0) {
-          this.searchResult.push("검색결과 없음");
+      if (this.searchKey == "") {
+        this.isShow = false;
+      } else {
+        this.isShow = true;
+        this.searchResult = [];
+        try {
+          const result = await this.$axios.get("/perfumes", {
+            params: { searchKey: this.searchKey },
+          });
+          if (result.data.length > 0) {
+            this.searchResult = result.data;
+          } else if (result.data.length == 0) {
+            this.searchResult.push("검색결과 없음");
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
     },
     selectPerfume(perfume) {
       this.searchKey = perfume.perfume_name;
       this.searchResult = [];
       this.perfumeId = perfume.id;
-      const searchBox = document.querySelector(".searchBox");
-      searchBox.classList.add("disabled");
+      this.isShow = false;
     },
   },
 };
@@ -164,9 +167,6 @@ export default {
 <style scoped>
 form {
   width: 630px;
-}
-.disabled {
-  display: none !important;
 }
 .searchBox {
   width: 300px;
