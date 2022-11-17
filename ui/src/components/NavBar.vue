@@ -43,7 +43,10 @@ export default {
       this.$store.commit("logout");
       alert("로그아웃 되었습니다.");
       localStorage.clear();
-      this.$router.push("/");
+      console.log(this.$route.path);
+      this.$route.path == "/" || this.$route.path == "/allreviews"
+        ? this.$router.go("")
+        : this.$router.push("/");
     },
     handleClick(link) {
       this.$route.path == link
