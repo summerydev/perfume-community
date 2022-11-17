@@ -50,12 +50,13 @@
       </label>
       <label for="phone">
         전화번호<el-input
-          v-model="inputData.phone"
+          v-model="phone"
           name="phone"
           type="tel"
           placeholder="01030200807"
           required
-          maxlength="12"
+          maxlength="13"
+          @input="autoHyphen(phone)"
         />
       </label>
       <button type="submit">회원가입하기</button>
@@ -74,6 +75,7 @@ export default {
         email: null,
         phone: null,
       },
+      phone: null,
       isChecked: false,
       availableId: true,
       checkIdMessge: "",
@@ -114,6 +116,12 @@ export default {
           this.checkIdMessge = "이미 사용중인 아이디입니다.";
         }
       }
+    },
+    autoHyphen(phone) {
+      this.phone = phone
+        .replace(/[^0-9]/g, "")
+        .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+      this.inputData.phone = this.phone.replace(/[^0-9]/g, "");
     },
   },
 };
