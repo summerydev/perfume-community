@@ -77,6 +77,12 @@ export default {
   computed: {
     ...mapGetters({ userInfo: "getUserInfo" }),
   },
+  methods: {
+    updateConfirm(reviewId) {
+      let updateConfirm = confirm("수정하시겠습니까?");
+      if (updateConfirm) this.$router.push(`/reviews/${reviewId}`);
+    },
+  },
 };
 </script>
 
