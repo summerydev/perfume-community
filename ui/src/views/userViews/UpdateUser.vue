@@ -1,45 +1,73 @@
 <template>
   <div>
-    <h1>회원 정보 수정</h1>
-    <div v-if="userInfo">{{ userInfo.user_id }}님</div>
     <form @submit.prevent="handleSubmit">
+      <h1>회원 정보 수정</h1>
+      <label for="id">
+        <el-row v-if="userInfo">
+          <el-col :span="6">아이디</el-col>
+          <el-col :span="18">
+            <el-input v-model="userInfo.user_id" required :disabled="true" />
+          </el-col>
+        </el-row>
+      </label>
       <label for="password">
-        <span>비밀번호</span>
-        <el-input
-          v-model="userData.password"
-          type="password"
-          placeholder="your password"
-          required
-        />
+        <el-row>
+          <el-col :span="6">비밀번호</el-col>
+          <el-col :span="18">
+            <el-input
+              v-model="userData.password"
+              type="password"
+              placeholder="your password"
+              required
+            />
+          </el-col>
+        </el-row>
       </label>
       <label for="name">
-        <span>이름</span>
-        <el-input
-          v-model="userData.name"
-          type="text"
-          placeholder="your name"
-          required
-        />
+        <el-row>
+          <el-col :span="6">이름</el-col>
+          <el-col :span="18">
+            <el-input
+              v-model="userData.name"
+              type="text"
+              placeholder="your name"
+              required
+            />
+          </el-col>
+        </el-row>
       </label>
       <label for="email">
-        <span>이메일</span>
-        <el-input
-          v-model="userData.email"
-          type="text"
-          placeholder="your email"
-          required
-        />
+        <el-row>
+          <el-col :span="6">이메일</el-col>
+          <el-col :span="18">
+            <el-input
+              v-model="userData.email"
+              type="email"
+              placeholder="your email"
+              required
+            />
+          </el-col>
+        </el-row>
       </label>
-      <label for="email">
-        <span>전화번호</span>
-        <el-input
-          v-model="userData.phone"
-          type="text"
-          placeholder="01030200807"
-          required
-        />
+      <label for="phone">
+        <el-row>
+          <el-col :span="6">전화번호</el-col>
+          <el-col :span="18">
+            <el-input
+              v-model="phone"
+              type="tel"
+              placeholder="010-3020-0807"
+              required
+              maxlength="13"
+              @input="autoHyphen(phone)"
+            />
+          </el-col>
+        </el-row>
       </label>
-      <button type="submit">저장</button>
+      <el-row>
+        <el-col :span="6" :offset="6"></el-col>
+        <el-col><button type="submit">저장</button></el-col>
+      </el-row>
     </form>
   </div>
 </template>
@@ -57,6 +85,7 @@ export default {
         email: null,
         phone: null,
       },
+      phone: null,
     };
   },
   computed: {
@@ -81,6 +110,12 @@ export default {
       }
       this.$store.commit("updateUserInfo");
     },
+    autoHyphen(phone) {
+      this.phone = phone
+        .replace(/[^0-9]/g, "")
+        .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+      this.userData.phone = this.phone.replace(/[^0-9]/g, "");
+    },
   },
 };
 </script>
@@ -88,5 +123,18 @@ export default {
 <style scoped>
 form {
   width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+form .el-row {
+  display: flex;
+  text-align: right;
+  align-items: center;
+  padding: 10px;
+}
+
+.el-row .el-col-6 {
+  padding: 5px;
 }
 </style>
