@@ -120,22 +120,6 @@ export default {
   },
   methods: {
     checkInputData() {
-      let isInitArr = [];
-      for (let i in this.inputValues) {
-        if (this.inputValues[i] == null) {
-          isInitArr.push(false);
-        }
-      }
-      const isInit = isInitArr.every((el) => {
-        el == true;
-      });
-      if (isInit) {
-        this.handleSubmit();
-      } else {
-        alert("모든 값을 입력해주세요👀");
-      }
-    },
-    async handleSubmit() {
       const inputData = {
         userPkId: localStorage.userid,
         perfumeId: this.perfumeId,
@@ -146,6 +130,10 @@ export default {
         fragrance: String(this.fragranceValue.map((el) => Number(el))),
         content: this.inputValues.content,
       };
+      const isInit = Object.values(inputData).every((el) => el != "");
+      isInit ? this.handleSubmit(inputData) : alert("모든 값을 입력해주세요👀");
+    },
+    async handleSubmit(inputData) {
       try {
         const result = await this.$axios.post("/reviews", inputData);
         if (result.status == 200) {

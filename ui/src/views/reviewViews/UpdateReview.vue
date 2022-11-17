@@ -64,7 +64,7 @@
         ><el-input type="textarea" :rows="2" v-model="review.content" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleSubmit">수정하기</el-button>
+        <el-button type="primary" @click="checkInputData">수정하기</el-button>
         <el-button type="danger" @click="handleDelete">삭제하기</el-button>
         <router-link to="/mypage"><el-button>back</el-button></router-link>
       </el-form-item>
@@ -120,7 +120,7 @@ export default {
         console.log(e);
       }
     },
-    async handleSubmit() {
+    checkInputData() {
       const inputData = {
         recommendation: Number(this.review.recommendation),
         longevity: Number(this.review.longevity),
@@ -129,6 +129,10 @@ export default {
         fragrance: String(this.fragranceValue.map((el) => Number(el))),
         content: this.review.content,
       };
+      const isInit = Object.values(inputData).every((el) => el !== "");
+      isInit ? this.handleSubmit(inputData) : alert("모든 값을 입력해주세요👀");
+    },
+    async handleSubmit(inputData) {
       try {
         const res = await this.$axios.put(
           `/reviews/${this.reviewPkId}`,
