@@ -130,7 +130,7 @@ export default {
         fragrance: String(this.fragranceValue.map((el) => Number(el))),
         content: this.inputValues.content,
       };
-      const isInit = Object.values(inputData).every((el) => el != "");
+      const isInit = Object.values(inputData).every((el) => el !== "");
       isInit ? this.handleSubmit(inputData) : alert("모든 값을 입력해주세요👀");
     },
     async handleSubmit(inputData) {
