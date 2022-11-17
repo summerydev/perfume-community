@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <NavBar></NavBar>
-    <AppHeader></AppHeader>
-    <main>
-      <router-view>
-        <AllReviews></AllReviews>
-      </router-view>
-    </main>
+    <div id="wrapper">
+      <NavBar></NavBar>
+      <AppHeader></AppHeader>
+      <main>
+        <router-view>
+          <AllReviews></AllReviews>
+        </router-view>
+      </main>
+    </div>
     <AppFooter></AppFooter>
   </div>
 </template>
@@ -28,8 +30,17 @@ export default {
 <style>
 body {
   background-color: white;
-  max-width: 1000px;
   margin: 0 auto;
+  height: 100%;
+}
+#wrapper {
+  min-height: 100%;
+  padding-bottom: 60px;
+}
+footer {
+  text-align: center;
+  position: relative;
+  transform: translateY(-100%);
 }
 a {
   text-decoration: none;
@@ -44,12 +55,6 @@ a:visited {
 
 .updatebtn {
   float: right;
-}
-
-.addBtn {
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
 }
 
 .img-box {
