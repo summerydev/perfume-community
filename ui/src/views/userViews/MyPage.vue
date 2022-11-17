@@ -115,6 +115,11 @@ export default {
         console.log(e);
       }
     },
+    handleClick(link) {
+      this.$route.path == link
+        ? this.$router.go("")
+        : this.$router.push(`${link}`);
+    },
   },
 };
 </script>
