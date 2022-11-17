@@ -86,7 +86,7 @@ export default {
           const result = await this.$axios.post("/users", this.inputData);
           if (result.status == 200) {
             alert("회원가입이 완료되었습니다.");
-            this.$router.go("/signin");
+            this.$router.push("/signin");
           }
         } catch (e) {
           console.log(e);

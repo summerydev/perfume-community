@@ -25,6 +25,7 @@ const router = new VueRouter({
     {
       path: "/reviews/:id",
       component: UpdateReview,
+      meta: { requiresAuth: true },
     },
     {
       path: "/mypage",
@@ -64,7 +65,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const isLogin = localStorage.getItem("accessToken");
   if (to.matched.some((record) => record.meta.requiresAuth) && !isLogin) {
-    next("/");
+    alert("로그인이 필요한 서비스입니다.");
+    next("/signin");
   } else {
     next();
   }

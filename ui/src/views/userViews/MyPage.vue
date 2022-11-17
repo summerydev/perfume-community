@@ -21,7 +21,7 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-link @click="handleClick('/mypage/update')" type="primary">
+            <el-link @click="$router.push('/mypage/update')" type="primary">
               회원정보 수정<i class="el-icon-edit"></i>
             </el-link>
           </el-col>
@@ -93,9 +93,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },
-    handleClick(link) {
-      this.$router.go(link);
     },
   },
 };

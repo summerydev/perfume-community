@@ -46,7 +46,9 @@ export default {
       this.$router.go("/");
     },
     handleClick(link) {
-      this.$router.go(`${link}`);
+      this.$route.path == link
+        ? this.$router.go("")
+        : this.$router.push(`${link}`);
     },
   },
 };

@@ -137,7 +137,7 @@ export default {
         console.log(res);
         if (res.data.ok) {
           alert("수정이 완료되었습니다.");
-          this.$router.go("/");
+          this.$router.push("/");
         } else if (!res.data.ok) {
           alert("🤔 존재하지 않는 리뷰입니다.");
         }
@@ -154,7 +154,7 @@ export default {
           if (res.data.ok) {
             console.log(res.data.ok);
             alert("삭제가 완료되었습니다.");
-            this.$router.go("/");
+            this.$router.push("/");
           } else if (!res.data.ok) {
             alert("🤔 삭제할 수 없습니다.");
           }
