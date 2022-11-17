@@ -17,7 +17,7 @@
         </el-row>
         <el-row>
           <el-col :span="4">전화번호</el-col>
-          <el-col :span="6">{{ userInfo.phone }}</el-col>
+          <el-col :span="6" v-model="phone">{{ setPhoneNumber.phone }}</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
@@ -78,6 +78,7 @@ export default {
       frangranceMessage,
       count: 0,
       myReviews: [],
+      phone: this.userInfo?.phone,
     };
   },
   computed: {
@@ -85,6 +86,13 @@ export default {
       isLogin: "getIsLogin",
       userInfo: "getUserInfo",
     }),
+    setPhoneNumber: function () {
+      const phone = this.$store.getters.getUserInfo.phone;
+      const result = phone
+        .replace(/[^0-9]/g, "")
+        .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+      return { phone: result };
+    },
   },
   components: {
     ReviewCard,
