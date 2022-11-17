@@ -1,6 +1,5 @@
 <template>
   <div>
-    <AddReviewBtn v-if="userInfo"></AddReviewBtn>
     <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
       <li v-for="review in this.reviewList" :key="review.id">
         <el-card
@@ -32,7 +31,7 @@
           </div>
           <div>
             <span
-              v-for="item in review.fragrance.trim().replace(',', '')"
+              v-for="item in review.fragrance.split(',')"
               v-bind:key="item.fragrance"
               class="fragrance"
               >{{ frangranceMessage[item] }}</span
@@ -62,7 +61,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import AddReviewBtn from "../../components/AddReviewBtn.vue";
 import {
   recommendationMessage,
   longevityMessage,
@@ -71,9 +69,6 @@ import {
   frangranceMessage,
 } from "../../config/config.js";
 export default {
-  components: {
-    AddReviewBtn,
-  },
   data() {
     return {
       recommendationMessage,

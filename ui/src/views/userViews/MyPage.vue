@@ -1,6 +1,5 @@
 <template>
   <div>
-    <AddReviewBtn></AddReviewBtn>
     <el-main>
       <div v-if="userInfo">
         <h2>회원 정보</h2>
@@ -33,6 +32,7 @@
       <el-divider></el-divider>
       <h2>내가 작성한 리뷰</h2>
       <div v-if="myReviews && myReviews.length > 0">
+        <AddReviewBtn></AddReviewBtn>
         <ul
           class="infinite-list"
           v-infinite-scroll="load"
@@ -67,7 +67,7 @@
               </div>
               <div>
                 <span
-                  v-for="item in review.fragrance.trim().replace(',', '')"
+                  v-for="item in review.fragrance.split(',')"
                   v-bind:key="item.fragrance"
                   class="fragrance"
                 >
@@ -101,7 +101,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import AddReviewBtn from "../../components/AddReviewBtn.vue";
 import {
   recommendationMessage,
   longevityMessage,
@@ -110,9 +109,6 @@ import {
   frangranceMessage,
 } from "../../config/config.js";
 export default {
-  components: {
-    AddReviewBtn,
-  },
   data() {
     return {
       recommendationMessage,
