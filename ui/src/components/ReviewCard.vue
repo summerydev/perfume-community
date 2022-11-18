@@ -29,11 +29,11 @@
     <div>
       <span
         v-for="item in review.fragrance.split(',')"
-        v-bind:key="item.fragrance"
+        v-bind:key="item"
         class="fragrance"
+        :class="color[item]"
+        >{{ frangranceMessage[item] }}</span
       >
-        {{ frangranceMessage[item] }}
-      </span>
     </div>
     <!-- <el-row>
       <el-col :span="8">지속력⏱️</el-col>
@@ -78,6 +78,16 @@ export default {
       genderMessage,
       frangranceMessage,
       count: 0,
+      color: {
+        0: "f-0",
+        1: "f-1",
+        2: "f-2",
+        3: "f-3",
+        4: "f-4",
+        5: "f-5",
+        6: "f-6",
+        7: "f-7",
+      },
     };
   },
   computed: {
@@ -121,7 +131,6 @@ export default {
   width: max-content;
   font-size: 0.8em;
   padding: 2px 7px;
-  border: 1px solid #bababa;
   border-radius: 20px;
   text-align: center;
 }
@@ -143,5 +152,29 @@ export default {
 .image {
   width: 100%;
   object-fit: cover;
+}
+.f-0 {
+  background-color: rgb(252, 251, 195);
+}
+.f-1 {
+  background-color: rgb(255, 202, 191);
+}
+.f-2 {
+  background-color: rgb(255, 221, 228);
+}
+.f-3 {
+  background-color: rgb(243, 136, 82);
+}
+.f-4 {
+  background-color: rgb(255, 135, 199);
+}
+.f-5 {
+  background-color: rgb(198, 185, 171);
+}
+.f-6 {
+  background-color: rgb(234, 234, 224);
+}
+.f-7 {
+  background-color: rgb(186, 221, 181);
 }
 </style>
