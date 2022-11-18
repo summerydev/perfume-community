@@ -59,4 +59,29 @@ a:visited {
 .updatebtn {
   float: right;
 }
+
+.submitBtn {
+  color: #fff;
+  background-color: #409eff;
+  font-weight: 500;
+  padding: 12px 20px;
+  font-size: 14px;
+  border: 1px solid #409eff;
+  border-radius: 4px;
+  text-align: center;
+  box-sizing: border-box;
+}
+.submitBtn:hover {
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  outline: none;
+  transition: 0.1s;
+}
+
+form > * {
+  margin: 10px;
+}
 </style>

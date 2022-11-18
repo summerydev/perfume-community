@@ -1,37 +1,49 @@
 <template>
   <div>
-    <form @submit.prevent="handleSubmit">
+    <form>
       <h1>Login</h1>
-      <label for="userid">
-        <span>ID</span>
-        <el-input
-          type="text"
-          name="userid"
-          v-model="inputData.userid"
-          placeholder="id"
-          required
-          clearable
-        />
-      </label>
-      <label for="current-password">
-        <span>Password</span>
-        <el-input
-          type="password"
-          name="current-password"
-          v-model="inputData.password"
-          placeholder="password"
-          required
-          clearable
-          show-password
-        />
-      </label>
-      <button type="submit" style="margin-top: 20px">Login</button>
+      <el-row>
+        <label for="userid">
+          <span>ID</span>
+          <el-input
+            type="text"
+            name="userid"
+            v-model="inputData.userid"
+            placeholder="id"
+            required
+            clearable
+        /></label>
+      </el-row>
+      <el-row>
+        <label for="current-password">
+          <span>Password</span>
+          <el-input
+            type="password"
+            name="current-password"
+            v-model="inputData.password"
+            placeholder="password"
+            required
+            clearable
+            show-password
+          />
+        </label>
+      </el-row>
+      <el-row>
+        <el-col>
+          <el-button
+            @click="checkInputData"
+            type="primary"
+            style="margin-top: 20px"
+            >Login</el-button
+          >
+        </el-col>
+      </el-row>
     </form>
     <div>
       아직 회원이 아니신가요?
-      <router-link to="/signup">
-        <el-link>회원가입하러가기</el-link>
-      </router-link>
+      <el-link @click="$router.push('/signup')" type="primary"
+        >회원가입하러가기</el-link
+      >
     </div>
   </div>
 </template>
@@ -51,6 +63,12 @@ export default {
     ...mapState(["isLogin"]),
   },
   methods: {
+    checkInputData() {
+      const isInit = Object.values(this.inputData).every(
+        (el) => el !== null && el !== ""
+      );
+      isInit ? this.handleSubmit() : alert("모두 입력해주세요🤓");
+    },
     async handleSubmit() {
       try {
         const result = await this.$axios.put("/users/login", this.inputData);

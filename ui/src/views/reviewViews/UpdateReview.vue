@@ -66,7 +66,7 @@
       <el-form-item>
         <el-button type="primary" @click="checkInputData">수정하기</el-button>
         <el-button type="danger" @click="handleDelete">삭제하기</el-button>
-        <router-link to="/mypage"><el-button>back</el-button></router-link>
+        <el-button @click="$router.go('-1')">back</el-button>
       </el-form-item>
     </el-form>
   </div>
