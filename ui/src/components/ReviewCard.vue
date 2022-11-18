@@ -5,23 +5,25 @@
     :body-style="{ padding: '15px' }"
   >
     <div v-if="review.user_id == userInfo?.id" class="updatebtn">
-      <i @click="updateConfirm(review.id)" class="el-icon-more-outline"></i>
+      <i @click="updateConfirm(review.id)" class="el-icon-more"></i>
     </div>
     <div class="overflow">
       <div>
         <span class="recommendation">
           {{ recommendationMessage[review.recommendation] }}
         </span>
-        <span class="reviewInfo">
-          <span v-if="review.user_name">{{ review.user_name }}님</span>
-          |
-          {{ review.created_date.substr(0, 10) }}
-        </span>
       </div>
       <div>
         <span class="perfume_name">{{ review.perfume_name }}</span>
         <span class="brand">({{ review.name }})</span>
       </div>
+    </div>
+    <div>
+      <span class="reviewInfo">
+        <span v-if="review.user_name">{{ review.user_name }}님</span>
+        |
+        {{ review.created_date.substr(0, 10) }}
+      </span>
     </div>
     <div class="img-box">
       <img v-bind:src="review.path" alt="perfume image" class="image" />
@@ -40,7 +42,7 @@
       <el-col :span="16">{{ longevityMessage[review.longevity] }}</el-col>
     </el-row> -->
     <div>
-      지속력⏱️
+      지속력⏱️›
       <span>{{ longevityMessage[review.longevity] }}</span>
     </div>
     <div>
@@ -140,7 +142,8 @@ export default {
   height: 40px;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.083);
-  overflow-y: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .img-box {

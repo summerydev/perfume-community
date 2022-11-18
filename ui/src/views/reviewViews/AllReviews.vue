@@ -48,7 +48,7 @@ li {
   padding: 10px;
   background-color: white;
   border-radius: 15px;
-  width: 270px;
-  height: 400px;
+  width: 300px;
+  height: 420px;
 }
 </style>

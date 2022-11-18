@@ -88,6 +88,36 @@
                 <el-col :span="10">{{ strengthMessage[2] }}</el-col>
               </el-row>
             </div>
+            <div>
+              <el-row>성별</el-row>
+              <el-row type="flex">
+                <el-col :span="15">
+                  <el-progress
+                    :stroke-width="13"
+                    :percentage="Number(perfume.g0)"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="10">{{ genderMessage[0] }}</el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="15">
+                  <el-progress
+                    :stroke-width="13"
+                    :percentage="Number(perfume.g1)"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="10">{{ genderMessage[1] }}</el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="15">
+                  <el-progress
+                    :stroke-width="13"
+                    :percentage="Number(perfume.g2)"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="10">{{ genderMessage[2] }}</el-col>
+              </el-row>
+            </div>
           </el-card>
         </li>
       </ul>
@@ -169,11 +199,16 @@ export default {
       reviewList: "getReviewList",
       userInfo: "getUserInfo",
     }),
+    reviewLists() {
+      console.log(this.reviewList);
+      return this.reviewList;
+    },
   },
-  created() {
-    this.$store.dispatch("fetchDataReviews");
+  async created() {
+    await this.$store.dispatch("fetchDataReviews");
     this.$store.dispatch("loginCheck");
     this.getPerfumeReviews();
+    console.log(this.reviewLists);
   },
   methods: {
     load() {
@@ -203,7 +238,58 @@ li {
   padding: 10px;
   background-color: white;
   border-radius: 15px;
-  width: 400px;
-  height: 400px;
+  width: 350px;
+  height: 450px;
+}
+.overflow div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.el-row {
+  width: 100%;
+  display: inline-block;
+}
+
+.recommendation {
+  font-size: 1.3rem;
+  font-weight: bolder;
+}
+.reviewInfo {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.perfume_name {
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+.fragrance {
+  width: max-content;
+  font-size: 0.8em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.content {
+  padding: 10px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.083);
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.img-box {
+  text-align: center;
+  width: 100px;
+  height: 150px;
+  margin: 0 auto;
+}
+.image {
+  width: 100%;
+  object-fit: cover;
 }
 </style>

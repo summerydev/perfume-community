@@ -179,7 +179,7 @@ export default {
 
 <style scoped>
 form {
-  width: 630px;
+  width: 650px;
 }
 .searchBox {
   width: 300px;

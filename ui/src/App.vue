@@ -80,8 +80,4 @@ a:visited {
   outline: none;
   transition: 0.1s;
 }
-
-form > * {
-  margin: 10px;
-}
 </style>

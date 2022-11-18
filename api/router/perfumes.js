@@ -36,13 +36,17 @@ router.get("/reviews", async (req, res) => {
   round(avg(longevity=2)*100, 0) as l2,
   round(avg(strength=0)*100, 0) as s0,
   round(avg(strength=1)*100, 0) as s1,
-  round(avg(strength=2)*100, 0) as s2
+  round(avg(strength=2)*100, 0) as s2,
+  round(avg(gender=0)*100, 0) as g0,
+  round(avg(gender=1)*100, 0) as g1,
+  round(avg(gender=2)*100, 0) as g2
   from perfume p, review r, brand b
   where p.id=r.perfume_id
   and p.brand_id=b.id
   group by
   p.id, p.perfume_name, p.brand_id, p.id, p.id, 
   p.id, p.id, 
+  p.id, p.id, p.id, 
   p.id, p.id, p.id, 
   p.id, p.id, p.id;`;
 
@@ -53,5 +57,24 @@ router.get("/reviews", async (req, res) => {
     res.status(500).send({ ok: false, message: e });
   }
 });
+
+// /** 향수별 리뷰 통계 */
+// router.get("/reviews", async (req, res) => {
+//   const getPerfumesReviews = `select
+//   r.id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, r.perfume_id, p.image_name, p.path, b.name
+//   from review r, perfume p, brand b, user u
+//   where r.perfume_id=p.id and p.brand_id=b.id and r.user_id=u.id;`;
+//   try {
+//     const [rows] = await pool.query(getPerfumesReviews);
+
+//     const result = rows;
+//     const a = result.map((el) => {
+//       return el.perfume_id;
+//     });
+//     res.json(rows);
+//   } catch (e) {
+//     res.status(500).send({ ok: false, message: e });
+//   }
+// });
 
 module.exports = router;
