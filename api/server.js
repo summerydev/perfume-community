@@ -51,7 +51,7 @@ app.use("/perfumes", perfumeRouter);
 /** authJWT */
 const authJWT = (req, res, next) => {
   if (req.headers.authorization) {
-    const token = req.headers.authorization.split("Bearer ")[1]; // header에서 access token get
+    const token = req.headers.Authorization.split("Bearer ")[1]; // header에서 access token get
     const result = verify(token); // token을 검증
     if (result.ok) {
       // token이 검증되었으면 req에 값을 세팅, 다음 콜백함수로
