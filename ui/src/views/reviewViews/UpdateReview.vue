@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ this.$route.params.id }}번 리뷰
     <h1>리뷰 수정하기</h1>
     <el-form v-if="userInfo?.id == review.user_id" label-width="150px">
       <el-form-item label="제품명" for="review">
@@ -138,7 +137,6 @@ export default {
           `/reviews/${this.reviewPkId}`,
           inputData
         );
-        console.log(res);
         if (res.data.ok) {
           alert("수정이 완료되었습니다.");
           this.$router.push("/");

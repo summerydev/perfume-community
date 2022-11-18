@@ -80,7 +80,7 @@ router.delete("/:id", async (req, res) => {
   const deleteReviewQuery = "delete from review where id=?";
   try {
     const [rows] = await pool.query(deleteReviewQuery, reviewPkId);
-    if (rows.changedRows == 1) {
+    if (rows.affectedRows == 1) {
       res.status(200).send({ ok: true });
     } else if (rows.affectedRows == 0) {
       res.status(200).send({ ok: false });
