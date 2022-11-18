@@ -45,6 +45,7 @@
           type="email"
           placeholder="your@email.com"
           required
+          minlength="7"
           maxlength="255"
         />
       </label>
@@ -55,11 +56,12 @@
           type="tel"
           placeholder="01030200807"
           required
+          minlength="13"
           maxlength="13"
           @input="autoHyphen(phone)"
         />
       </label>
-      <button type="submit">회원가입하기</button>
+      <button class="submitBtn" type="submit">회원가입하기</button>
     </form>
   </div>
 </template>

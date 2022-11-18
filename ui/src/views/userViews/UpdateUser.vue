@@ -45,6 +45,8 @@
               type="email"
               placeholder="your email"
               required
+              minlength="7"
+              maxlength="255"
             />
           </el-col>
         </el-row>
@@ -58,6 +60,7 @@
               type="tel"
               placeholder="010-3020-0807"
               required
+              minlength="13"
               maxlength="13"
               @input="autoHyphen(phone)"
             />
@@ -66,7 +69,10 @@
       </label>
       <el-row>
         <el-col :span="6" :offset="6"></el-col>
-        <el-col><button type="submit">저장</button></el-col>
+        <el-col><button class="submitBtn" type="submit">저장</button></el-col>
+        <el-col>
+          <el-button @click="$router.go('-1')">back</el-button>
+        </el-col>
       </el-row>
     </form>
   </div>
