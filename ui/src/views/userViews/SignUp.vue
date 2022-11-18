@@ -106,6 +106,7 @@ export default {
       const userIdRegex = /^[A-Za-z0-9+]{3,}$/;
       const validation = userIdRegex.test(this.inputData.userid);
       if (!validation) {
+        this.availableId = false;
         this.checkIdMessge = "영어 3글자 이상 입력해주세요.";
       } else {
         const res = await this.$axios.get(`/users/${this.inputData.userid}`);
