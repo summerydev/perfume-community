@@ -28,36 +28,43 @@
     <div class="img-box">
       <img v-bind:src="review.path" alt="perfume image" class="image" />
     </div>
-    <div>
-      <span
-        v-for="item in review.fragrance.split(',')"
-        v-bind:key="item"
-        class="fragrance"
-        :class="color[item]"
-        >{{ frangranceMessage[item] }}</span
-      >
-    </div>
-    <!-- <el-row>
-      <el-col :span="8">지속력⏱️</el-col>
-      <el-col :span="16">{{ longevityMessage[review.longevity] }}</el-col>
-    </el-row> -->
-    <div>
-      지속력⏱️›
-      <span>{{ longevityMessage[review.longevity] }}</span>
-    </div>
-    <div>
-      확산력✨
-      <span>{{ strengthMessage[review.strength] }}</span>
-    </div>
-    <div>
-      성별
-      <span>{{ genderMessage[review.gender] }}</span
-      >에게 추천
-    </div>
-    <div>
-      상세리뷰
-      <div class="content">{{ review.content }}</div>
-    </div>
+    <table>
+      <tr>
+        <td colspan="4">
+          <span
+            v-for="item in review.fragrance.split(',')"
+            v-bind:key="item"
+            class="fragrance"
+            :class="color[item]"
+            style="margin-right: 3px"
+            >{{ frangranceMessage[item] }}</span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td class="td-1">지속력</td>
+        <td colspan="3">{{ longevityMessage[review.longevity] }}</td>
+      </tr>
+      <tr>
+        <td class="td-1">확산력</td>
+        <td colspan="3">{{ strengthMessage[review.strength] }}</td>
+      </tr>
+      <tr>
+        <td class="td-1">성별</td>
+        <td colspan="3">{{ genderMessage[review.gender] }}</td>
+      </tr>
+      <tr>
+        <td class="td-1">상세리뷰</td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <div class="content">{{ review.content }}</div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4"></td>
+      </tr>
+    </table>
   </el-card>
 </template>
 
@@ -110,10 +117,6 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.el-row {
-  width: 100%;
-  display: inline-block;
-}
 
 .recommendation {
   font-size: 1.3rem;
@@ -156,6 +159,19 @@ export default {
   width: 100%;
   object-fit: cover;
 }
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+td {
+  height: 20px;
+}
+
+.td-1 {
+  color: gray;
+}
+
 .f-0 {
   background-color: rgb(252, 251, 195);
 }
