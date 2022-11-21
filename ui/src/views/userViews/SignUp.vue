@@ -13,8 +13,8 @@
         />
         <span>
           <el-link type="danger" @click="checkId">아이디 체크</el-link>
-          <span v-if="isChecked">
-            {{ checkIdMessge }}
+          <span>
+            {{ rule.id.message }}
           </span>
         </span>
       </label>
@@ -47,7 +47,11 @@
           required
           minlength="7"
           maxlength="255"
+          @blur="checkEmail"
         />
+        <span v-if="!rule.email.available">
+          {{ rule.email.message }}
+        </span>
       </label>
       <label for="phone">
         전화번호<el-input
@@ -78,14 +82,23 @@ export default {
         phone: null,
       },
       phone: null,
-      isChecked: false,
-      availableId: true,
-      checkIdMessge: "",
+      rule: {
+        id: {
+          isChecked: false,
+          available: false,
+          message: null,
+        },
+        email: {
+          available: false,
+          message: null,
+        },
+      },
     };
   },
   methods: {
     async handleSubmit() {
-      if (this.isChecked && this.availableId) {
+      const rule = this.rule;
+      if (rule.id.isChecked && rule.id.available && rule.email.available) {
         try {
           const result = await this.$axios.post("/users", this.inputData);
           if (result.status == 200) {
@@ -95,29 +108,44 @@ export default {
         } catch (e) {
           console.log(e);
         }
-      } else if (!this.isChecked) {
+      } else if (!rule.id.isChecked) {
         alert("아이디 중복 체크를 해주세요!👀");
-      } else if (!this.availableId) {
+      } else if (!rule.id.availableId) {
         alert("사용 가능한 아이디를 입력해주세요👀");
+      } else if (!rule.email.available) {
+        alert("유효한 이메일을 입력해주세요👀");
       }
     },
     async checkId() {
-      this.isChecked = true;
+      const id = this.rule.id;
+      id.isChecked = true;
       const userIdRegex = /^[A-Za-z0-9+]{3,}$/;
       const validation = userIdRegex.test(this.inputData.userid);
       if (!validation) {
-        this.availableId = false;
-        this.checkIdMessge = "영어 3글자 이상 입력해주세요.";
+        id.available = false;
+        id.message = "영어 3글자 이상 입력해주세요.";
+        id.isChecked = false;
       } else {
         const res = await this.$axios.get(`/users/${this.inputData.userid}`);
-        console.log(res.data);
         if (res.data.ok) {
-          this.availableId = true;
-          this.checkIdMessge = "사용 가능한 아이디입니다.";
+          id.available = true;
+          id.message = "사용 가능한 아이디입니다.";
         } else if (!res.data.ok) {
-          this.availableId = false;
-          this.checkIdMessge = "이미 사용중인 아이디입니다.";
+          id.availableId = false;
+          id.message = "이미 사용중인 아이디입니다.";
+          id.isChecked = false;
         }
+      }
+    },
+    checkEmail() {
+      const email = this.rule.email;
+      const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+      const validation = emailRegex.test(this.inputData.email);
+      if (validation) {
+        email.available = true;
+      } else {
+        email.available = false;
+        email.message = "유효한 이메일을 입력해주세요.";
       }
     },
     autoHyphen(phone) {
@@ -136,5 +164,10 @@ form {
   flex-direction: column;
   width: 400px;
   margin: auto;
+}
+
+form > label {
+  height: 85px;
+  margin: 5px;
 }
 </style>
