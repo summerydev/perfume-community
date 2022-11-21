@@ -98,7 +98,6 @@ export default {
     ReviewCard,
   },
   created() {
-    this.$store.dispatch("loginCheck");
     this.getMyReview();
   },
   methods: {

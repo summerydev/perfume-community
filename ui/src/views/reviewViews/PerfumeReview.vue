@@ -206,7 +206,6 @@ export default {
   },
   async created() {
     await this.$store.dispatch("fetchDataReviews");
-    this.$store.dispatch("loginCheck");
     this.getPerfumeReviews();
     console.log(this.reviewLists);
   },

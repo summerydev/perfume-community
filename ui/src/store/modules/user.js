@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const state = {
   userInfo: null,
   isLogin: false,
@@ -20,21 +18,6 @@ const getters = {
   },
 };
 
-const actions = {
-  async loginCheck({ commit }) {
-    if (localStorage.accessToken) {
-      const data = await axios.get("/", localStorage.accessToken);
-      if (data.status == 200) {
-        const result = await axios.put(`/users/login/${localStorage.userid}`);
-        const accessToken = localStorage.getItem("accessToken");
-        const refreshToken = localStorage.getItem("refreshToken");
-        commit("loginToken", { accessToken, refreshToken });
-        commit("loginSuccess", result.data.user);
-      }
-    }
-  },
-};
-
 const mutations = {
   setRole(state, payload) {
     state.role = payload;
@@ -46,7 +29,6 @@ const mutations = {
   loginToken(state, payload) {
     state.accessToken = payload.accessToken;
     state.refreshToken = payload.refreshToken;
-    axios.defaults.headers.common["Authrization"] = `${payload.accessToken}`;
   },
   logout(state) {
     state.isLogin = false;
@@ -60,4 +42,4 @@ const mutations = {
   },
 };
 
-export default { state, getters, mutations, actions };
+export default { state, getters, mutations };

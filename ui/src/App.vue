@@ -22,7 +22,25 @@ import AllReviews from "./views/reviewViews/AllReviews.vue";
 export default {
   components: { AppHeader, AppFooter, NavBar, AllReviews },
   created() {
-    this.$store.dispatch("loginCheck");
+    this.loginCheck();
+  },
+  methods: {
+    async loginCheck() {
+      if (localStorage.accessToken) {
+        const data = await this.$axios.get("/", localStorage.accessToken);
+        if (data.status == 200) {
+          const result = await this.$axios.put(
+            `/users/login/${localStorage.userid}`
+          );
+          const accessToken = localStorage.getItem("accessToken");
+          const refreshToken = localStorage.getItem("refreshToken");
+          this.$store.commit("loginToken", { accessToken, refreshToken });
+          this.$axios.defaults.headers.common["Authrization"] =
+            localStorage.accessToken;
+          this.$store.commit("loginSuccess", result.data.user);
+        }
+      }
+    },
   },
 };
 </script>

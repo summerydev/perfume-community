@@ -62,7 +62,7 @@
         </td>
       </tr>
       <tr>
-        <td colspan="4"></td>
+        <td colspan="4" style="display: none"></td>
       </tr>
     </table>
   </el-card>

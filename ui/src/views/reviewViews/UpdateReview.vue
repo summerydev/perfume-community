@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>리뷰 수정하기</h1>
     <el-form v-if="userInfo?.id == review.user_id" label-width="150px">
+      <h1>리뷰 수정하기</h1>
       <el-form-item label="제품명" for="review">
         <el-row class="demo-autocomplete">
           <el-col :span="12">
@@ -39,8 +39,8 @@
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="어떤 향이 느껴지나요?" for="fragranceValue">
-        <el-checkbox-group v-model="fragranceValue" size="small">
+      <el-form-item label="어떤 향이 느껴지나요?" for="review.fragrance">
+        <el-checkbox-group v-model="review.fragrance" size="small">
           <el-checkbox-button
             v-for="(item, index) in frangranceMessage"
             :key="index"
@@ -88,7 +88,6 @@ export default {
       strengthMessage,
       genderMessage,
       frangranceMessage,
-      fragranceValue: [],
       review: {
         user_id: null,
         user_name: null,
@@ -97,7 +96,7 @@ export default {
         recommendation: null,
         longevity: null,
         strength: null,
-        fragrance: null,
+        fragrance: [],
         gender: null,
         content: null,
       },
@@ -115,6 +114,7 @@ export default {
       try {
         const res = await this.$axios.get(`/reviews/${this.reviewPkId}`);
         this.review = res.data;
+        this.review.fragrance = res.data.fragrance.split(",");
       } catch (e) {
         console.log(e);
       }
@@ -125,7 +125,7 @@ export default {
         longevity: Number(this.review.longevity),
         strength: Number(this.review.strength),
         gender: Number(this.review.gender),
-        fragrance: String(this.fragranceValue.map((el) => Number(el))),
+        fragrance: String(this.review.fragrance.map((el) => Number(el))),
         content: this.review.content,
       };
       const isInit = Object.values(inputData).every(
