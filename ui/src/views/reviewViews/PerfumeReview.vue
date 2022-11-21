@@ -32,52 +32,62 @@
             <img v-bind:src="perfume.path" alt="perfume image" class="image" />
           </div>
           <div>
-            <el-row>지속력</el-row>
-            <el-row
-              type="flex"
-              v-for="(el, index) in perfume.longevity"
-              :key="index"
-            >
-              <el-col :span="14">
-                <el-progress
-                  :stroke-width="10"
-                  :percentage="(el / perfume.cnt_review) * 100"
-                ></el-progress>
-              </el-col>
-              <el-col :span="10">{{ longevityMessage[index] }}</el-col>
-            </el-row>
-          </div>
-          <div>
-            <el-row>확산력</el-row>
-            <el-row
-              type="flex"
-              v-for="(el, index) in perfume.strength"
-              :key="index"
-            >
-              <el-col :span="14">
-                <el-progress
-                  :stroke-width="10"
-                  :percentage="(el / perfume.cnt_review) * 100"
-                ></el-progress>
-              </el-col>
-              <el-col :span="10">{{ strengthMessage[index] }}</el-col>
-            </el-row>
-          </div>
-          <div>
-            <el-row>추천 성별</el-row>
-            <el-row
-              type="flex"
-              v-for="(el, index) in perfume.gender"
-              :key="index"
-            >
-              <el-col :span="14">
-                <el-progress
-                  :stroke-width="10"
-                  :percentage="(el / perfume.cnt_review) * 100"
-                ></el-progress>
-              </el-col>
-              <el-col :span="10">{{ genderMessage[index] }}</el-col>
-            </el-row>
+            <div>
+              <el-row>지속력</el-row>
+              <el-row
+                type="flex"
+                v-for="(el, index) in perfume.longevity"
+                :key="index"
+              >
+                <span>
+                  <el-col :span="10">
+                    <el-progress
+                      :stroke-width="10"
+                      :percentage="(el / perfume.cnt_review) * 100"
+                    ></el-progress>
+                  </el-col>
+                  <el-col :span="7" class="message">{{
+                    longevityMessage[index]
+                  }}</el-col>
+                </span>
+              </el-row>
+            </div>
+            <div>
+              <el-row>확산력</el-row>
+              <el-row
+                type="flex"
+                v-for="(el, index) in perfume.strength"
+                :key="index"
+              >
+                <el-col :span="10">
+                  <el-progress
+                    :stroke-width="10"
+                    :percentage="(el / perfume.cnt_review) * 100"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="7" class="message">{{
+                  strengthMessage[index]
+                }}</el-col>
+              </el-row>
+            </div>
+            <div>
+              <el-row>추천 성별</el-row>
+              <el-row
+                type="flex"
+                v-for="(el, index) in perfume.gender"
+                :key="index"
+              >
+                <el-col :span="10">
+                  <el-progress
+                    :stroke-width="10"
+                    :percentage="(el / perfume.cnt_review) * 100"
+                  ></el-progress>
+                </el-col>
+                <el-col :span="7" class="message">{{
+                  genderMessage[index]
+                }}</el-col>
+              </el-row>
+            </div>
           </div>
         </el-card>
       </li>
@@ -127,7 +137,6 @@ export default {
       try {
         const result = await this.$axios.get("/perfumes/reviews");
         this.perfumesReviews = result.data;
-        console.log(this.perfumesReviews);
       } catch (e) {
         console.log(e);
       }
@@ -163,6 +172,7 @@ li {
 .el-row {
   width: 100%;
   display: inline-block;
+  margin: 2px;
 }
 
 .recommendation {
@@ -205,5 +215,9 @@ li {
 .image {
   width: 100%;
   object-fit: cover;
+}
+
+.message {
+  color: gray;
 }
 </style>
