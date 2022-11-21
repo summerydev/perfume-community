@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>리뷰 등록하기</h1>
     <el-form label-width="150px" style="position: relative">
+      <h1>리뷰 등록하기</h1>
       <el-form-item label="제품명" for="perfumeName">
         <el-input v-model="searchKey" @input="searchPerfume"></el-input>
         <div v-show="isShow" class="searchBox" style="position: absolute">
@@ -50,8 +50,11 @@
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="어떤 향이 느껴지나요?" for="fragranceValue">
-        <el-checkbox-group v-model="fragranceValue" size="small">
+      <el-form-item
+        label="어떤 향이 느껴지나요?(최대 4개)"
+        for="fragranceValue"
+      >
+        <el-checkbox-group v-model="fragranceValue" size="small" :max="4">
           <el-checkbox-button
             v-for="(item, index) in frangranceMessage"
             :key="index"
@@ -179,12 +182,17 @@ export default {
 
 <style scoped>
 form {
-  width: 650px;
+  width: 700px;
+  margin: auto;
 }
 .searchBox {
   width: 300px;
-  height: 150px;
+  max-height: 150px;
   overflow: scroll;
   z-index: 1;
+}
+
+.el-form-item__label {
+  width: fit-content;
 }
 </style>
