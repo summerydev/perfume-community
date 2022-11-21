@@ -54,7 +54,7 @@ router.put("/login/:id", async (req, res) => {
 
 /** 유저 회원가입 */
 router.post("/", async (req, res) => {
-  const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
+  const signupQuery = `insert into user (user_id, PASSWORD(password), name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
   try {
     await pool.query(signupQuery, [
       req.body.userid,
