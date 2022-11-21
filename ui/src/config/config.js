@@ -9,7 +9,7 @@ export const longevityMessage = {
   2: "오래가요",
 };
 export const strengthMessage = {
-  0: "나만 맡을 수 있어요",
+  0: "약해요",
   1: "지하철 가능!",
   2: "강력해요",
 };
