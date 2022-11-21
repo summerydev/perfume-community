@@ -21,7 +21,7 @@ import AllReviews from "./views/reviewViews/AllReviews.vue";
 
 export default {
   components: { AppHeader, AppFooter, NavBar, AllReviews },
-  created() {
+  updated() {
     this.loginCheck();
   },
   methods: {
