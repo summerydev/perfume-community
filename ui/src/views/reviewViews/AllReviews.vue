@@ -40,6 +40,7 @@ ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: auto;
 }
 li {
   list-style: none;

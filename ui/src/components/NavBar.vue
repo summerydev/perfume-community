@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar">
+  <nav>
     <div v-if="this.isLogin">
       <el-button @click="handleClick('/addreview')" size="mini" round>
         <i class="el-icon-edit"></i>
