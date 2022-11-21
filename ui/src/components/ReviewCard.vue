@@ -5,7 +5,7 @@
     :body-style="{ padding: '15px' }"
   >
     <div v-if="review.user_id == userInfo?.id" class="updatebtn">
-      <i @click="updateConfirm(review.id)" class="el-icon-more"></i>
+      <el-link type="primary" @click="updateConfirm(review.id)">수정</el-link>
     </div>
     <div class="overflow">
       <div>
