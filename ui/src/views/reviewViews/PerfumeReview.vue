@@ -1,175 +1,87 @@
 <template>
   <div>
-    <div>
-      <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
-        <li v-for="perfume in perfumesReviews" :key="perfume.id">
-          <el-card
-            shadow="hover"
-            style="border-radius: 10px"
-            :body-style="{ padding: '15px' }"
-          >
-            <div>
-              <span class="perfume_name">{{ perfume.perfume_name }}</span>
-              <span class="brand">({{ perfume.name }})</span>
-            </div>
-            <div>
-              <span class="recommendation"
-                >👍 {{ perfume.recommendation }} ({{
-                  Math.floor(
-                    (perfume.recommendation / perfume.review_count) * 100
-                  )
-                }}%, {{ perfume.review_count }}개 리뷰)
-              </span>
-            </div>
-            <div class="img-box">
-              <img
-                v-bind:src="perfume.path"
-                alt="perfume image"
-                class="image"
-              />
-            </div>
-            <div>
-              <el-row>지속력</el-row>
-              <el-row type="flex">
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.l0)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="6">{{ longevityMessage[0] }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.l1)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="6">{{ longevityMessage[1] }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.l2)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="6">{{ longevityMessage[2] }}</el-col>
-              </el-row>
-            </div>
-            <div>
-              <el-row>확산력</el-row>
-              <el-row type="flex">
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.s0)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="10">{{ strengthMessage[0] }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.s1)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="10">{{ strengthMessage[1] }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.s2)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="10">{{ strengthMessage[2] }}</el-col>
-              </el-row>
-            </div>
-            <div>
-              <el-row>성별</el-row>
-              <el-row type="flex">
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.g0)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="10">{{ genderMessage[0] }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.g1)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="10">{{ genderMessage[1] }}</el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="15">
-                  <el-progress
-                    :stroke-width="13"
-                    :percentage="Number(perfume.g2)"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="10">{{ genderMessage[2] }}</el-col>
-              </el-row>
-            </div>
-          </el-card>
-        </li>
-      </ul>
-    </div>
-
-    <!-- <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
-      <li v-for="review in this.reviewList" :key="review.id">
+    <ul
+      class="infinite-list"
+      v-infinite-scroll="load"
+      style="overflow: auto"
+      v-for="perfume in perfumesReviews"
+      :key="perfume.id"
+    >
+      <li v-if="perfume.cnt_review > 0">
         <el-card
           shadow="hover"
           style="border-radius: 10px"
           :body-style="{ padding: '15px' }"
         >
           <div>
-            <span class="perfume_name">{{ review.perfume_name }}</span>
-            <span class="brand">({{ review.name }})</span>
+            <span class="perfume_name">{{ perfume.perfume_name }}</span>
+            <span class="brand">({{ perfume.brand_name }})</span>
           </div>
           <div>
-            <span class="recommendation">
-              {{ recommendationMessage[review.recommendation] }}
+            <span class="recommendation"
+              >👍
+              {{ perfume.recommendation[1] ? perfume.recommendation[1] : 0 }}
+              ({{
+                perfume.recommendation[1]
+                  ? (perfume.recommendation[1] / perfume.cnt_review) * 100
+                  : 0
+              }}%, {{ perfume.cnt_review }}개 리뷰)
             </span>
           </div>
           <div class="img-box">
-            <img v-bind:src="review.path" alt="perfume image" class="image" />
+            <img v-bind:src="perfume.path" alt="perfume image" class="image" />
           </div>
           <div>
-            <span
-              v-for="item in review.fragrance.replace(',', '').trim()"
-              v-bind:key="item.fragrance"
-              class="fragrance"
+            <el-row>지속력</el-row>
+            <el-row
+              type="flex"
+              v-for="(el, index) in perfume.longevity"
+              :key="index"
             >
-              {{ frangranceMessage[item] }}
-            </span>
+              <el-col :span="14">
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="(el / perfume.cnt_review) * 100"
+                ></el-progress>
+              </el-col>
+              <el-col :span="10">{{ longevityMessage[index] }}</el-col>
+            </el-row>
           </div>
           <div>
-            지속력⏱️
-            <span>{{ longevityMessage[review.longevity] }}</span>
+            <el-row>확산력</el-row>
+            <el-row
+              type="flex"
+              v-for="(el, index) in perfume.strength"
+              :key="index"
+            >
+              <el-col :span="14">
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="(el / perfume.cnt_review) * 100"
+                ></el-progress>
+              </el-col>
+              <el-col :span="10">{{ strengthMessage[index] }}</el-col>
+            </el-row>
           </div>
           <div>
-            확산력✨
-            <span>{{ strengthMessage[review.strength] }}</span>
-          </div>
-          <div>
-            성별 <span>{{ genderMessage[review.gender] }}</span
-            >에게 추천
-          </div>
-          <div>
-            상세리뷰
-            <div class="content">{{ review.content }}</div>
+            <el-row>추천 성별</el-row>
+            <el-row
+              type="flex"
+              v-for="(el, index) in perfume.gender"
+              :key="index"
+            >
+              <el-col :span="14">
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="(el / perfume.cnt_review) * 100"
+                ></el-progress>
+              </el-col>
+              <el-col :span="10">{{ genderMessage[index] }}</el-col>
+            </el-row>
           </div>
         </el-card>
       </li>
-    </ul> -->
+    </ul>
   </div>
 </template>
 
@@ -200,14 +112,12 @@ export default {
       userInfo: "getUserInfo",
     }),
     reviewLists() {
-      console.log(this.reviewList);
       return this.reviewList;
     },
   },
   async created() {
     await this.$store.dispatch("fetchDataReviews");
     this.getPerfumeReviews();
-    console.log(this.reviewLists);
   },
   methods: {
     load() {
@@ -217,6 +127,7 @@ export default {
       try {
         const result = await this.$axios.get("/perfumes/reviews");
         this.perfumesReviews = result.data;
+        console.log(this.perfumesReviews);
       } catch (e) {
         console.log(e);
       }
@@ -237,6 +148,10 @@ li {
   padding: 10px;
   background-color: white;
   border-radius: 15px;
+  width: 350px;
+  height: 450px;
+}
+.el-card {
   width: 350px;
   height: 450px;
 }

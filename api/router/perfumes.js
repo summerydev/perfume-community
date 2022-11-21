@@ -23,58 +23,64 @@ router.get("/", async (req, res) => {
 
 /** 향수별 리뷰 통계 */
 router.get("/reviews", async (req, res) => {
-  const getPerfumesReviews = `select 
-  p.id, 
-  p.perfume_name, 
-  b.name,
-  p.image_name,
-  p.path,
-  count(case when r.recommendation=1 then 1 end) as recommendation,
-  count(case when r.id is null then 0 else r.id end) as review_count, 
-  round(avg(longevity=0)*100, 0) as l0,
-  round(avg(longevity=1)*100, 0) as l1,
-  round(avg(longevity=2)*100, 0) as l2,
-  round(avg(strength=0)*100, 0) as s0,
-  round(avg(strength=1)*100, 0) as s1,
-  round(avg(strength=2)*100, 0) as s2,
-  round(avg(gender=0)*100, 0) as g0,
-  round(avg(gender=1)*100, 0) as g1,
-  round(avg(gender=2)*100, 0) as g2
-  from perfume p, review r, brand b
-  where p.id=r.perfume_id
-  and p.brand_id=b.id
-  group by
-  p.id, p.perfume_name, p.brand_id, p.id, p.id, 
-  p.id, p.id, 
-  p.id, p.id, p.id, 
-  p.id, p.id, p.id, 
-  p.id, p.id, p.id;`;
+  const getPerfumesReviewsQuery = `select p.id, p.perfume_name, b.name as brand_name, ifnull(r.cnt_review, 0) as cnt_review,  p.image_name, p.path
+  from perfume p
+  left outer join (
+  select 
+  count(id) as cnt_review, perfume_id
+  from review group by perfume_id
+  ) as r
+  on p.id=r.perfume_id
+  left join brand b
+  on p.brand_id=b.id`;
+
+  const getRecommendationCountQuery = `select perfume_id as id, recommendation, count(recommendation) as ctn_recommendation from review group by perfume_id, recommendation`;
+  const getLongevityCountQuery = `select perfume_id as id, longevity, count(longevity) as ctn_longevity from review group by perfume_id, longevity`;
+  const getStrengthCountQuery = `select perfume_id as id, strength, count(strength) as ctn_strength from review group by perfume_id, strength`;
+  const getGenderCountQuery = `select perfume_id as id, gender, count(gender) as ctn_gender from review group by perfume_id, gender`;
 
   try {
-    const [rows] = await pool.query(getPerfumesReviews);
-    res.json(rows);
+    const [perfumes] = await pool.query(getPerfumesReviewsQuery);
+    const [recommendationCount] = await pool.query(getRecommendationCountQuery);
+    const [longevityCount] = await pool.query(getLongevityCountQuery);
+    const [strengthCount] = await pool.query(getStrengthCountQuery);
+    const [genderCount] = await pool.query(getGenderCountQuery);
+
+    for (let perfume of perfumes) {
+      const detail = {
+        recommendation: {},
+        longevity: {},
+        strength: {},
+        gender: {},
+      };
+
+      Object.assign(perfume, detail);
+      recommendationCount
+        .filter((el) => perfume.id == el.id)
+        .map((el) => {
+          perfume.recommendation[el.recommendation] = el.ctn_recommendation;
+        });
+      longevityCount
+        .filter((el) => perfume.id == el.id)
+        .map((el) => {
+          perfume.longevity[el.longevity] = el.ctn_longevity;
+        });
+      strengthCount
+        .filter((el) => perfume.id == el.id)
+        .map((el) => {
+          perfume.strength[el.strength] = el.ctn_strength;
+        });
+      genderCount
+        .filter((el) => perfume.id == el.id)
+        .map((el) => {
+          perfume.gender[el.gender] = el.ctn_gender;
+        });
+    }
+    console.log(perfumes[0]);
+    res.json(perfumes);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });
   }
 });
-
-// /** 향수별 리뷰 통계 */
-// router.get("/reviews", async (req, res) => {
-//   const getPerfumesReviews = `select
-//   r.id, r.recommendation, r.longevity, r.strength, r.gender, r.fragrance, r.content, p.perfume_name, r.perfume_id, p.image_name, p.path, b.name
-//   from review r, perfume p, brand b, user u
-//   where r.perfume_id=p.id and p.brand_id=b.id and r.user_id=u.id;`;
-//   try {
-//     const [rows] = await pool.query(getPerfumesReviews);
-
-//     const result = rows;
-//     const a = result.map((el) => {
-//       return el.perfume_id;
-//     });
-//     res.json(rows);
-//   } catch (e) {
-//     res.status(500).send({ ok: false, message: e });
-//   }
-// });
 
 module.exports = router;
