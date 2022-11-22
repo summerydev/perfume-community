@@ -1,7 +1,10 @@
 <template>
   <nav>
     <div v-if="this.isLogin">
-      <el-button @click="handleClick('/addreview')" size="mini" round>
+      <el-link v-if="userInfo?.id == 1" @click="handleClick('/admin')">
+        관리자페이지
+      </el-link>
+      <el-button v-else @click="handleClick('/addreview')" size="mini" round>
         <i class="el-icon-edit"></i>
         리뷰쓰기
       </el-button>
