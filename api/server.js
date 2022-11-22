@@ -44,9 +44,11 @@ app.get("/", (req, res) => {
 const userRouter = require("./router/users");
 const reviewsRouter = require("./router/reviews");
 const perfumeRouter = require("./router/perfumes");
+const brandRouter = require("./router/brands");
 app.use("/users", userRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/perfumes", perfumeRouter);
+app.use("/brands", brandRouter);
 
 /** authJWT */
 const authJWT = (req, res, next) => {
