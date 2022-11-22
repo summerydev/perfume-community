@@ -117,6 +117,7 @@ export default {
       }
     },
     async checkId() {
+      console.log(this.inputData.userid);
       const id = this.rule.id;
       id.isChecked = true;
       const userIdRegex = /^[A-Za-z0-9+]{3,}$/;
@@ -126,14 +127,18 @@ export default {
         id.message = "영어 3글자 이상 입력해주세요.";
         id.isChecked = false;
       } else {
-        const res = await this.$axios.get(`/users/${this.inputData.userid}`);
-        if (res.data.ok) {
-          id.available = true;
-          id.message = "사용 가능한 아이디입니다.";
-        } else if (!res.data.ok) {
-          id.availableId = false;
-          id.message = "이미 사용중인 아이디입니다.";
-          id.isChecked = false;
+        try {
+          const res = await this.$axios.get(`/users/${this.inputData.userid}`);
+          if (res.data.ok) {
+            id.available = true;
+            id.message = "사용 가능한 아이디입니다.";
+          } else if (!res.data.ok) {
+            id.availableId = false;
+            id.message = "이미 사용중인 아이디입니다.";
+            id.isChecked = false;
+          }
+        } catch (e) {
+          console.log(e);
         }
       }
     },
