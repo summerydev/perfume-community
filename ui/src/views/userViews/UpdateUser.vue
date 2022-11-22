@@ -47,7 +47,11 @@
               required
               minlength="7"
               maxlength="255"
+              @blur="checkEmail"
             />
+            <span v-if="!rule.email.available" class="alert">
+              {{ rule.email.message }}
+            </span>
           </el-col>
         </el-row>
       </label>
@@ -58,7 +62,7 @@
             <el-input
               v-model="phone"
               type="tel"
-              placeholder="010-3020-0807"
+              placeholder="01030200807"
               required
               minlength="13"
               maxlength="13"
@@ -92,6 +96,12 @@ export default {
         phone: null,
       },
       phone: null,
+      rule: {
+        email: {
+          available: false,
+          message: null,
+        },
+      },
     };
   },
   computed: {
@@ -99,22 +109,27 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      try {
-        const result = await this.$axios.put(
-          `/users/${this.userPkId}`,
-          this.userData
-        );
-        if (result.status == 200 && result.data.ok) {
-          alert("회원정보 수정이 완료되었습니다.");
-          this.$router.push("/mypage");
-        } else if (result.status == 200 && !result.data.ok) {
-          alert("존재하지 않는 사용자입니다.");
+      const rule = this.rule;
+      if (rule.email.available) {
+        try {
+          const result = await this.$axios.put(
+            `/users/${this.userPkId}`,
+            this.userData
+          );
+          if (result.data.ok) {
+            alert("회원정보 수정이 완료되었습니다.");
+            this.$router.push("/mypage");
+          } else if (!result.data.ok) {
+            alert("존재하지 않는 사용자입니다.");
+          }
+        } catch (e) {
+          alert("수정에 실패했습니다.😭");
+          console.log(e);
         }
-      } catch (e) {
-        alert("수정에 실패했습니다.😭");
-        console.log(e);
+        this.$store.commit("updateUserInfo");
+      } else if (!rule.email.available) {
+        alert("유효한 이메일을 입력해주세요👀");
       }
-      this.$store.commit("updateUserInfo");
     },
     autoHyphen(phone) {
       this.phone = phone
@@ -122,22 +137,38 @@ export default {
         .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
       this.userData.phone = this.phone.replace(/[^0-9]/g, "");
     },
+    checkEmail() {
+      const email = this.rule.email;
+      const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+      const validation = emailRegex.test(this.userData.email);
+      if (validation) {
+        email.available = true;
+      } else {
+        email.available = false;
+        email.message = "유효한 이메일을 입력해주세요.";
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
 form {
-  width: 300px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
   margin: auto;
-  text-align: center;
+}
+
+form > label {
+  height: 60px;
+  margin: 5px;
 }
 
 form .el-row {
   display: flex;
   text-align: right;
   align-items: center;
-  padding: 10px;
 }
 
 .el-row .el-col-6 {
