@@ -35,11 +35,27 @@
           v-infinite-scroll="load"
           style="overflow: auto"
         >
-          <li v-for="review in myReviews" :key="review.id">
+          <li
+            v-for="review in myReviews"
+            :key="review.id"
+            @click="
+              showModal = true;
+              clickedReview = review;
+            "
+            @blur="showModal = false"
+            tabindex="-1"
+            ref="mymodal"
+          >
             <ReviewCard :review="review"></ReviewCard>
           </li>
         </ul>
       </div>
+      <ReviewModal
+        v-if="showModal"
+        @close="showModal = false"
+        :review="clickedReview"
+      >
+      </ReviewModal>
       <div v-else>
         <div>아직 리뷰를 등록하지 않으셨군요!👀</div>
         <div>
@@ -68,6 +84,7 @@ import {
   frangranceMessage,
 } from "../../config/config.js";
 import ReviewCard from "../../components/ReviewCard.vue";
+import ReviewModal from "../../components/ReviewModal.vue";
 export default {
   data() {
     return {
@@ -79,6 +96,8 @@ export default {
       count: 0,
       myReviews: [],
       phone: this.userInfo?.phone,
+      showModal: false,
+      clickedReview: null,
     };
   },
   computed: {
@@ -96,6 +115,7 @@ export default {
   },
   components: {
     ReviewCard,
+    ReviewModal,
   },
   created() {
     this.getMyReview();
