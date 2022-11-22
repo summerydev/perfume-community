@@ -8,19 +8,29 @@ router.use(function (req, res, next) {
   next();
 });
 
-/** 향수 검색 */
+/** 향수 전체 목록 */
 router.get("/", async (req, res) => {
-  const searchKey = req.query.searchKey;
-  const getPerfumeIdQuery = `select p.id, p.perfume_name, p.brand_id, b.name from perfume p, brand b where p.perfume_name like ? and p.brand_id=b.id`;
-  // const getBrandIdQuery = `select p.id, p.perfume_name, b.id as brand_id, b.name from brand b, perfume p where b.name like ? and b.id=p.brand_id;`;
-
+  const getPerfumesQuery = `select p.id, p.perfume_name, p.image_name, p.path, p.modified_date, p.brand_id, b.name from perfume p, brand b where p.brand_id=b.id  order by modified_date desc`;
   try {
-    const [perfumes] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
-    // const [brands] = await pool.query(getBrandIdQuery, `%${searchKey}%`);
-    // result.push(...perfumes);
-    // result.push(...brands);
-    // res.json(results);
-    res.json(perfumes);
+    const [result] = await pool.query(getPerfumesQuery);
+    res.json(result);
+  } catch (e) {
+    res.status(500).send({ ok: false, message: e });
+    console.log(e);
+  }
+});
+
+router.post("/", async (req, res) => {
+  const addPerfumeQuery = `insert into perfume (brand_id, perfume_name, image_name, path, created_date, modified_date) values(?, ?, ?, ?, now(), now());`;
+  try {
+    const [result] = await pool.query(addPerfumeQuery, [
+      req.body.brandId,
+      req.body.perfumeName,
+      `${req.body.perfumeName}_image`,
+      req.body.path,
+    ]);
+    console.log(result);
+    res.json(result);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });
   }
@@ -50,7 +60,7 @@ router.get("/reviews", async (req, res) => {
     const [longevityCount] = await pool.query(getLongevityCountQuery);
     const [strengthCount] = await pool.query(getStrengthCountQuery);
     const [genderCount] = await pool.query(getGenderCountQuery);
-
+    console.log(perfumes);
     for (let perfume of perfumes) {
       const detail = {
         recommendation: {},
@@ -82,6 +92,24 @@ router.get("/reviews", async (req, res) => {
         });
     }
     console.log(perfumes[0]);
+    res.json(perfumes);
+  } catch (e) {
+    res.status(500).send({ ok: false, message: e });
+  }
+});
+
+/** 향수 검색 */
+router.get("/:searchKey", async (req, res) => {
+  const searchKey = req.params.searchKey;
+  const getPerfumeIdQuery = `select p.id, p.perfume_name, p.brand_id, b.name from perfume p, brand b where p.perfume_name like ? and p.brand_id=b.id`;
+  // const getBrandIdQuery = `select p.id, p.perfume_name, b.id as brand_id, b.name from brand b, perfume p where b.name like ? and b.id=p.brand_id;`;
+
+  try {
+    const [perfumes] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
+    // const [brands] = await pool.query(getBrandIdQuery, `%${searchKey}%`);
+    // result.push(...perfumes);
+    // result.push(...brands);
+    // res.json(results);
     res.json(perfumes);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });
