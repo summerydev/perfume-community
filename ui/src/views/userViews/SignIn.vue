@@ -98,13 +98,7 @@ export default {
           this.$axios.defaults.headers.common[
             "authorization"
           ] = `Bearer ${result.data.token}`;
-          this.$router
-            .push({
-              path: "/",
-            })
-            .catch((e) => {
-              console.log(e);
-            });
+          this.$router.push("/");
         }
       } catch (e) {
         alert("아이디 또는 비밀번호가 일치하지 않습니다.");
