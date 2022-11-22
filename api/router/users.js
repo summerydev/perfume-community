@@ -91,7 +91,7 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const userPkId = req.params.id;
   const userUpdatequery =
-    "update user set password=?, name=?, email=?, phone=? where id=?";
+    "update user set password=password(?), name=?, email=?, phone=? where id=?";
   try {
     const [rows] = await pool.query(userUpdatequery, [
       req.body.password,
