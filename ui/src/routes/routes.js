@@ -6,7 +6,7 @@ import AddReview from "../views/reviewViews/AddReview.vue";
 import SignIn from "../views/userViews/SignIn.vue";
 import SignUp from "../views/userViews/SignUp.vue";
 import UpdateUser from "../views/userViews/UpdateUser.vue";
-import UpdateReview from "../views/reviewViews//UpdateReview.vue";
+import UpdateReview from "../views/reviewViews/UpdateReview.vue";
 import ErrorPage from "../views/ErrorPage.vue";
 import PerfumeReview from "../views/reviewViews/PerfumeReview.vue";
 Vue.use(VueRouter);
