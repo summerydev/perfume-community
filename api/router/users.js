@@ -16,7 +16,7 @@ router.put("/login", async (req, res) => {
   const userid = req.body.userid;
   const password = req.body.password;
   try {
-    const loginCheckQuery = `select * from user where user_id=? and password=?`;
+    const loginCheckQuery = `select * from user where user_id=? and password=password(?)`;
     const updateLoginDateQuery = `update user set login_date=now() where id=?`;
     const [result] = await pool.query(loginCheckQuery, [userid, password]);
     const user = result[0];
@@ -54,7 +54,7 @@ router.put("/login/:id", async (req, res) => {
 
 /** 유저 회원가입 */
 router.post("/", async (req, res) => {
-  const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
+  const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,password(?),?,?,?,now(),1)`;
   console.log(req.body);
   try {
     const [result] = await pool.query(signupQuery, [
