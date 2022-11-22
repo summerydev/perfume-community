@@ -16,8 +16,6 @@
           <div>
             <span class="perfume_name">{{ perfume.perfume_name }}</span>
             <span class="brand">({{ perfume.brand_name }})</span>
-          </div>
-          <div>
             <span class="recommendation"
               >👍
               {{ perfume.recommendation[1] ? perfume.recommendation[1] : 0 }}
@@ -28,65 +26,71 @@
               }}%, {{ perfume.cnt_review }}개 리뷰)
             </span>
           </div>
-          <div class="img-box">
-            <img v-bind:src="perfume.path" alt="perfume image" class="image" />
-          </div>
-          <div>
-            <div>
-              <el-row>지속력</el-row>
-              <el-row
-                type="flex"
-                v-for="(el, index) in perfume.longevity"
-                :key="index"
-              >
-                <span>
+          <div class="review-box">
+            <div class="img-box">
+              <img
+                v-bind:src="perfume.path"
+                alt="perfume image"
+                class="image"
+              />
+            </div>
+            <div class="progress-box">
+              <div>
+                <el-row>지속력</el-row>
+                <el-row
+                  type="flex"
+                  v-for="(el, index) in perfume.longevity"
+                  :key="index"
+                >
+                  <span>
+                    <el-col :span="10">
+                      <el-progress
+                        :stroke-width="10"
+                        :percentage="(el / perfume.cnt_review) * 100"
+                      ></el-progress>
+                    </el-col>
+                    <el-col :span="10" class="message">{{
+                      longevityMessage[index]
+                    }}</el-col>
+                  </span>
+                </el-row>
+              </div>
+              <div>
+                <el-row>확산력</el-row>
+                <el-row
+                  type="flex"
+                  v-for="(el, index) in perfume.strength"
+                  :key="index"
+                >
                   <el-col :span="10">
                     <el-progress
                       :stroke-width="10"
                       :percentage="(el / perfume.cnt_review) * 100"
                     ></el-progress>
                   </el-col>
-                  <el-col :span="7" class="message">{{
-                    longevityMessage[index]
+                  <el-col :span="10" class="message">{{
+                    strengthMessage[index]
                   }}</el-col>
-                </span>
-              </el-row>
-            </div>
-            <div>
-              <el-row>확산력</el-row>
-              <el-row
-                type="flex"
-                v-for="(el, index) in perfume.strength"
-                :key="index"
-              >
-                <el-col :span="10">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="(el / perfume.cnt_review) * 100"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="7" class="message">{{
-                  strengthMessage[index]
-                }}</el-col>
-              </el-row>
-            </div>
-            <div>
-              <el-row>추천 성별</el-row>
-              <el-row
-                type="flex"
-                v-for="(el, index) in perfume.gender"
-                :key="index"
-              >
-                <el-col :span="10">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="(el / perfume.cnt_review) * 100"
-                  ></el-progress>
-                </el-col>
-                <el-col :span="7" class="message">{{
-                  genderMessage[index]
-                }}</el-col>
-              </el-row>
+                </el-row>
+              </div>
+              <div>
+                <el-row>추천 성별</el-row>
+                <el-row
+                  type="flex"
+                  v-for="(el, index) in perfume.gender"
+                  :key="index"
+                >
+                  <el-col :span="10">
+                    <el-progress
+                      :stroke-width="10"
+                      :percentage="(el / perfume.cnt_review) * 100"
+                    ></el-progress>
+                  </el-col>
+                  <el-col :span="10" class="message">{{
+                    genderMessage[index]
+                  }}</el-col>
+                </el-row>
+              </div>
             </div>
           </div>
         </el-card>
@@ -154,38 +158,51 @@ ul {
 li {
   list-style: none;
   margin: 10px;
-  padding: 10px;
   background-color: white;
   border-radius: 15px;
-  width: 350px;
-  height: 450px;
+  margin: 0 auto;
 }
 .el-card {
-  width: 350px;
-  height: 450px;
+  width: max-content;
+  height: max-content;
 }
 .overflow div {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .el-row {
   width: 100%;
   display: inline-block;
   margin: 2px;
 }
 
-.recommendation {
-  font-size: 1.3rem;
-  font-weight: bolder;
+.review-box {
+  display: flex;
+  align-items: stretch;
+
+  justify-content: center;
 }
-.reviewInfo {
-  font-size: 0.8rem;
-  color: gray;
+.img-box {
+  text-align: center;
+  width: 100px;
+  height: 130px;
+  margin-right: 20px;
+}
+.image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.progress-box {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
 }
 
 .perfume_name {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bolder;
 }
 
@@ -204,17 +221,6 @@ li {
   background-color: rgba(0, 0, 0, 0.083);
   overflow-x: auto;
   overflow-y: auto;
-}
-
-.img-box {
-  text-align: center;
-  width: 100px;
-  height: 150px;
-  margin: 0 auto;
-}
-.image {
-  width: 100%;
-  object-fit: cover;
 }
 
 .message {
