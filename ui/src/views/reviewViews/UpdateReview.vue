@@ -39,8 +39,11 @@
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="어떤 향이 느껴지나요?" for="review.fragrance">
-        <el-checkbox-group v-model="review.fragrance" size="small">
+      <el-form-item
+        label="어떤 향이 느껴지나요?(최대 4개)"
+        for="review.fragrance"
+      >
+        <el-checkbox-group v-model="review.fragrance" size="small" :max="4">
           <el-checkbox-button
             v-for="(item, index) in frangranceMessage"
             :key="index"
