@@ -38,8 +38,9 @@
           maxlength="30"
         />
       </label>
-      <label for="email">
-        이메일<el-input
+      <label for="email" style="position: relative">
+        이메일
+        <el-input
           v-model="inputData.email"
           name="email"
           type="email"
@@ -49,7 +50,7 @@
           maxlength="255"
           @blur="checkEmail"
         />
-        <span v-if="!rule.email.available">
+        <span v-if="!rule.email.available" class="msg-val">
           {{ rule.email.message }}
         </span>
       </label>

@@ -49,7 +49,7 @@
               maxlength="255"
               @blur="checkEmail"
             />
-            <span v-if="!rule.email.available" class="alert">
+            <span v-if="!rule.email.available" class="msg-val">
               {{ rule.email.message }}
             </span>
           </el-col>

@@ -101,4 +101,11 @@ a:visited {
   outline: none;
   transition: 0.1s;
 }
+.msg-val {
+  color: #f56c6c;
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: 1px;
+  right: 5px;
+}
 </style>
