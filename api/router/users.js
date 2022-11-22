@@ -72,12 +72,14 @@ router.post("/", async (req, res) => {
 /** 유저 회원가입 - 아이디 중복 체크 */
 router.get("/:id", async (req, res) => {
   const userId = req.params.id;
+  console.log(userId);
   const checkIdQuery = "select user_id from user where user_id=?";
   try {
     const [result] = await pool.query(checkIdQuery, userId);
-    if (result[0].user_id == undefined) {
+    console.log(result);
+    if (result.length == 0) {
       res.status(200).send({ ok: true });
-    } else if (result[0].user_id != undefined) {
+    } else if (result.length > 0) {
       res.status(200).send({ ok: false });
     }
   } catch (e) {
