@@ -101,7 +101,7 @@ export default {
       if (rule.id.isChecked && rule.id.available && rule.email.available) {
         try {
           const result = await this.$axios.post("/users", this.inputData);
-          if (result.status == 200) {
+          if (result.data.ok) {
             alert("회원가입이 완료되었습니다.");
             this.$router.push("/signin");
           }
@@ -110,7 +110,7 @@ export default {
         }
       } else if (!rule.id.isChecked) {
         alert("아이디 중복 체크를 해주세요!👀");
-      } else if (!rule.id.availableId) {
+      } else if (!rule.id.available) {
         alert("사용 가능한 아이디를 입력해주세요👀");
       } else if (!rule.email.available) {
         alert("유효한 이메일을 입력해주세요👀");
@@ -133,7 +133,7 @@ export default {
             id.available = true;
             id.message = "사용 가능한 아이디입니다.";
           } else if (!res.data.ok) {
-            id.availableId = false;
+            id.available = false;
             id.message = "이미 사용중인 아이디입니다.";
             id.isChecked = false;
           }

@@ -54,9 +54,10 @@ router.put("/login/:id", async (req, res) => {
 
 /** 유저 회원가입 */
 router.post("/", async (req, res) => {
-  const signupQuery = `insert into user (user_id, PASSWORD(password), name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
+  const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,?,?,?,?,now(),1)`;
+  console.log(req.body);
   try {
-    await pool.query(signupQuery, [
+    const [result] = await pool.query(signupQuery, [
       req.body.userid,
       req.body.password,
       req.body.name,
@@ -72,7 +73,6 @@ router.post("/", async (req, res) => {
 /** 유저 회원가입 - 아이디 중복 체크 */
 router.get("/:id", async (req, res) => {
   const userId = req.params.id;
-  console.log(userId);
   const checkIdQuery = "select user_id from user where user_id=?";
   try {
     const [result] = await pool.query(checkIdQuery, userId);
