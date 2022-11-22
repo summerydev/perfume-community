@@ -158,9 +158,7 @@ export default {
         this.isShow = true;
         this.searchResult = [];
         try {
-          const result = await this.$axios.get("/perfumes", {
-            params: { searchKey: this.searchKey },
-          });
+          const result = await this.$axios.get(`/perfumes/${this.searchKey}`);
           if (result.data.length > 0) {
             this.searchResult = result.data;
             console.log(result.data);
