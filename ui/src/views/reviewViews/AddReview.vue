@@ -11,7 +11,9 @@
               :key="perfume.id"
               @click="selectPerfume(perfume)"
             >
-              {{ perfume.perfume_name ? perfume.perfume_name : perfume }}
+              {{ perfume.perfume_name ? perfume.perfume_name : perfume }}({{
+                perfume.perfume_name ? perfume.name : perfume
+              }})
             </div>
           </el-card>
         </div>
@@ -162,6 +164,7 @@ export default {
           });
           if (result.data.length > 0) {
             this.searchResult = result.data;
+            console.log(result.data);
           } else if (result.data.length == 0) {
             this.searchResult.push("검색결과 없음");
           }
