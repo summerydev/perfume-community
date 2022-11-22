@@ -2,7 +2,7 @@
   <div>
     <form @submit.prevent="handleSubmit">
       <h1>회원가입</h1>
-      <label for="userid">
+      <label for="userid" style="position: relative">
         아이디
         <el-input
           v-model="inputData.userid"
@@ -12,9 +12,10 @@
           required
         />
         <span>
-          <el-link type="danger" @click="checkId">아이디 체크</el-link>
-          <span>
+          <span class="msg-val">
             {{ rule.id.message }}
+            <el-link type="danger" @click="checkId">아이디 체크</el-link>
+            <span v-if="rule.id.available"> ✅</span>
           </span>
         </span>
       </label>
