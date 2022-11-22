@@ -5,27 +5,38 @@
       <el-row>
         <label for="userid">
           <span>ID</span>
-          <el-input
-            type="text"
-            name="userid"
-            v-model="inputData.userid"
-            placeholder="id"
-            required
-            clearable
-        /></label>
+          <div>
+            <el-input
+              type="text"
+              name="userid"
+              v-model="inputData.userid"
+              placeholder="id"
+              required
+              clearable
+              @blur="checkId"
+            />
+            <span v-if="rule.idIsNull" class="msg-val"> {{ message }} </span>
+          </div>
+        </label>
       </el-row>
       <el-row>
         <label for="current-password">
           <span>Password</span>
-          <el-input
-            type="password"
-            name="current-password"
-            v-model="inputData.password"
-            placeholder="password"
-            required
-            clearable
-            show-password
-          />
+          <div>
+            <el-input
+              type="password"
+              name="current-password"
+              v-model="inputData.password"
+              placeholder="password"
+              required
+              clearable
+              show-password
+              @blur="checkPwd"
+            />
+            <span v-if="rule.pwdIsNull" class="msg-val">
+              {{ message }}
+            </span>
+          </div>
         </label>
       </el-row>
       <el-row>
@@ -34,8 +45,8 @@
             @click="checkInputData"
             type="primary"
             style="margin-top: 20px"
-            >Login</el-button
-          >
+            >Login
+          </el-button>
         </el-col>
       </el-row>
     </form>
@@ -57,6 +68,11 @@ export default {
         userid: null,
         password: null,
       },
+      rule: {
+        idIsNull: false,
+        pwdIsNull: false,
+      },
+      message: "입력해주세요👀",
     };
   },
   computed: {
@@ -93,6 +109,20 @@ export default {
       } catch (e) {
         alert("아이디 또는 비밀번호가 일치하지 않습니다.");
         console.log(e);
+      }
+    },
+    checkId() {
+      if (this.inputData.userid == "" || this.inputData.userid == null) {
+        this.rule.idIsNull = true;
+      } else {
+        this.rule.idIsNull = false;
+      }
+    },
+    checkPwd() {
+      if (this.inputData.password == "" || this.inputData.userid == null) {
+        this.rule.pwdIsNull = true;
+      } else {
+        this.rule.pwdIsNull = false;
       }
     },
   },
