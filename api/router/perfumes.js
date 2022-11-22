@@ -16,7 +16,10 @@ router.get("/", async (req, res) => {
 
   try {
     const [perfumes] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
-    // const [brands] = await pool.query(getBrandIdQuery, `%${searchKey}%`)
+    // const [brands] = await pool.query(getBrandIdQuery, `%${searchKey}%`);
+    // result.push(...perfumes);
+    // result.push(...brands);
+    // res.json(results);
     res.json(perfumes);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });

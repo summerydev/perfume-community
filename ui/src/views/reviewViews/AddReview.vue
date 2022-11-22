@@ -11,9 +11,8 @@
               :key="perfume.id"
               @click="selectPerfume(perfume)"
             >
-              {{ perfume.perfume_name ? perfume.perfume_name : perfume }}({{
-                perfume.perfume_name ? perfume.name : perfume
-              }})
+              {{ perfume.perfume_name ? perfume.perfume_name : perfume }}
+              <span v-if="perfume.perfume_name">({{ perfume.name }})</span>
             </div>
           </el-card>
         </div>
