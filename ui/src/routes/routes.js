@@ -1,14 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import AllReviews from "../views/reviewViews/AllReviews.vue";
-import MyPage from "../views/userViews/MyPage.vue";
-import AddReview from "../views/reviewViews/AddReview.vue";
-import SignIn from "../views/userViews/SignIn.vue";
-import SignUp from "../views/userViews/SignUp.vue";
-import UpdateUser from "../views/userViews/UpdateUser.vue";
-import UpdateReview from "../views/reviewViews/UpdateReview.vue";
-import ErrorPage from "../views/ErrorPage.vue";
-import PerfumeReview from "../views/reviewViews/PerfumeReview.vue";
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -20,44 +12,65 @@ const router = new VueRouter({
     },
     {
       path: "/allreviews",
-      component: AllReviews,
+      component: () => import("../views/reviewViews/AllReviews.vue"),
     },
     {
       path: "/reviews/:id",
-      component: UpdateReview,
+      component: () => import("../views/reviewViews/UpdateReview.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/mypage",
-      component: MyPage,
+      component: () => import("../views/userViews/MyPage.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/mypage/update",
-      component: UpdateUser,
+      component: () => import("../views/userViews/UpdateUser.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/addreview",
-      component: AddReview,
+      component: () => import("../views/reviewViews/AddReview.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/signin",
-      component: SignIn,
+      component: () => import("../views/userViews/SignIn.vue"),
     },
     {
       path: "/signup",
-      component: SignUp,
+      component: () => import("../views/userViews/SignUp.vue"),
     },
     {
       path: "/perfumes",
-      component: PerfumeReview,
+      component: () => import("../views/reviewViews/PerfumeReview.vue"),
+    },
+    {
+      path: "/admin",
+      component: () => import("../views/adminViews/AdminMain.vue"),
+      children: [
+        {
+          path: "perfumes",
+          name: "perfumes",
+          component: () => import("../views/adminViews/PerfumeList.vue"),
+        },
+        {
+          path: "addperfume",
+          name: "addperfume",
+          component: () => import("../views/adminViews/AddPerfume.vue"),
+        },
+        {
+          path: "addbrand",
+          name: "addbrand",
+          component: () => import("../views/adminViews/AddBrand.vue"),
+        },
+      ],
     },
     {
       path: "/:catchAll(.*)",
       name: "ErrorPage",
-      component: ErrorPage,
+      component: () => import("../views/ErrorPage.vue"),
     },
   ],
 });
