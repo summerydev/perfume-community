@@ -6,9 +6,18 @@
           <img v-bind:src="perfume.path" alt="perfume image" class="image" />
         </div>
         <div class="perfumeInfo">
-          <div>{{ perfume.perfume_name }}</div>
+          <h3>{{ perfume.perfume_name }}</h3>
           <div>{{ perfume.name }}</div>
-          <div>최종수정일 : {{ perfume.modified_date.substr(0, 10) }}</div>
+          <div class="date">
+            최종수정일 : {{ perfume.modified_date.substr(0, 10) }}
+          </div>
+          <el-link
+            type="primary"
+            @click="updateConfirm(perfume.id, perfume.perfume_name)"
+            class="updatebtn"
+          >
+            수정
+          </el-link>
         </div>
       </li>
     </ul>
@@ -30,6 +39,10 @@ export default {
       const res = await this.$axios.get("/perfumes");
       this.perfumeList = res.data;
     },
+    updateConfirm(perfumeId, perfume_name) {
+      const flag = confirm(`${perfume_name} 수정하시겠습니까?`);
+      flag ? this.$router.push(`/admin/perfumes/${perfumeId}`) : "";
+    },
   },
 };
 </script>
@@ -37,13 +50,15 @@ export default {
 <style scoped>
 ul {
   margin: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 li {
   display: flex;
   list-style: none;
-  margin: 5px;
-  padding: 5px;
+  margin: 5px auto;
   background-color: white;
+  width: 350px;
 }
 .perfumeInfo {
   text-align: left;
@@ -62,5 +77,8 @@ li {
   height: 100px;
   width: 100%;
   object-fit: cover;
+}
+.date {
+  font-size: 0.8rem;
 }
 </style>

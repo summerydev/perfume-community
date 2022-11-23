@@ -57,6 +57,11 @@ const router = new VueRouter({
           component: () => import("../views/adminViews/PerfumeList.vue"),
         },
         {
+          path: "brands",
+          name: "brands",
+          component: () => import("../views/adminViews/BrandList.vue"),
+        },
+        {
           path: "addperfume",
           name: "addperfume",
           component: () => import("../views/adminViews/AddPerfume.vue"),
@@ -65,6 +70,11 @@ const router = new VueRouter({
           path: "addbrand",
           name: "addbrand",
           component: () => import("../views/adminViews/AddBrand.vue"),
+        },
+        {
+          path: "perfumes/:id",
+          name: "updateperfumes",
+          component: () => import("../views/adminViews/UpdatePerfume.vue"),
         },
       ],
     },
