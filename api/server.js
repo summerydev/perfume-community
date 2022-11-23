@@ -22,7 +22,7 @@ app.all("/*", function (req, res, next) {
 
 app.use(
   cors({
-    origin: "http://localhost:8080",
+    origin: "*",
     credentials: true,
   })
 );
