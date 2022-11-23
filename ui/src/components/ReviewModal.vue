@@ -133,7 +133,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 80%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -204,7 +204,7 @@ export default {
 
 .content {
   padding: 10px;
-  width: 280px;
+  width: 95%;
   height: 150px;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.083);
@@ -216,7 +216,6 @@ export default {
   text-align: center;
   width: 100px;
   height: 150px;
-  margin: 0 auto;
 }
 .image {
   width: 100%;
