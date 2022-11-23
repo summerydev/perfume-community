@@ -8,7 +8,7 @@ router.use(function (req, res, next) {
   next();
 });
 
-/** 향수 전체 목록 */
+/** 조회 - 향수 전체 목록 */
 router.get("/", async (req, res) => {
   const getPerfumesQuery = `select p.id, p.perfume_name, p.image_name, p.path, p.modified_date, p.brand_id, b.name from perfume p, brand b where p.brand_id=b.id  order by modified_date desc`;
   try {
@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+/** 등록 - 향수 */
 router.post("/", async (req, res) => {
   const addPerfumeQuery = `insert into perfume (brand_id, perfume_name, image_name, path, created_date, modified_date) values(?, ?, ?, ?, now(), now());`;
   try {
@@ -36,7 +37,43 @@ router.post("/", async (req, res) => {
   }
 });
 
-/** 향수별 리뷰 통계 */
+/** 조회 - 개별 향수 */
+router.get("/:id", async (req, res) => {
+  const perfumeId = req.params.id;
+  console.log(perfumeId);
+  const getPerfumesQuery = `select p.id, p.perfume_name, p.image_name, p.path, p.modified_date, p.brand_id, b.name from perfume p, brand b where p.brand_id=b.id and p.id=? order by modified_date desc`;
+  try {
+    const [result] = await pool.query(getPerfumesQuery, perfumeId);
+    res.json(result[0]);
+  } catch (e) {
+    res.status(500).send({ ok: false, message: e });
+    console.log(e);
+  }
+});
+
+/** 수정 - 개별 향수 */
+router.put("/:id", async (req, res) => {
+  console.log("put req");
+  const updatePerfumeQuery = `update perfume set brand_id=?, perfume_name=?, image_name=?, path=?, modified_date=now() where id=?`;
+  try {
+    const [result] = await pool.query(updatePerfumeQuery, [
+      req.body.brand_id,
+      req.body.perfume_name,
+      `${req.body.perfume_name}_image`,
+      req.body.path,
+      req.params.id,
+    ]);
+    if (result.affectedRows == 1) {
+      res.status(200).send({ ok: true });
+    } else if (result.affectedRows == 0) {
+      res.status(200).send({ ok: false });
+    }
+  } catch (e) {
+    res.status(500).send({ ok: false, message: e });
+  }
+});
+
+/** 조회 - 향수별 리뷰 통계 */
 router.get("/reviews", async (req, res) => {
   const getPerfumesReviewsQuery = `select p.id, p.perfume_name, b.name as brand_name, ifnull(r.cnt_review, 0) as cnt_review,  p.image_name, p.path
   from perfume p
@@ -98,8 +135,8 @@ router.get("/reviews", async (req, res) => {
   }
 });
 
-/** 향수 검색 */
-router.get("/:searchKey", async (req, res) => {
+/** 조회 - 향수 검색 */
+router.get("/search/:searchKey", async (req, res) => {
   const searchKey = req.params.searchKey;
   const getPerfumeIdQuery = `select p.id, p.perfume_name, p.brand_id, b.name from perfume p, brand b where p.perfume_name like ? and p.brand_id=b.id`;
   // const getBrandIdQuery = `select p.id, p.perfume_name, b.id as brand_id, b.name from brand b, perfume p where b.name like ? and b.id=p.brand_id;`;
