@@ -53,6 +53,8 @@ body {
   background-color: white;
   margin: 0 auto;
   max-width: 1280px;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 #wrapper {
   height: auto;
@@ -107,5 +109,14 @@ a:visited {
   position: absolute;
   bottom: 1px;
   right: 5px;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+td {
+  width: max-content;
+  height: max-content;
 }
 </style>

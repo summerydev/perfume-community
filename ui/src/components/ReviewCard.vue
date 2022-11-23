@@ -37,8 +37,8 @@
             class="fragrance"
             :class="color[item]"
             style="margin-right: 3px"
-            >{{ frangranceMessage[item] }}</span
-          >
+            >{{ frangranceMessage[item] }}
+          </span>
         </td>
       </tr>
       <tr>
@@ -158,14 +158,6 @@ export default {
 .image {
   width: 100%;
   object-fit: cover;
-}
-
-table {
-  table-layout: fixed;
-  width: 100%;
-}
-td {
-  height: 20px;
 }
 
 .td-1 {

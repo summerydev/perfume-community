@@ -198,6 +198,6 @@ form > label {
 }
 
 .el-form-item__label {
-  width: fit-content;
+  width: max-content;
 }
 </style>
