@@ -17,10 +17,10 @@
         </div>
       </el-form-item>
       <el-form-item label="향수 상품명">
-        <el-input v-model="inputData.perfume_name"></el-input>
+        <el-input v-model="perfume.perfume_name"></el-input>
       </el-form-item>
       <el-form-item label="이미지 경로">
-        <el-input v-model="inputData.path"></el-input>
+        <el-input v-model="perfume.path"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="checkInputData">작성하기</el-button>
@@ -34,16 +34,25 @@
 export default {
   data() {
     return {
+      perfume: {},
       inputData: {
-        perfumeId: this.$route.params.id,
-        brandId: null,
+        id: this.$route.params.id,
+        brandId: this.perfume?.brand_id,
         perfumeName: null,
         path: null,
       },
+      brandId: null,
       brandName: null,
       searchKey: null,
       searchResult: [],
       isShow: false,
+    };
+  },
+  updated() {
+    this.inputData = {
+      perfumeName: this.perfume.perfume_name,
+      path: this.perfume.path,
+      brandId: this.brandId,
     };
   },
   mounted() {
@@ -56,7 +65,8 @@ export default {
           `/perfumes/${this.$route.params.id}`
         );
         if (result.data != null) {
-          this.inputData = result.data;
+          this.perfume = result.data;
+          this.searchKey = result.data.name;
         } else if (result.data.length == 0) {
           alert("error");
         }
@@ -85,7 +95,7 @@ export default {
     selectBrand(brand) {
       this.searchKey = brand.name;
       this.searchResult = [];
-      this.inputData.brandId = brand.id;
+      this.brandId = brand.id; //
       this.isShow = false;
     },
     checkInputData() {
@@ -102,7 +112,6 @@ export default {
           `/perfumes/${this.$route.params.id}`,
           inputData
         );
-        console.log(result.data);
         if (result.data.ok) {
           alert("등록이 완료되었습니다.");
           this.$router.push("/admin");
