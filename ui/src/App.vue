@@ -5,7 +5,7 @@
       <AppHeader></AppHeader>
       <main>
         <router-view>
-          <AllReviews></AllReviews>
+          <review-main></review-main>
         </router-view>
       </main>
     </div>
@@ -17,10 +17,10 @@
 import AppFooter from "./components/AppFooter.vue";
 import AppHeader from "./components/AppHeader.vue";
 import NavBar from "./components/NavBar.vue";
-import AllReviews from "./views/reviewViews/AllReviews.vue";
+import ReviewMain from "./views/reviewViews/ReviewMain.vue";
 
 export default {
-  components: { AppHeader, AppFooter, NavBar, AllReviews },
+  components: { AppHeader, AppFooter, NavBar, ReviewMain },
   created() {
     this.loginCheck();
   },

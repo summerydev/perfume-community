@@ -8,12 +8,26 @@ const router = new VueRouter({
   routes: [
     {
       path: "/",
-      redirect: "/allreviews",
+      redirect: "/reviews",
     },
     {
-      path: "/allreviews",
-      component: () => import("../views/reviewViews/AllReviews.vue"),
+      path: "/reviews",
+      redirect: "/reviews/list",
+      component: () => import("../views/reviewViews/ReviewMain.vue"),
+      children: [
+        {
+          path: "list",
+          name: "reviewlist",
+          component: () => import("../views/reviewViews/AllReviews.vue"),
+        },
+        {
+          path: "perfumes",
+          name: "perfumes",
+          component: () => import("../views/reviewViews/PerfumeReview.vue"),
+        },
+      ],
     },
+
     {
       path: "/reviews/:id",
       component: () => import("../views/reviewViews/UpdateReview.vue"),
@@ -42,10 +56,7 @@ const router = new VueRouter({
       path: "/signup",
       component: () => import("../views/userViews/SignUp.vue"),
     },
-    {
-      path: "/perfumes",
-      component: () => import("../views/reviewViews/PerfumeReview.vue"),
-    },
+
     {
       path: "/admin",
       redirect: "/admin/perfumes",
