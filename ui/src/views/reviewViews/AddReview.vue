@@ -184,13 +184,16 @@ export default {
 
 <style scoped>
 form {
-  width: 700px;
+  max-width: 80%;
   margin: auto;
+}
+form > label {
+  min-width: 100%;
 }
 .searchBox {
   width: 300px;
   max-height: 150px;
-  overflow: scroll;
+  overflow: auto;
   z-index: 1;
 }
 
