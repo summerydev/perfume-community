@@ -48,6 +48,7 @@ const router = new VueRouter({
     },
     {
       path: "/admin",
+      redirect: "/admin/perfumes",
       component: () => import("../views/adminViews/AdminMain.vue"),
       children: [
         {
