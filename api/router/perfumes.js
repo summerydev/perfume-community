@@ -30,7 +30,6 @@ router.post("/", async (req, res) => {
       `${req.body.perfumeName}_image`,
       req.body.path,
     ]);
-    console.log(result);
     res.json(result);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });
@@ -115,13 +114,12 @@ router.get("/:id", async (req, res) => {
 
 /** 수정 - 개별 향수 */
 router.put("/:id", async (req, res) => {
-  console.log("put req");
   const updatePerfumeQuery = `update perfume set brand_id=?, perfume_name=?, image_name=?, path=?, modified_date=now() where id=?`;
   try {
     const [result] = await pool.query(updatePerfumeQuery, [
-      req.body.brand_id,
-      req.body.perfume_name,
-      `${req.body.perfume_name}_image`,
+      req.body.brandId,
+      req.body.perfumeName,
+      `${req.body.perfumeName}_image`,
       req.body.path,
       req.params.id,
     ]);
