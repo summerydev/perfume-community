@@ -106,7 +106,9 @@ form {
   overflow: scroll;
   z-index: 1;
 }
-
+.el-form {
+  width: 500px;
+}
 .el-form-item__label {
   width: fit-content;
 }

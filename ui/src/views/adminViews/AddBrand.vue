@@ -42,5 +42,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.el-form {
+  width: 500px;
+}
 </style>
