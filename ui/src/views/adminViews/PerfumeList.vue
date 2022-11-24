@@ -2,15 +2,7 @@
   <div>
     <ul>
       <li v-for="perfume in this.perfumeList" :key="perfume.id">
-        <div class="img-box">
-          <img v-bind:src="perfume.path" alt="perfume image" class="image" />
-        </div>
-        <div class="perfumeInfo">
-          <h3>{{ perfume.perfume_name }}</h3>
-          <div>{{ perfume.name }}</div>
-          <div class="date">
-            최종수정일 : {{ perfume.modified_date.substr(0, 10) }}
-          </div>
+        <div>
           <el-link
             type="primary"
             @click="updateConfirm(perfume.id, perfume.perfume_name)"
@@ -18,6 +10,18 @@
           >
             수정
           </el-link>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img v-bind:src="perfume.path" alt="perfume image" class="image" />
+          </div>
+          <div class="perfumeInfo">
+            <h3>{{ perfume.perfume_name }}</h3>
+            <div>{{ perfume.name }}</div>
+            <div class="date">
+              최종수정일 : {{ perfume.modified_date.substr(0, 10) }}
+            </div>
+          </div>
         </div>
       </li>
     </ul>
@@ -54,11 +58,15 @@ ul {
   flex-wrap: wrap;
 }
 li {
-  display: flex;
   list-style: none;
-  margin: 5px auto;
+  margin: 10px;
+  padding: 10px;
   background-color: white;
   width: 350px;
+}
+.box {
+  display: flex;
+  margin: 5px;
 }
 .perfumeInfo {
   text-align: left;
@@ -80,5 +88,8 @@ li {
 }
 .date {
   font-size: 0.8rem;
+}
+.updatebtn {
+  float: right;
 }
 </style>
