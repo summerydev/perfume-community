@@ -136,15 +136,15 @@ router.put("/:id", async (req, res) => {
 /** 조회 - 향수 검색 */
 router.get("/search/:searchKey", async (req, res) => {
   const searchKey = req.params.searchKey;
-  const getPerfumeIdQuery = `select p.id, p.perfume_name, p.brand_id, b.name from perfume p, brand b where p.perfume_name like ? and p.brand_id=b.id`;
-  // const getBrandIdQuery = `select p.id, p.perfume_name, b.id as brand_id, b.name from brand b, perfume p where b.name like ? and b.id=p.brand_id;`;
+  const getPerfumeIdQuery = `(select p.id, p.perfume_name, p.brand_id, b.name from perfume p, brand b where p.perfume_name like ? and p.brand_id=b.id)
+  union
+  (select p.id, p.perfume_name, b.id, b.name from brand b, perfume p where b.name like ? and b.id=p.brand_id)`;
 
   try {
-    const [perfumes] = await pool.query(getPerfumeIdQuery, `%${searchKey}%`);
-    // const [brands] = await pool.query(getBrandIdQuery, `%${searchKey}%`);
-    // result.push(...perfumes);
-    // result.push(...brands);
-    // res.json(results);
+    const [perfumes] = await pool.query(getPerfumeIdQuery, [
+      `%${searchKey}%`,
+      `%${searchKey}%`,
+    ]);
     res.json(perfumes);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });
