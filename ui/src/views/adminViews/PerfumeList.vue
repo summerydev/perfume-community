@@ -62,7 +62,6 @@ li {
   margin: 10px;
   padding: 10px;
   background-color: white;
-  width: 350px;
 }
 .box {
   display: flex;

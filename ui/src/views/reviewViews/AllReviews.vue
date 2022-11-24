@@ -61,6 +61,8 @@ ul {
   flex-direction: row;
   flex-wrap: wrap;
   margin: auto;
+  padding: 0 40px;
+  justify-content: space-evenly;
 }
 li {
   list-style: none;
