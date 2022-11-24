@@ -64,12 +64,12 @@ const router = new VueRouter({
       children: [
         {
           path: "perfumes",
-          name: "perfumes",
+          name: "perfumeslist",
           component: () => import("../views/adminViews/PerfumeList.vue"),
         },
         {
           path: "brands",
-          name: "brands",
+          name: "brandslist",
           component: () => import("../views/adminViews/BrandList.vue"),
         },
         {
