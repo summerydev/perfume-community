@@ -1,7 +1,9 @@
 require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const port = 3000;
+// const host = "49.247.33.119";
 
 const { verify, decodePayload } = require("./util/jwt.js");
 
@@ -71,6 +73,8 @@ const authJWT = (req, res, next) => {
 
 app.get("/", authJWT);
 
-app.listen(port, () => {
-  console.log(`listening on port http://localhost:${port}`);
+// var server = http.createServer(app);
+
+app.listen(port, "0.0.0.0", () => {
+  console.log(`listening on port ${port}`);
 });
