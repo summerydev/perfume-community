@@ -56,17 +56,19 @@ export default {
 </script>
 
 <style scoped>
+div {
+  margin: 0 auto;
+}
 ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: auto;
-  padding: 0 40px;
-  justify-content: space-evenly;
+  padding: 0 20px;
+  justify-content: flex-start;
 }
 li {
   list-style: none;
-  margin: 10px;
+  margin: 10px auto;
   padding: 10px;
   background-color: white;
   border-radius: 15px;
