@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div v-if="this.isLogin">
-      <el-link v-if="userInfo?.id == 1" @click="handleClick('/admin')">
+      <el-link v-if="userInfo?.id == 1" @click="handleClick('/admin/perfumes')">
         관리자페이지
       </el-link>
       <el-button v-else @click="handleClick('/addreview')" size="mini" round>
