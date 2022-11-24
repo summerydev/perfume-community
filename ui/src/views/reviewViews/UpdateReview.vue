@@ -159,7 +159,6 @@ export default {
         try {
           const res = await this.$axios.delete(`/reviews/${this.reviewPkId}`);
           if (res.data.ok) {
-            console.log(res.data.ok);
             alert("삭제가 완료되었습니다.");
             this.$router.push("/");
           } else if (!res.data.ok) {

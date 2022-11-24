@@ -60,7 +60,6 @@ router.get("/reviews", async (req, res) => {
     const [longevityCount] = await pool.query(getLongevityCountQuery);
     const [strengthCount] = await pool.query(getStrengthCountQuery);
     const [genderCount] = await pool.query(getGenderCountQuery);
-    console.log(perfumes);
     for (let perfume of perfumes) {
       const detail = {
         recommendation: {},
@@ -91,7 +90,6 @@ router.get("/reviews", async (req, res) => {
           perfume.gender[el.gender] = el.ctn_gender;
         });
     }
-    console.log(perfumes[0]);
     res.json(perfumes);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });
@@ -101,7 +99,6 @@ router.get("/reviews", async (req, res) => {
 /** 조회 - 개별 향수 */
 router.get("/:id", async (req, res) => {
   const perfumeId = req.params.id;
-  console.log(perfumeId);
   const getPerfumesQuery = `select p.id, p.perfume_name, p.image_name, p.path, p.modified_date, p.brand_id, b.name from perfume p, brand b where p.brand_id=b.id and p.id=? order by modified_date desc`;
   try {
     const [result] = await pool.query(getPerfumesQuery, perfumeId);

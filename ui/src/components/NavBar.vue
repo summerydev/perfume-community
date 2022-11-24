@@ -46,7 +46,6 @@ export default {
       this.$store.commit("logout");
       alert("로그아웃 되었습니다.");
       localStorage.clear();
-      console.log(this.$route.path);
       this.$route.path == "/" || this.$route.path == "/reviews/list"
         ? this.$router.go("")
         : this.$router.push("/");

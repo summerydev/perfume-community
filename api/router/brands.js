@@ -24,7 +24,6 @@ router.post("/", async (req, res) => {
   const addPerfumeQuery = `insert into brand (name, created_date, modified_date) values(?, now(), now())`;
   try {
     const [result] = await pool.query(addPerfumeQuery, req.body.brandName);
-    console.log(result);
     res.json(result);
   } catch (e) {
     res.status(500).send({ ok: false, message: e });

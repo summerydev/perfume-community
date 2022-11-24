@@ -56,7 +56,6 @@ export default {
           const result = await this.$axios.get(`/brands/${this.searchKey}`);
           if (result.data.length > 0) {
             this.searchResult = result.data;
-            console.log(result.data);
           } else if (result.data.length == 0) {
             this.searchResult.push("검색결과 없음");
           }

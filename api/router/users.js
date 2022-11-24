@@ -55,7 +55,6 @@ router.put("/login/:id", async (req, res) => {
 /** 유저 회원가입 */
 router.post("/", async (req, res) => {
   const signupQuery = `insert into user (user_id, password, name, email, phone, created_date, role_id) values (?,password(?),?,?,?,now(),1)`;
-  console.log(req.body);
   try {
     const [result] = await pool.query(signupQuery, [
       req.body.userid,
@@ -76,7 +75,6 @@ router.get("/:id", async (req, res) => {
   const checkIdQuery = "select user_id from user where user_id=?";
   try {
     const [result] = await pool.query(checkIdQuery, userId);
-    console.log(result);
     if (result.length == 0) {
       res.status(200).send({ ok: true });
     } else if (result.length > 0) {
