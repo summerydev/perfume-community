@@ -30,7 +30,7 @@
     </div>
     <table>
       <tr>
-        <td colspan="4">
+        <td colspan="5">
           <span
             v-for="item in review.fragrance.split(',')"
             v-bind:key="item"
@@ -42,22 +42,22 @@
         </td>
       </tr>
       <tr>
-        <td class="td-1">지속력</td>
+        <td colspan="2" class="td-1">지속력</td>
         <td colspan="3">{{ longevityMessage[review.longevity] }}</td>
       </tr>
       <tr>
-        <td class="td-1">확산력</td>
+        <td colspan="2" class="td-1">확산력</td>
         <td colspan="3">{{ strengthMessage[review.strength] }}</td>
       </tr>
       <tr>
-        <td class="td-1">성별</td>
+        <td colspan="2" class="td-1">성별</td>
         <td colspan="3">{{ genderMessage[review.gender] }}</td>
       </tr>
       <tr>
-        <td class="td-1">상세리뷰</td>
+        <td colspan="2" class="td-1">상세리뷰</td>
       </tr>
       <tr>
-        <td colspan="4">
+        <td colspan="5">
           <div class="content">
             {{ review.content }}
           </div>
