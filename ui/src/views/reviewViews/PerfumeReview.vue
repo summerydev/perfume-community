@@ -1,17 +1,12 @@
 <template>
   <div>
-    <ul
-      class="infinite-list"
-      v-infinite-scroll="load"
-      style="overflow: auto"
-      v-for="perfume in perfumesReviews"
-      :key="perfume.id"
-    >
-      <li v-if="perfume.cnt_review > 0">
+    <ul class="infinite-list" v-infinite-scroll="load" style="overflow: auto">
+      <li v-for="perfume in perfumesReviews" :key="perfume.id">
         <el-card
           shadow="hover"
           style="border-radius: 10px"
           :body-style="{ padding: '15px' }"
+          v-if="perfume.cnt_review > 0"
         >
           <div>
             <span class="perfume_name">{{ perfume.perfume_name }}</span>
@@ -21,7 +16,9 @@
               {{ perfume.recommendation[1] ? perfume.recommendation[1] : 0 }}
               ({{
                 perfume.recommendation[1]
-                  ? (perfume.recommendation[1] / perfume.cnt_review) * 100
+                  ? Math.round(
+                      (perfume.recommendation[1] / perfume.cnt_review) * 100
+                    )
                   : 0
               }}%, {{ perfume.cnt_review }}개 리뷰)
             </span>
@@ -46,8 +43,11 @@
                     <el-col :span="10">
                       <el-progress
                         :stroke-width="10"
-                        :percentage="(el / perfume.cnt_review) * 100"
-                      ></el-progress>
+                        :percentage="
+                          Math.round((el / perfume.cnt_review) * 100)
+                        "
+                      >
+                      </el-progress>
                     </el-col>
                     <el-col :span="10" class="message">{{
                       longevityMessage[index]
@@ -65,7 +65,7 @@
                   <el-col :span="10">
                     <el-progress
                       :stroke-width="10"
-                      :percentage="(el / perfume.cnt_review) * 100"
+                      :percentage="Math.round((el / perfume.cnt_review) * 100)"
                     ></el-progress>
                   </el-col>
                   <el-col :span="10" class="message">{{
@@ -83,7 +83,7 @@
                   <el-col :span="10">
                     <el-progress
                       :stroke-width="10"
-                      :percentage="(el / perfume.cnt_review) * 100"
+                      :percentage="Math.round((el / perfume.cnt_review) * 100)"
                     ></el-progress>
                   </el-col>
                   <el-col :span="10" class="message">{{
@@ -152,15 +152,14 @@ export default {
 <style scoped>
 ul {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 li {
   list-style: none;
   margin: 10px;
   background-color: white;
   border-radius: 15px;
-  margin: 0 auto;
+  margin: 5px auto;
 }
 .el-card {
   width: max-content;
