@@ -58,7 +58,9 @@
       </tr>
       <tr>
         <td colspan="4">
-          <div class="content">{{ review.content }}</div>
+          <div class="content">
+            {{ review.content }}
+          </div>
         </td>
       </tr>
       <tr>
@@ -112,12 +114,6 @@ export default {
 </script>
 
 <style scoped>
-.overflow div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .recommendation {
   font-size: 1.3rem;
   font-weight: bolder;
@@ -141,11 +137,12 @@ export default {
 }
 
 .content {
+  width: 93%;
   padding: 10px;
   height: 40px;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.083);
-  overflow-x: auto;
+  overflow-wrap: break-word;
   overflow-y: auto;
 }
 

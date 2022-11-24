@@ -166,11 +166,6 @@ li {
   width: max-content;
   height: max-content;
 }
-.overflow div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 .el-row {
   width: 100%;

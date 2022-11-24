@@ -134,6 +134,7 @@ export default {
 
 .modal-container {
   width: 80%;
+  max-width: 700px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -174,11 +175,6 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-.overflow div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 .recommendation {
   font-size: 1.3rem;
@@ -203,12 +199,13 @@ export default {
 }
 
 .content {
+  width: 93%;
   padding: 10px;
-  width: 95%;
-  height: 150px;
+  min-height: 40px;
+  max-height: 50%;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.083);
-  overflow-x: auto;
+  overflow-wrap: break-word;
   overflow-y: auto;
 }
 

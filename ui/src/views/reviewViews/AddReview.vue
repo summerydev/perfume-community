@@ -75,7 +75,12 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="리뷰를 작성해주세요." for="inputValues.content"
-        ><el-input type="textarea" :rows="2" v-model="inputValues.content" />
+        ><el-input
+          type="textarea"
+          :rows="2"
+          v-model="inputValues.content"
+          maxlength="1500"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="checkInputData">작성하기</el-button>
