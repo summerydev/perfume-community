@@ -50,12 +50,6 @@
           </li>
         </ul>
       </div>
-      <ReviewModal
-        v-if="showModal"
-        @close="showModal = false"
-        :review="clickedReview"
-      >
-      </ReviewModal>
       <div v-else>
         <div>아직 리뷰를 등록하지 않으셨군요!👀</div>
         <div>
@@ -70,6 +64,12 @@
           </el-link>
         </div>
       </div>
+      <ReviewModal
+        v-if="showModal"
+        @close="showModal = false"
+        :review="clickedReview"
+      >
+      </ReviewModal>
     </el-main>
   </div>
 </template>
