@@ -1,7 +1,4 @@
 # [side-project]향수 리뷰 커뮤니티
-
-## [커뮤니티 데모 보러가기🚀](http://49.247.33.119)
-
 <a href="http://49.247.33.119">
 <img src="ui/public/perfume-community-home.png" width="600">
 </a>
